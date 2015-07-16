@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.gamewin.weixin.mybatis.UserMybatisDao">
+	<resultMap id="userMap" type="User">
+		<id property="id" column="id" />
+		<result property="loginName" column="login_Name" /> 
+		<result property="name" column="name" /> 
+		<result property="roles" column="roles" /> 
+		<result property="registerDate" column="register_Date" /> 
+		<result property="status" column="status" /> 
+		<result property="manageAddress" column="manage_Address" /> 
+		<result property="loginName" column="login_Name" />  
+		
+		 <association property="upuser" column="upuser_id" javaType="User">
+			<id property="id" column="upuser_user_id" />
+			<result property="loginName" column="upuser_login_Name" /> 
+		</association>
+	</resultMap>
+	
+	
+	<resultMap id="userTreeDetailMap" type="com.gamewin.weixin.entity.UserTree">
+		<id property="id" column="upuser_id" />
+		<result property="text" column="upuser_name" />
+ 
+		<collection property="children" javaType="com.gamewin.weixin.entity.UserTree">
+			<id property="id" column="id" />
+			<result property="text" column="name" /> 
+		</collection>
+	</resultMap>
+	
+	<select id="getUserAllUserlist" parameterType="long" resultMap="userMap">
+		SELECT u.*,m.id AS upuser_user_id,m.login_Name AS upuser_login_Name  FROM wx_user u LEFT JOIN wx_user m ON u.upuser_id=m.id WHERE u.isdelete=0 
+	</select>
+	
+	  
+	<select id="getUserByUpUserlist" parameterType="long" resultMap="userMap">
+			select u.*, m.id as upuser_user_id, m.login_Name as upuser_login_Name
+			  from wx_user u, wx_user m
+			 where u.upuser_id = m.id
+			   and u.isdelete = 0
+			   and u.id in (SELECT u.id
+			                  FROM wx_user u
+			                 WHERE FIND_IN_SET(u.id, queryChildrenUser(#{id}))
+			                   AND u.upuser_id IS NOT NULL) 
+	</select>
+	
+	
+	<select id="getUserTree"  resultMap="userTreeDetailMap">
+	SELECT u.id,u.name,u.upuser_id,u.name upuser_name  FROM wx_user u WHERE FIND_IN_SET(id, queryChildrenUser(1)) AND u.upuser_id IS NOT NULL 
+	AND u.status='enabled' AND u.isdelete=0
+	</select>
+		<!-- CASE WHEN(SELECT COUNT(*) FROM wx_user WHERE upuser_id=u.id)>0 THEN 'closed' ELSE '' END AS state -->
+	<select id="getUserTree2"  resultType="com.gamewin.weixin.entity.UserTree2" parameterType="long">
+		SELECT u.id AS id,u.name AS TEXT,  ''  state FROM wx_user u 
+		WHERE  u.status='enabled' AND u.isdelete=0 AND
+		<if test="userid != 1">
+		 u.upuser_id=#{userid}
+		</if>
+		<if test="userid == 1">
+		 u.roles = 'TwoAdmin'
+		</if>
+		
+	</select>
+</mapper> 

@@ -42,12 +42,14 @@ function confirmtisheng(url)
 		<thead>
 			<tr>
 				<th>登录名</th>
-				<th>用户名</th>
+				<th>昵称</th>
+				<th>邮箱</th>
+				<th>游戏角色名</th> 
+				<th>所属公会</th>
 				<th>注册时间</th>
-				<th>角色</th>
-				<th>地区</th>
-				<th>状态</th>
-				<th>上级分销商</th>
+				<th>权限</th> 
+				<th>电话</th> 
+				<th>状态</th> 
 				<th>管理</th>
 			</tr>
 		</thead>
@@ -56,19 +58,23 @@ function confirmtisheng(url)
 				<tr>
 					<td> ${user.loginName} </td>
 					<td>${user.name}</td>
+					<td></td>
+					<td></td>
+					<td></td>
 					<td><fmt:formatDate value="${user.registerDate}"
 							pattern="yyyy-MM-dd  HH:mm:ss" /></td>
 					<td>
 					<c:choose>
 						<c:when test="${user.roles eq 'admin'}">管理员</c:when>
-						<c:when test="${user.roles eq 'TwoAdmin'}">二级分销商</c:when>
-						<c:when test="${user.roles eq 'ThreeAdmin'}">三级分销商</c:when>
-						<c:otherwise>用户</c:otherwise>
+						<c:when test="${user.roles eq 'Head'}">团长</c:when>
+						<c:when test="${user.roles eq 'OneLevel'}">一级</c:when>
+						<c:when test="${user.roles eq 'TwoLevel'}">二级</c:when>
+						<c:when test="${user.roles eq 'ThreeLevel'}">三级</c:when> 
+						<c:otherwise>会员</c:otherwise>
 					</c:choose> 
-					</td>
-					<td>${user.manageAddress}</td>
-					<td>${allStatus[user.status]}&nbsp;</td>
-					<td>${user.upuser.loginName}</td>
+					<td></td>
+					</td> 
+					<td>${allStatus[user.status]}&nbsp;</td> 
 					<td>
 					<shiro:hasAnyRoles name="admin"> 
 							<a href="${ctx}/admin/user/update/${user.id}">修改</a>&nbsp; 

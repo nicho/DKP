@@ -3,22 +3,37 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <div id="leftbar" style="float: left; margin-left: 20px; width: 140px;">
-	<h1>任务管理</h1>
+	<h1>展示页面</h1>
 	<div class="submenu">
-		<a id="myTask" href="${ctx}/manageTask/myTask">我的任务</a>
-		<shiro:hasRole name="admin">
-			<a id="ManageTaskController" href="${ctx}/manageTask">管理任务</a>
-		</shiro:hasRole>
-		<a id="account-tab" href="${ctx}/admin/user">物品兑换积分</a>
-		<shiro:hasAnyRoles name="admin">
-			<a id="account-tab" href="${ctx}/admin/user">物品拍卖竞价</a>
-		</shiro:hasAnyRoles>
+		<a id="myTask" href="${ctx}/manageTask/myTask">活动发起</a>
+		<a id="myTask" href="${ctx}/manageTask/myTask">活动登记</a>
+		<a id="myTask" href="${ctx}/manageTask/myTask">最近所有活动列表</a>
+		<a id="myTask" href="${ctx}/manageTask/myTask">积分排行</a>
+		<a id="myTask" href="${ctx}/manageTask/myTask">近期拍卖成功物品</a>
+		<a id="myTask" href="${ctx}/manageTask/myTask">物品兑换积分</a>
+		 
 	</div>
+	<h1>个人页面</h1>
+		<div class="submenu">
+		<a id="myTask" href="${ctx}/manageTask/myTask">发起活动</a> 
+		<a id="myTask" href="${ctx}/manageTask/myTask">我参与的活动</a>
+		<a id="myTask" href="${ctx}/manageTask/myTask">我兑换的物品</a>
+		<a id="myTask" href="${ctx}/manageTask/myTask">我的拍卖</a>
+		<a id="myTask" href="${ctx}/manageTask/myTask">我贡献的物品</a>  
+	</div>
+	 <h1>积分管理</h1>
+		<div class="submenu">
+			<a id="account-tab" href="${ctx}/admin/user">物品兑换积分</a> 
+		<a id="account-tab" href="${ctx}/admin/user">物品拍卖竞价</a> 
+	</div>
+
 	<h1>系统管理</h1>
 	<div class="submenu">
 
 		<shiro:hasAnyRoles name="admin">
 			<a id="account-tab" href="${ctx}/admin/user">帐号管理</a>
+			<a id="account-tab" href="${ctx}/admin/user">公会管理</a>
+			<a id="account-tab" href="${ctx}/admin/user">游戏管理</a>
 		</shiro:hasAnyRoles>
 
 		<a id="account-tab" href="${ctx}/profile">资料修改</a>

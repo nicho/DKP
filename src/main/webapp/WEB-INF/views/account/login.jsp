@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>《宝箱》推广系统:</title>
+<title>《DKP》公会系统:</title>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
@@ -30,7 +30,7 @@
 	<div class="container" style="width:50%">
 	<div id="header" style="border-bottom: 0 solid #658a16;">
 	<div id="title">
-	    <h1><a href="${ctx}">《宝箱》微信公众号推广系统</a><small>--二维码</small> </h1>  
+	    <h1><a href="${ctx}">《DKP》公会系统</a><small>--离恨天</small> </h1>  
 	</div>
 </div>
 		<div id="content" >

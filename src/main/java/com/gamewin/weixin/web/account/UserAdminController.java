@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springside.modules.web.Servlets;
 
@@ -50,7 +49,7 @@ public class UserAdminController {
 		sortTypes.put("auto", "自动");
 		sortTypes.put("title", "标题");
 	}
-	
+
 	private static Map<String, String> allStatus = Maps.newHashMap();
 
 	static {
@@ -58,26 +57,18 @@ public class UserAdminController {
 		allStatus.put("disabled", "无效");
 		allStatus.put("Audit", "审批中");
 	}
-	
+
 	@Autowired
 	private AccountService accountService;
-	
-	@RequestMapping(value = "findUserTree")
-	@ResponseBody 
-	public String findUserTree(@RequestParam("id") Long id) { 
-		//UserTree
-		return accountService.getUserTree2(id); 
-	}
-	
+
 	@RequiresRoles(value = { "admin", "TwoAdmin", "ThreeAdmin" }, logical = Logical.OR)
-	@RequestMapping(value = "auditUserlist",method = RequestMethod.GET)
+	@RequestMapping(value = "auditUserlist", method = RequestMethod.GET)
 	public String auditUserlist(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
-			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model,
-			ServletRequest request) {
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
-		Page<User> users =null;
+		Page<User> users = null;
 		if ("admin".equals(user.getRoles())) {
 			users = accountService.getUserByAuditUserAdminlist(user.id, searchParams, pageNumber, pageSize, sortType);
 		} else {
@@ -93,27 +84,20 @@ public class UserAdminController {
 
 		return "audit/auditUserList";
 	}
-	
+
 	@RequiresRoles(value = { "admin", "TwoAdmin", "ThreeAdmin" }, logical = Logical.OR)
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
-			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model,
-			ServletRequest request) {
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
-		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
-		String usertype=user.getRoles();
-	  	List<User> users =null;
-		if ("admin".equals(usertype)) {
-			users = accountService.getUserAllUserlist(searchParams, pageNumber, pageSize, sortType);
-		}else if ("TwoAdmin".equals(usertype) || "ThreeAdmin".equals(usertype)) {
-			users = accountService.getUserByUpUserlist(user.id, searchParams, pageNumber, pageSize, sortType);
-		}
-		 
+
+		List<User> users = accountService.getUserAllUserlist(searchParams, pageNumber, pageSize, sortType);
+
 		PageInfo<User> page = new PageInfo<User>(users);
-	  	model.addAttribute("page", page);
-	  	model.addAttribute("usersx", users);
-		 
+		model.addAttribute("page", page);
+		model.addAttribute("usersx", users);
+
 		model.addAttribute("sortType", sortType);
 		model.addAttribute("sortTypes", sortTypes);
 		model.addAttribute("allStatus", allStatus);
@@ -122,49 +106,45 @@ public class UserAdminController {
 
 		return "account/adminUserList";
 	}
-	
+
 	@RequiresRoles("admin")
 	@RequestMapping(value = "update/{id}", method = RequestMethod.GET)
 	public String updateForm(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("user", accountService.getUser(id));
-		List<UserDto> userdto=accountService.getUserByUpAdminUserlist();
+		List<UserDto> userdto = accountService.getUserByUpAdminUserlist();
 		model.addAttribute("userdto", userdto);
 		return "account/adminUserForm";
 	}
-	
+
 	@RequiresRoles("admin")
 	@RequestMapping(value = "update", method = RequestMethod.POST)
-	public String update(@Valid @ModelAttribute("user") User user, RedirectAttributes redirectAttributes,ServletRequest request) {
-		String upuserId =request.getParameter("upuserId");
-		if(!StringUtils.isEmpty(upuserId))
-		{
-			User upuser=  accountService.getUser(Long.parseLong(upuserId));
-			if(upuser!=null && ("TwoAdmin".equals(upuser.getRoles()) || "ThreeAdmin".equals(upuser.getRoles())))
-			{
+	public String update(@Valid @ModelAttribute("user") User user, RedirectAttributes redirectAttributes, ServletRequest request) {
+		String upuserId = request.getParameter("upuserId");
+		if (!StringUtils.isEmpty(upuserId)) {
+			User upuser = accountService.getUser(Long.parseLong(upuserId));
+			if (upuser != null && ("TwoAdmin".equals(upuser.getRoles()) || "ThreeAdmin".equals(upuser.getRoles()))) {
 				user.setUpuser(upuser);
 			}
-		} 
+		}
 		accountService.updateUser(user);
 		redirectAttributes.addFlashAttribute("message", "更新用户" + user.getLoginName() + "成功");
 		return "redirect:/admin/user";
 	}
-	
+
 	@RequiresRoles("admin")
 	@RequestMapping(value = "upTwoAdmin/{id}", method = RequestMethod.GET)
-	public String update(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) { 
- 
-		User user=  accountService.getUser(id);
-		if(user!=null &&  "ThreeAdmin".equals(user.getRoles()))
-		{
-			user.setRoles("TwoAdmin"); 
+	public String update(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
+
+		User user = accountService.getUser(id);
+		if (user != null && "ThreeAdmin".equals(user.getRoles())) {
+			user.setRoles("TwoAdmin");
 			accountService.updateUser(user);
 		}
-		 
+
 		redirectAttributes.addFlashAttribute("message", "更新用户" + user.getLoginName() + "为二级经销商");
 		return "redirect:/admin/user";
 	}
-	
-	
+
 	@RequiresRoles(value = { "admin", "TwoAdmin", "ThreeAdmin" }, logical = Logical.OR)
 	@RequestMapping(value = "disabled/{id}")
 	public String disabled(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
@@ -174,26 +154,25 @@ public class UserAdminController {
 		redirectAttributes.addFlashAttribute("message", "失效用户" + user.getLoginName() + "成功");
 		return "redirect:/admin/user";
 	}
-	
+
 	@RequiresRoles(value = { "admin", "TwoAdmin", "ThreeAdmin" }, logical = Logical.OR)
 	@RequestMapping(value = "auditPass/{id}")
 	public String auditPass(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
 		User user = accountService.getUser(id);
 		ShiroUser nowuser = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
-		if("admin".equals(nowuser.getRoles()) || user.getUpuser().getLoginName().equals(nowuser.getLoginName()))
-		{
+		if ("admin".equals(nowuser.getRoles()) || user.getUpuser().getLoginName().equals(nowuser.getLoginName())) {
 			user.setStatus("enabled");
 			accountService.updateUser(user);
 			redirectAttributes.addFlashAttribute("message", "用户" + user.getLoginName() + "注册成功");
-		 
+
 			return "redirect:/admin/user/auditUserlist";
-		}else
-		{
+		} else {
 			redirectAttributes.addFlashAttribute("message", "非法操作!");
 			return "redirect:/admin/user/auditUserlist";
 		}
 
 	}
+
 	@RequiresRoles(value = { "admin", "TwoAdmin", "ThreeAdmin" }, logical = Logical.OR)
 	@RequestMapping(value = "delete/{id}")
 	public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
@@ -204,7 +183,8 @@ public class UserAdminController {
 	}
 
 	/**
-	 * 所有RequestMapping方法调用前的Model准备方法, 实现Struts2 Preparable二次部分绑定的效果,先根据form的id从数据库查出User对象,再把Form提交的内容绑定到该对象上。
+	 * 所有RequestMapping方法调用前的Model准备方法, 实现Struts2
+	 * Preparable二次部分绑定的效果,先根据form的id从数据库查出User对象,再把Form提交的内容绑定到该对象上。
 	 * 因为仅update()方法的form中有id属性，因此仅在update时实际执行.
 	 */
 	@ModelAttribute

@@ -21,7 +21,6 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springside.modules.mapper.JsonMapper;
 import org.springside.modules.persistence.DynamicSpecifications;
 import org.springside.modules.persistence.SearchFilter;
 import org.springside.modules.persistence.SearchFilter.Operator;
@@ -30,8 +29,6 @@ import org.springside.modules.utils.Clock;
 import org.springside.modules.utils.Encodes;
 
 import com.gamewin.weixin.entity.User;
-import com.gamewin.weixin.entity.UserTree;
-import com.gamewin.weixin.entity.UserTree2;
 import com.gamewin.weixin.model.UserDto;
 import com.gamewin.weixin.mybatis.UserMybatisDao;
 import com.gamewin.weixin.repository.UserDao;
@@ -79,6 +76,7 @@ public class AccountService {
 
 		userDao.save(user);
 	}
+
 	public void registerAdminUser(User user) {
 		entryptPassword(user);
 		user.setRoles("ThreeAdmin");
@@ -86,6 +84,7 @@ public class AccountService {
 
 		userDao.save(user);
 	}
+
 	public void createUser(User user) {
 		entryptPassword(user);
 		user.setRegisterDate(clock.getCurrentDate());
@@ -144,18 +143,6 @@ public class AccountService {
 		this.clock = clock;
 	}
 
-	public List<User> getUserAllUserlist(Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
-		PageHelper.startPage(pageNumber, pageSize);
-		List<User> userList = userMybatisDao.getUserAllUserlist();
-		return userList;
-	}
-
-	public List<User> getUserByUpUserlist(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
-		PageHelper.startPage(pageNumber, pageSize);
-		List<User> userList = userMybatisDao.getUserByUpUserlist(userId);
-		return userList;
-	}
-
 	/**
 	 * 获取二级,三级用户列表
 	 * 
@@ -195,7 +182,14 @@ public class AccountService {
 		}
 		return userdto;
 	}
- 
+	public Page<User> getAllUserlist(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
+		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
+		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams); 
+		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0")); 
+		Specification<User> spec = DynamicSpecifications.bySearchFilter(filters.values(), User.class);
+
+		return userDao.findAll(spec, pageRequest);
+	}
 	public Page<User> getUserByAuditUserlist(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
@@ -206,15 +200,17 @@ public class AccountService {
 
 		return userDao.findAll(spec, pageRequest);
 	}
+
 	public Page<User> getUserByAuditUserAdminlist(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
-		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams); 
+		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
 		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));
 		filters.put("status", new SearchFilter("status", Operator.EQ, "Audit"));
 		Specification<User> spec = DynamicSpecifications.bySearchFilter(filters.values(), User.class);
 
 		return userDao.findAll(spec, pageRequest);
 	}
+
 	/**
 	 * 创建分页请求.
 	 */
@@ -228,18 +224,9 @@ public class AccountService {
 
 		return new PageRequest(pageNumber - 1, pagzSize, sort);
 	}
-
-	private static JsonMapper mapper = JsonMapper.nonDefaultMapper();
-
-	public String getUserTree() {
-		List<UserTree> userTree = userMybatisDao.getUserTree();
-		String listString = mapper.toJson(userTree); 
-		return listString;
-	}
-
-	public String getUserTree2(Long id) {
-		List<UserTree2> userTree = userMybatisDao.getUserTree2(id);
-		String listString = mapper.toJson(userTree); 
-		return listString;
+	public List<User> getUserAllUserlist(Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
+		PageHelper.startPage(pageNumber, pageSize);
+		List<User> userList = userMybatisDao.getUserAllUserlist();
+		return userList;
 	}
 }

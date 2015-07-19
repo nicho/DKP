@@ -24,6 +24,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 
 import com.gamewin.weixin.entity.User;
+import com.gamewin.weixin.util.StringUtil;
 
 import org.springside.modules.utils.Encodes;
 
@@ -46,7 +47,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
 				throw new ConcurrentAccessException();
 			}
 			byte[] salt = Encodes.decodeHex(user.getSalt());
-			return new SimpleAuthenticationInfo(new ShiroUser(user.getId(), user.getLoginName(), user.getName(),user.getRoles()),
+			return new SimpleAuthenticationInfo(new ShiroUser(user.getId(), user.getLoginName(), user.getName(),user.getRoles(),user.getIntegral()),
 					user.getPassword(), ByteSource.Util.bytes(salt), getName());
 		} else {
 			return null;
@@ -89,14 +90,18 @@ public class ShiroDbRealm extends AuthorizingRealm {
 		public String loginName;
 		public String name;
 		public String roles;
+		public Double integral;
 
-		public ShiroUser(Long id, String loginName, String name,String roles) {
+		public ShiroUser(Long id, String loginName, String name,String roles,Double integral) {
 			this.id = id;
 			this.loginName = loginName;
 			this.name = name;
 			this.roles=roles;
+			this.integral=integral;
 		}
-
+		public String getIntegral() {
+			return StringUtil.subZeroAndDot(integral+"");
+		}
 		public String getName() {
 			return name;
 		}

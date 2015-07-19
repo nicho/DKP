@@ -49,9 +49,9 @@
 				<div class="controls">
 					<select name="personCount" class="required">
 						<option value="">请选择</option>
-						<option value="30">&lt;=30</option>
-						<option value="100">&lt;=100</option>
-						<option value="500">&lt;=500</option> 
+						<option value="≤30">≤30</option>
+						<option value="≤100">≤100</option>
+						<option value="≤500">≤500</option> 
 					</select>
 				</div>
 			</div>

@@ -36,9 +36,7 @@ public class RegisterController {
 	private AccountService accountService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String registerForm(Model model) {
-		List<UserDto> userdto = accountService.getUserByUpAdminUserlist();
-		model.addAttribute("userdto", userdto);
+	public String registerForm(Model model) { 
 		return "account/register";
 	}
 

@@ -9,8 +9,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -34,36 +32,50 @@ public class User extends IdEntity {
 	private Integer isdelete;
 	private Date registerDate;
 	private String status;
-	private String manageAddress;
+	private String gameName;
+	private String email;
+	private String phone;
 	private String weixinOpenid;
-	private User upuser; 
-	
-	
+	private Double integral;
+
+	public Double getIntegral() {
+		return integral;
+	}
+
+	public void setIntegral(Double integral) {
+		this.integral = integral;
+	}
+
+	public String getGameName() {
+		return gameName;
+	}
+
+	public void setGameName(String gameName) {
+		this.gameName = gameName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
 	public String getWeixinOpenid() {
 		return weixinOpenid;
 	}
 
 	public void setWeixinOpenid(String weixinOpenid) {
 		this.weixinOpenid = weixinOpenid;
-	}
-
-	public String getManageAddress() {
-		return manageAddress;
-	}
-
-	public void setManageAddress(String manageAddress) {
-		this.manageAddress = manageAddress;
-	}
-
-	// JPA 基于USER_ID列的多对一关系定义
-	@ManyToOne
-	@JoinColumn(name = "upuser_id")
-	public User getUpuser() {
-		return upuser;
-	}
-
-	public void setUpuser(User upuser) {
-		this.upuser = upuser;
 	}
 
 	public Integer getIsdelete() {

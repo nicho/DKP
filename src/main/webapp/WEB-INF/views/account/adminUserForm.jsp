@@ -20,37 +20,41 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label">用户名:</label>
+				<label class="control-label">昵称:</label>
 				<div class="controls">
 					<input type="text" id="name" name="name" value="${user.name}" class="input-large required"/>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">级别:</label>
-				<div class="controls"> 
-					 <c:choose>
-						<c:when test="${user.roles eq 'admin'}">管理员</c:when>
-						<c:when test="${user.roles eq 'TwoAdmin'}">二级分销商</c:when>
-						<c:when test="${user.roles eq 'ThreeAdmin'}">三级分销商</c:when>
-						<c:otherwise>用户</c:otherwise>
-					</c:choose> 
-				</div>
-			</div>
-		    <div class="control-group">
-				<label for="plainPassword" class="control-label">上级分销商:</label>
-				<div class="controls"> 
-					<select name="upuserId">
-						<option value="">请选择</option>
-						 <c:forEach var="list" items="${userdto}" varStatus="name">
-							<option value="${list.id}" <c:if test="${list.id eq user.upuser.id}"> selected</c:if>>${list.userName}</option>
-						</c:forEach>
+				<div class="controls">   
+					<select name="roles">
+						<option value="admin" <c:if test="${user.roles eq 'admin'}">selected</c:if>>管理员</option>
+						<option value="Head" <c:if test="${user.roles eq 'Head'}">selected</c:if>>团长</option>
+						<option value="OneLevel" <c:if test="${user.roles eq 'OneLevel'}">selected</c:if>>一级</option>
+						<option value="TwoLevel" <c:if test="${user.roles eq 'TwoLevel'}">selected</c:if>>二级</option>
+						<option value="ThreeLevel" <c:if test="${user.roles eq 'ThreeLevel'}">selected</c:if>>三级</option>
+						<option value="user" <c:if test="${user.roles eq 'user'}">selected</c:if>>会员</option>
 					</select>
 				</div>
 			</div>
+		   
 		    <div class="control-group">
-				<label class="control-label">地区:</label>
+				<label class="control-label">游戏名:</label>
 				<div class="controls">
-					<input type="text" id="manageAddress" name="manageAddress" value="${user.manageAddress}" class="input-large"/>
+					<input type="text" id="gameName" name="gameName" value="${user.gameName}" class="input-large"/>
+				</div>
+			</div>
+				    <div class="control-group">
+				<label class="control-label">邮箱:</label>
+				<div class="controls">
+					<input type="text" id="email" name="email" value="${user.email}" class="input-large"/>
+				</div>
+			</div>
+				    <div class="control-group">
+				<label class="control-label">电话:</label>
+				<div class="controls">
+					<input type="text" id="phone" name="phone" value="${user.phone}" class="input-large"/>
 				</div>
 			</div>
 			<div class="control-group">

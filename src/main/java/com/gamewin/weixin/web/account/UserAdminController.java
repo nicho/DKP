@@ -11,7 +11,6 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.validation.Valid;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -28,7 +27,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springside.modules.web.Servlets;
 
 import com.gamewin.weixin.entity.User;
-import com.gamewin.weixin.model.UserDto;
 import com.gamewin.weixin.service.account.AccountService;
 import com.gamewin.weixin.service.account.ShiroDbRealm.ShiroUser;
 import com.github.pagehelper.PageInfo;
@@ -61,29 +59,7 @@ public class UserAdminController {
 	@Autowired
 	private AccountService accountService;
 
-	@RequiresRoles(value = { "admin", "TwoAdmin", "ThreeAdmin" }, logical = Logical.OR)
-	@RequestMapping(value = "auditUserlist", method = RequestMethod.GET)
-	public String auditUserlist(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
-			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
-			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request) {
-		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
-		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
-		Page<User> users = null;
-		if ("admin".equals(user.getRoles())) {
-			users = accountService.getUserByAuditUserAdminlist(user.id, searchParams, pageNumber, pageSize, sortType);
-		} else {
-			users = accountService.getUserByAuditUserlist(user.id, searchParams, pageNumber, pageSize, sortType);
-		}
-
-		model.addAttribute("users", users);
-		model.addAttribute("sortType", sortType);
-		model.addAttribute("sortTypes", sortTypes);
-		model.addAttribute("allStatus", allStatus);
-		// 将搜索条件编码成字符串，用于排序，分页的URL
-		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
-
-		return "audit/auditUserList";
-	}
+ 
 
 	@RequiresRoles(value = { "admin", "TwoAdmin", "ThreeAdmin" }, logical = Logical.OR)
 	@RequestMapping(method = RequestMethod.GET)
@@ -110,22 +86,13 @@ public class UserAdminController {
 	@RequiresRoles("admin")
 	@RequestMapping(value = "update/{id}", method = RequestMethod.GET)
 	public String updateForm(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("user", accountService.getUser(id));
-		List<UserDto> userdto = accountService.getUserByUpAdminUserlist();
-		model.addAttribute("userdto", userdto);
+		model.addAttribute("user", accountService.getUser(id)); 
 		return "account/adminUserForm";
 	}
 
 	@RequiresRoles("admin")
 	@RequestMapping(value = "update", method = RequestMethod.POST)
-	public String update(@Valid @ModelAttribute("user") User user, RedirectAttributes redirectAttributes, ServletRequest request) {
-		String upuserId = request.getParameter("upuserId");
-		if (!StringUtils.isEmpty(upuserId)) {
-			User upuser = accountService.getUser(Long.parseLong(upuserId));
-			if (upuser != null && ("TwoAdmin".equals(upuser.getRoles()) || "ThreeAdmin".equals(upuser.getRoles()))) {
-				user.setUpuser(upuser);
-			}
-		}
+	public String update(@Valid @ModelAttribute("user") User user, RedirectAttributes redirectAttributes, ServletRequest request) { 
 		accountService.updateUser(user);
 		redirectAttributes.addFlashAttribute("message", "更新用户" + user.getLoginName() + "成功");
 		return "redirect:/admin/user";
@@ -154,25 +121,7 @@ public class UserAdminController {
 		redirectAttributes.addFlashAttribute("message", "失效用户" + user.getLoginName() + "成功");
 		return "redirect:/admin/user";
 	}
-
-	@RequiresRoles(value = { "admin", "TwoAdmin", "ThreeAdmin" }, logical = Logical.OR)
-	@RequestMapping(value = "auditPass/{id}")
-	public String auditPass(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
-		User user = accountService.getUser(id);
-		ShiroUser nowuser = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
-		if ("admin".equals(nowuser.getRoles()) || user.getUpuser().getLoginName().equals(nowuser.getLoginName())) {
-			user.setStatus("enabled");
-			accountService.updateUser(user);
-			redirectAttributes.addFlashAttribute("message", "用户" + user.getLoginName() + "注册成功");
-
-			return "redirect:/admin/user/auditUserlist";
-		} else {
-			redirectAttributes.addFlashAttribute("message", "非法操作!");
-			return "redirect:/admin/user/auditUserlist";
-		}
-
-	}
-
+ 
 	@RequiresRoles(value = { "admin", "TwoAdmin", "ThreeAdmin" }, logical = Logical.OR)
 	@RequestMapping(value = "delete/{id}")
 	public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {

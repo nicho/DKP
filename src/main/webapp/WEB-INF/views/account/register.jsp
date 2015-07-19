@@ -70,20 +70,27 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label for="name" class="control-label">用户名:</label>
+				<label for="name" class="control-label">昵称:</label>
 				<div class="controls">
 					<input type="text" id="name" name="name" class="input-large required"/>
 				</div>
 			</div>
 		   <div class="control-group">
-				<label for="plainPassword" class="control-label">上级分销商:</label>
-				<div class="controls"> 
-					<select name="upuserId">
-						<option value="">请选择</option>
-						 <c:forEach var="list" items="${userdto}" varStatus="name">
-							<option value="${list.id}" >${list.userName}</option>
-						</c:forEach>
-					</select>
+				<label for="name" class="control-label">游戏名:</label>
+				<div class="controls">
+					<input type="text" id="gameName" name="gameName" class="input-large required"/>
+				</div>
+			</div>
+						<div class="control-group">
+				<label for="name" class="control-label">邮箱:</label>
+				<div class="controls">
+					<input type="text" id="email" name="email" class="input-large required"/>
+				</div>
+			</div>
+						<div class="control-group">
+				<label for="name" class="control-label">电话:</label>
+				<div class="controls">
+					<input type="text" id="phone" name="phone" class="input-large required"/>
 				</div>
 			</div>
 			<div class="control-group">
@@ -98,12 +105,7 @@
 					<input type="password" id="confirmPassword" name="confirmPassword" class="input-large required" equalTo="#plainPassword"/>
 				</div>
 			</div>
-			 <div class="control-group">
-				<label for="plainPassword" class="control-label">激活码:</label>
-				<div class="controls">
-					<input type="text" id="activationCode" name="activationCode" class="input-large "/>
-				</div>
-			</div>
+			 
 			<div class="form-actions">
 				<input id="submit_btn" class="btn btn-primary" type="submit" value="提交"/>&nbsp;	
 				<input id="cancel_btn" class="btn" type="button" value="返回" onclick="history.back()"/>

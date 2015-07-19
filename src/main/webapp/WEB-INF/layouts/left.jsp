@@ -31,9 +31,7 @@
 	<div class="submenu">
 
 		<shiro:hasAnyRoles name="admin">
-			<a id="account-tab" href="${ctx}/admin/user">帐号管理</a>
-			<a id="account-tab" href="${ctx}/admin/user">公会管理</a>
-			<a id="account-tab" href="${ctx}/admin/user">游戏管理</a>
+			<a id="account-tab" href="${ctx}/admin/user">帐号管理</a>  
 		</shiro:hasAnyRoles>
 
 		<a id="account-tab" href="${ctx}/profile">资料修改</a>

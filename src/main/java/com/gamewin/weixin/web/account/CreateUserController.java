@@ -5,8 +5,6 @@
  *******************************************************************************/
 package com.gamewin.weixin.web.account;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.gamewin.weixin.entity.User;
-import com.gamewin.weixin.model.UserDto;
 import com.gamewin.weixin.service.account.AccountService;
 
 /**
@@ -36,9 +33,7 @@ public class CreateUserController {
 	private AccountService accountService;
 	@RequiresRoles("admin")
 	@RequestMapping(method = RequestMethod.GET)
-	public String registerForm( Model model) {
-		List<UserDto> userdto=accountService.getUserByUpAdminUserlist();
-		model.addAttribute("userdto", userdto);
+	public String registerForm( Model model) { 
 		return "account/createUserFrom";
 	}
 	@RequiresRoles("admin")

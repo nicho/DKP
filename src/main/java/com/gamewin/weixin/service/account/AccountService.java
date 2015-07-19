@@ -5,7 +5,6 @@
  *******************************************************************************/
 package com.gamewin.weixin.service.account;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +28,6 @@ import org.springside.modules.utils.Clock;
 import org.springside.modules.utils.Encodes;
 
 import com.gamewin.weixin.entity.User;
-import com.gamewin.weixin.model.UserDto;
 import com.gamewin.weixin.mybatis.UserMybatisDao;
 import com.gamewin.weixin.repository.UserDao;
 import com.gamewin.weixin.service.ServiceException;
@@ -143,45 +141,7 @@ public class AccountService {
 		this.clock = clock;
 	}
 
-	/**
-	 * 获取二级,三级用户列表
-	 * 
-	 * @param userId
-	 * @return
-	 */
-	public List<UserDto> getUserByUpAdminUserlist() {
-		List<UserDto> userdto = new ArrayList<UserDto>();
-		List<User> userList = userDao.findByUpAdmin();
-		if (userList != null && userList.size() > 0) {
-			for (int i = 0; i < userList.size(); i++) {
-				User user = userList.get(i);
-				UserDto dto = new UserDto();
-				dto.setId(user.getId() + "");
-				dto.setUserName(user.getLoginName());
-				dto.setManageAddress(user.getManageAddress());
-				userdto.add(dto);
-			}
-
-		}
-		return userdto;
-	}
-
-	public List<UserDto> getUserByTwoUpAdminUserlist() {
-		List<UserDto> userdto = new ArrayList<UserDto>();
-		List<User> userList = userDao.findByTwoAdmin();
-		if (userList != null && userList.size() > 0) {
-			for (int i = 0; i < userList.size(); i++) {
-				User user = userList.get(i);
-				UserDto dto = new UserDto();
-				dto.setId(user.getId() + "");
-				dto.setUserName(user.getLoginName());
-				dto.setManageAddress(user.getManageAddress());
-				userdto.add(dto);
-			}
-
-		}
-		return userdto;
-	}
+	  
 	public Page<User> getAllUserlist(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams); 

@@ -6,11 +6,13 @@
 package com.gamewin.weixin.web.activity;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,8 +27,10 @@ import org.springside.modules.web.Servlets;
 
 import com.gamewin.weixin.entity.Activity;
 import com.gamewin.weixin.entity.User;
+import com.gamewin.weixin.entity.ValueSet;
 import com.gamewin.weixin.service.account.ShiroDbRealm.ShiroUser;
 import com.gamewin.weixin.service.activity.ActivityService;
+import com.gamewin.weixin.service.valueSet.ValueSetService;
 import com.google.common.collect.Maps;
 
 /**
@@ -52,7 +56,10 @@ public class ActivityController {
 
 	@Autowired
 	private ActivityService activityService;
+	
 
+	@Autowired
+	private ValueSetService valueSetService;
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
@@ -69,6 +76,9 @@ public class ActivityController {
 		// 将搜索条件编码成字符串，用于排序，分页的URL
 		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
 
+		
+		List<ValueSet> ActivityTypeList=valueSetService.getActivityTypeAll("ActivityType");
+		model.addAttribute("ActivityTypeList", ActivityTypeList);
 		return "activity/activityList";
 	}
 
@@ -76,20 +86,29 @@ public class ActivityController {
 	public String createForm(Model model) {
 		model.addAttribute("activity", new Activity());
 		model.addAttribute("action", "create");
+		List<ValueSet> ActivityTypeList=valueSetService.getActivityType("ActivityType");
+		model.addAttribute("ActivityTypeList", ActivityTypeList);
 		return "activity/activityForm";
 	}
 
 	@RequestMapping(value = "create", method = RequestMethod.POST)
 	public String create(@Valid Activity newActivity, RedirectAttributes redirectAttributes, ServletRequest request) {
 		User user = new User(getCurrentUserId());
-
-		newActivity.setCreateDate(new Date());
-		newActivity.setCreateUser(user);
-		newActivity.setIsdelete(0);
-		newActivity.setStatus("N");
-		activityService.saveActivity(newActivity);
-
-		redirectAttributes.addFlashAttribute("message", "创建活动成功");
+		String startDateStr = request.getParameter("startDateStr");
+		String endDateStr = request.getParameter("endDateStr");
+		try { 
+			newActivity.setStartDate(DateUtils.parseDate(startDateStr, "yyyy年MM月dd日 HH时mm分ss秒"));
+			newActivity.setEndDate(DateUtils.parseDate(endDateStr, "yyyy年MM月dd日 HH时mm分ss秒"));
+			newActivity.setCreateDate(new Date());
+			newActivity.setCreateUser(user);
+			newActivity.setIsdelete(0);
+			newActivity.setStatus("Y");
+			activityService.saveActivity(newActivity);
+			redirectAttributes.addFlashAttribute("message", "创建活动成功");
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("message", "创建活动失败");
+		}
+		
 		return "redirect:/activity/";
 	}
 

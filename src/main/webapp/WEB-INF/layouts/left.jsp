@@ -5,7 +5,7 @@
 <div id="leftbar" style="float: left; margin-left: 20px; width: 140px;">
 	<h1>展示页面</h1>
 	<div class="submenu">
-		<a id="myTask" href="${ctx}/manageTask/myTask">活动发起</a>
+		<a id="myTask" href="${ctx}/activity/create">活动发起</a>
 		<a id="myTask" href="${ctx}/manageTask/myTask">活动登记</a>
 		<a id="myTask" href="${ctx}/activity">最近所有活动列表</a>
 		<a id="myTask" href="${ctx}/manageTask/myTask">积分排行</a>
@@ -33,7 +33,7 @@
 		<shiro:hasAnyRoles name="admin">
 			<a id="account-tab" href="${ctx}/admin/user">帐号管理</a>  
 		</shiro:hasAnyRoles>
-
+		<a id="account-tab" href="${ctx}/valueSet">活动类型设置</a>  
 		<a id="account-tab" href="${ctx}/profile">资料修改</a>
 	</div>
 

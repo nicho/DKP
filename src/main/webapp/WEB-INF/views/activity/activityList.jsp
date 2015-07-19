@@ -26,7 +26,7 @@
 		<thead>
 			<tr>
 				<th>标题</th>
-				<th>类型</th>
+				<th>活动级别</th>
 				<th>活动类型</th>
 				<th>人数规模</th>
 				<th>活动说明</th>
@@ -40,21 +40,24 @@
 			<c:forEach items="${activitys.content}" var="task">
 				<tr>
 					<td>${task.title}</td>
-					<td><c:if test="${task.fType eq 'PersonalActivities'}">个人活动</c:if> <c:if
-							test="${task.fType eq 'AssociationActivity'}">公会活动</c:if></td>
+					<td><c:if test="${task.fType eq 'PersonalActivities'}">个人活动</c:if> <c:if test="${task.fType eq 'AssociationActivity'}">公会活动</c:if></td>
 					<td><c:forEach var="list" items="${ActivityTypeList}">
 							<c:if test="${list.id eq task.activityType}">${list.typeName}</c:if>
 						</c:forEach></td>
 					<td>${task.personCount}</td>
 					<td>${task.activityExplain}</td>
-					<td><fmt:formatDate value="${task.startDate}" pattern="yyyy年MM月dd日 HH时mm分ss秒" /> 至 <fmt:formatDate
-							value="${task.endDate}" pattern="yyyy年MM月dd日 HH时mm分ss秒" /></td>
-					<td><c:if test="${task.status eq 'Y'}">有效</c:if> <c:if test="${task.status eq 'N'}">失效</c:if></td>
+					<td><fmt:formatDate value="${task.startDate}" pattern="yyyy年MM月dd日 HH时mm分ss秒" /> 至 <fmt:formatDate value="${task.endDate}" pattern="yyyy年MM月dd日 HH时mm分ss秒" /></td>
+					<td><c:if test="${task.status eq 'Y'}">有效</c:if><c:if test="${task.status eq 'process'}">审批中</c:if> <c:if test="${task.status eq 'N'}">失效</c:if></td>
 					<td>${task.createUser.gameName}</td>
 
-					<td><c:if test="${task.status eq 'Y'}">
-							<a href="#" onclick="confirmDisabled('${ctx}/gameCode/disabled/${task.id}')">失效</a>
-						</c:if></td>
+					<td><a href="${ctx}/activity/view/${task.id}">查看</a> &nbsp; 
+						<a href="${ctx}/activity/viewUser/${task.id}">参与的会员</a>  &nbsp; 
+						 <c:if test="${task.status eq 'Y'}">
+							<a href="#" onclick="confirmDisabled('${ctx}/activity/disabled/${task.id}')">失效</a>
+						</c:if>
+						
+					</td>
+						
 				</tr>
 			</c:forEach>
 		</tbody>

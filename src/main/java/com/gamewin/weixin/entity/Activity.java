@@ -17,8 +17,8 @@ public class Activity extends IdEntity {
 	private String activityExplain;
 	private Date startDate;
 	private Date endDate;
-	private Date qrCodeUrl;
-	private Date webUrl;
+	private String qrCodeUrl;
+	private String webUrl;
 	private User createUser;
 	private Date createDate;
 	private Date updateDate;
@@ -99,19 +99,21 @@ public class Activity extends IdEntity {
 		this.endDate = endDate;
 	}
 
-	public Date getQrCodeUrl() {
+	 
+
+	public String getQrCodeUrl() {
 		return qrCodeUrl;
 	}
 
-	public void setQrCodeUrl(Date qrCodeUrl) {
+	public void setQrCodeUrl(String qrCodeUrl) {
 		this.qrCodeUrl = qrCodeUrl;
 	}
 
-	public Date getWebUrl() {
+	public String getWebUrl() {
 		return webUrl;
 	}
 
-	public void setWebUrl(Date webUrl) {
+	public void setWebUrl(String webUrl) {
 		this.webUrl = webUrl;
 	}
 

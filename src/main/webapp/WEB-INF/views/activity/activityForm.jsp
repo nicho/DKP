@@ -18,7 +18,7 @@
 		<fieldset>
 			<legend><small>创建活动</small></legend>
 			 <div class="control-group">
-				<label class="control-label">类型:</label>
+				<label class="control-label">活动级别:</label>
 				<div class="controls">
 					<select name="fType" class="required">
 						<option value="">请选择</option>

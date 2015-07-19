@@ -5,6 +5,8 @@
  *******************************************************************************/
 package com.gamewin.weixin.web.activity;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +14,7 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,8 @@ import com.gamewin.weixin.entity.ValueSet;
 import com.gamewin.weixin.service.account.ShiroDbRealm.ShiroUser;
 import com.gamewin.weixin.service.activity.ActivityService;
 import com.gamewin.weixin.service.valueSet.ValueSetService;
+import com.gamewin.weixin.util.MobileContants;
+import com.gamewin.weixin.web.util.QRCodeUtil;
 import com.google.common.collect.Maps;
 
 /**
@@ -102,7 +107,7 @@ public class ActivityController {
 			newActivity.setCreateDate(new Date());
 			newActivity.setCreateUser(user);
 			newActivity.setIsdelete(0);
-			newActivity.setStatus("Y");
+			newActivity.setStatus("process");
 			activityService.saveActivity(newActivity);
 			redirectAttributes.addFlashAttribute("message", "创建活动成功");
 		} catch (Exception e) {
@@ -127,6 +132,67 @@ public class ActivityController {
 		activityService.saveActivity(activity);
 		redirectAttributes.addFlashAttribute("message", "失效任务'" + activity.getTitle() + "'成功");
 		return "redirect:/activity/";
+	}
+	
+	
+	@RequestMapping(value = "view/{id}", method = RequestMethod.GET)
+	public String view(@PathVariable("id") Long id,Model model,ServletRequest request) {
+		
+		Activity activity=activityService.getActivity(id);
+		model.addAttribute("activity", activity); 
+		List<ValueSet> ActivityTypeList=valueSetService.getActivityTypeAll("ActivityType");
+		model.addAttribute("ActivityTypeList", ActivityTypeList);
+		
+		  
+		if("Y".equals(activity.getStatus()))
+		{  
+			
+			String filePath = MobileContants.IMAGEURL+"\\" ;
+			if(!StringUtils.isEmpty(activity.getQrCodeUrl()))
+			{
+				File file=new File(filePath+activity.getQrCodeUrl());    
+				if(!file.exists())
+				{
+					//原文件不存在,重新生成
+					createQrCode(activity, request, filePath);
+				}
+			}else
+			{ 
+				createQrCode(activity, request, filePath);
+			}
+			
+			
+		} 
+		model.addAttribute("HttpImageUrl",MobileContants.HTTPIMAGEURL); 
+		  
+		return "activity/activityView";
+	}
+	
+	
+	private void createQrCode(Activity entity,ServletRequest request,String filePath)
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		String nowDate=sdf.format(new Date());
+		
+		String imageUrl = entity.getTitle()  + "-" + entity.getId() + ".jpg";
+		String url =  MobileContants.YM+"/activity/join?activityId="+entity.getId(); // 
+		
+		File file =new File(filePath+nowDate);    
+		// 如果文件夹不存在则创建
+		if (!file.exists() && !file.isDirectory()) {
+			file.mkdirs();
+		} 
+		 
+		try {  
+				QRCodeUtil.createEncode(url, null, filePath+nowDate, imageUrl);
+		 
+		} catch (Exception e) { 
+			e.printStackTrace();
+		}
+		
+		entity.setQrCodeUrl(nowDate+"\\"+imageUrl);
+		entity.setWebUrl(url);
+		activityService.saveActivity(entity);
 	}
 
 }

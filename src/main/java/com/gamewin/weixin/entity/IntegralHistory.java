@@ -16,6 +16,58 @@ public class IntegralHistory extends IdEntity {
 	private String mark;
 	private Date createDate;
 	private User user;
+	private String status; 
+	private Integer isdelete;
+	private Activity activity;
+	private ExchangeGoods exchangeGoods;
+	private ExchangeIntegral exchangeIntegral;
+	
+	
+	
+	
+	@ManyToOne
+	@JoinColumn(name = "activity_id")
+	public Activity getActivity() {
+		return activity;
+	}
+
+	public void setActivity(Activity activity) {
+		this.activity = activity;
+	}
+	@ManyToOne
+	@JoinColumn(name = "exchangegoods_id")
+	public ExchangeGoods getExchangeGoods() {
+		return exchangeGoods;
+	}
+
+	public void setExchangeGoods(ExchangeGoods exchangeGoods) {
+		this.exchangeGoods = exchangeGoods;
+	}
+	@ManyToOne
+	@JoinColumn(name = "exchangeintegral_id")
+	public ExchangeIntegral getExchangeIntegral() {
+		return exchangeIntegral;
+	}
+
+	public void setExchangeIntegral(ExchangeIntegral exchangeIntegral) {
+		this.exchangeIntegral = exchangeIntegral;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Integer getIsdelete() {
+		return isdelete;
+	}
+
+	public void setIsdelete(Integer isdelete) {
+		this.isdelete = isdelete;
+	}
 
 	public String getTitle() {
 		return title;

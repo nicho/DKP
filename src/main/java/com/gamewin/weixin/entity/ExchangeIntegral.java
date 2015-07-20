@@ -3,6 +3,8 @@ package com.gamewin.weixin.entity;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -33,6 +35,8 @@ public class ExchangeIntegral extends IdEntity {
 	public void setIntegral(Double integral) {
 		this.integral = integral;
 	}
+	@ManyToOne
+	@JoinColumn(name = "cteate_user_id")
 	public User getCteateUser() {
 		return cteateUser;
 	}

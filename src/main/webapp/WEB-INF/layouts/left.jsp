@@ -9,8 +9,8 @@
 		<a id="myTask" href="${ctx}/manageTask/myTask">活动登记</a>
 		<a id="myTask" href="${ctx}/activity">最近所有活动列表</a>
 		<a id="myTask" href="${ctx}/manageTask/myTask">积分排行</a>
-		<a id="myTask" href="${ctx}/manageTask/myTask">近期拍卖成功物品</a>
-		<a id="myTask" href="${ctx}/manageTask/myTask">物品兑换积分</a>
+		<a id="myTask" href="${ctx}/exchangeGoods">近期拍卖成功物品</a>
+		<a id="myTask" href="${ctx}/exchangeIntegral">物品兑换积分</a>
 		 
 	</div>
 	<h1>个人页面</h1>
@@ -23,8 +23,8 @@
 	</div>
 	 <h1>积分管理</h1>
 		<div class="submenu">
-			<a id="account-tab" href="${ctx}/admin/user">物品兑换积分</a> 
-		<a id="account-tab" href="${ctx}/admin/user">物品拍卖竞价</a> 
+			<a id="account-tab" href="${ctx}/exchangeIntegral">物品兑换积分</a> 
+		<a id="account-tab" href="${ctx}/exchangeGoods">物品拍卖竞价</a> 
 	</div>
 
 	<h1>系统管理</h1>

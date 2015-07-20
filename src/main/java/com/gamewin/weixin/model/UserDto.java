@@ -1,27 +1,41 @@
 package com.gamewin.weixin.model;
 
 public class UserDto {
-	String id;
-	String userName;
-	String manageAddress;
-	
-	public String getUserName() {
-		return userName;
-	}
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-	public String getId() {
+	private Long id;
+	private String name;
+	private String gameName;
+	private Double integral;
+
+	public Long getId() {
 		return id;
 	}
-	public void setId(String id) {
+
+	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getManageAddress() {
-		return manageAddress;
+
+	public String getName() {
+		return name;
 	}
-	public void setManageAddress(String manageAddress) {
-		this.manageAddress = manageAddress;
+
+	public void setName(String name) {
+		this.name = name;
 	}
-	
+
+	public String getGameName() {
+		return gameName;
+	}
+
+	public void setGameName(String gameName) {
+		this.gameName = gameName;
+	}
+
+	public Double getIntegral() {
+		return integral;
+	}
+
+	public void setIntegral(Double integral) {
+		this.integral = integral;
+	}
+
 }

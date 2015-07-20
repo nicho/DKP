@@ -5,6 +5,7 @@
  *******************************************************************************/
 package com.gamewin.weixin.service.activity;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +22,11 @@ import org.springside.modules.persistence.SearchFilter;
 import org.springside.modules.persistence.SearchFilter.Operator;
 
 import com.gamewin.weixin.entity.ExchangeGoods;
+import com.gamewin.weixin.entity.IntegralHistory;
+import com.gamewin.weixin.entity.User;
 import com.gamewin.weixin.repository.ExchangeGoodsDao;
+import com.gamewin.weixin.repository.IntegralHistoryDao;
+import com.gamewin.weixin.repository.UserDao;
 
 // Spring Bean的标识.
 @Component
@@ -30,6 +35,28 @@ import com.gamewin.weixin.repository.ExchangeGoodsDao;
 public class ExchangeGoodsService {
 
 	private ExchangeGoodsDao exchangeGoodsDao;
+
+	private UserDao userDao;
+	private IntegralHistoryDao integralHistoryDao;
+
+	public void saveExchangeGoodsToo(ExchangeGoods entity, User user) {
+		exchangeGoodsDao.save(entity);
+		// 扣除用户积分
+		user.setIntegral(user.getIntegral() - entity.getIntegral());
+		userDao.save(user);
+		// 记录日志
+		IntegralHistory ih=new IntegralHistory();
+		ih.setExchangeGoods(entity);
+		ih.setCreateDate(new Date());
+		ih.setDescription("拍得物品:'"+entity.getGoodsName()+"',扣除积分:"+entity.getIntegral());
+		ih.setIntegral(entity.getIntegral());
+		ih.setIsdelete(0);
+		ih.setMark("-");
+		ih.setUser(user);
+		ih.setStatus("Y");
+		ih.setTitle("拍卖扣积分");
+		integralHistoryDao.save(ih);
+	}
 
 	public ExchangeGoods getExchangeGoods(Long id) {
 		return exchangeGoodsDao.findOne(id);

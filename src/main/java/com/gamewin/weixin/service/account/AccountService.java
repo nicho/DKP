@@ -5,6 +5,7 @@
  *******************************************************************************/
 package com.gamewin.weixin.service.account;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,7 @@ import org.springside.modules.utils.Clock;
 import org.springside.modules.utils.Encodes;
 
 import com.gamewin.weixin.entity.User;
+import com.gamewin.weixin.model.UserDto;
 import com.gamewin.weixin.mybatis.UserMybatisDao;
 import com.gamewin.weixin.repository.UserDao;
 import com.gamewin.weixin.service.ServiceException;
@@ -57,6 +59,24 @@ public class AccountService {
 
 	public List<User> getAllUser() {
 		return (List<User>) userDao.findAll();
+	}
+
+	public List<UserDto> getAllUserDto() {
+		List<UserDto> dtoList = new ArrayList<UserDto>();
+		List<User> userList = (List<User>) userDao.findAll();
+		if(userList!=null && userList.size()>0)
+		{
+			for (int i = 0; i < userList.size(); i++) {
+				User user=userList.get(i);
+				UserDto dto=new UserDto();
+				dto.setId(user.getId());
+				dto.setGameName(user.getGameName());
+				dto.setIntegral(user.getIntegral());
+				dto.setName(user.getName());
+				dtoList.add(dto);
+			}
+		}
+		return dtoList;
 	}
 
 	public User getUser(Long id) {
@@ -141,15 +161,15 @@ public class AccountService {
 		this.clock = clock;
 	}
 
-	  
 	public Page<User> getAllUserlist(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
-		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams); 
-		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0")); 
+		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
+		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));
 		Specification<User> spec = DynamicSpecifications.bySearchFilter(filters.values(), User.class);
 
 		return userDao.findAll(spec, pageRequest);
 	}
+
 	public Page<User> getUserByAuditUserlist(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
@@ -184,6 +204,7 @@ public class AccountService {
 
 		return new PageRequest(pageNumber - 1, pagzSize, sort);
 	}
+
 	public List<User> getUserAllUserlist(Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
 		PageHelper.startPage(pageNumber, pageSize);
 		List<User> userList = userMybatisDao.getUserAllUserlist();

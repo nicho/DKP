@@ -34,7 +34,12 @@
 			 <div class="control-group">
 				<label class="control-label">买受人:</label>
 				<div class="controls">
-					<input type="text" id="userId" name="userId" value=" " class="input-large required "/>
+					<select name="userId" class="required">
+						<option value="" >请选择</option>
+						<c:forEach var="list" items="${userList }">
+							<option value="${list.id }" >${list.name },积分${list.integral }</option>
+						</c:forEach>
+					</select>
 				</div>
 			</div>  
 				  

@@ -53,6 +53,7 @@ public class ExchangeIntegralController {
 
 	@Autowired
 	private ExchangeIntegralService exchangeIntegralService;
+
 	
 
 	@Autowired

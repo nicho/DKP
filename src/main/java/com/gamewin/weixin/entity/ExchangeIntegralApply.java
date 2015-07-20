@@ -13,11 +13,20 @@ public class ExchangeIntegralApply extends IdEntity {
 	private ExchangeIntegral exchangeIntegral;
 	private String description;
 	private Integer number;
+	private Double integral;
 	private User cteateUser;
 	private User approvalUser;
 	private Date cteateDate;
 	private String status;
 	private Integer isdelete;
+
+	public Double getIntegral() {
+		return integral;
+	}
+
+	public void setIntegral(Double integral) {
+		this.integral = integral;
+	}
 
 	@ManyToOne
 	@JoinColumn(name = "exchange_integral_id")

@@ -43,7 +43,7 @@
 
 					<td>
 					<a href="#" onclick="confirmDelete('${ctx}/exchangeIntegral/delete/${task.id}')">删除</a>&nbsp;
-					<a href="${ctx}/exchangeIntegral/apply/${task.id}"  >申请兑换</a>&nbsp;
+					<a href="${ctx}/exchangeIntegralApply/create/${task.id}"  >申请兑换</a>&nbsp;
 					</td>
 
 				</tr>

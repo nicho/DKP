@@ -80,6 +80,7 @@ public class ExchangeIntegralApplyService {
 	private Specification<ExchangeIntegralApply> buildSpecification(Long userId, Map<String, Object> searchParams) {
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
 		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));
+		filters.put("cteateUser", new SearchFilter("cteateUser", Operator.EQ, userId));
 		Specification<ExchangeIntegralApply> spec = DynamicSpecifications.bySearchFilter(filters.values(), ExchangeIntegralApply.class);
 		return spec;
 	}

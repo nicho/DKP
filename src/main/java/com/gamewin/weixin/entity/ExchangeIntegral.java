@@ -17,6 +17,13 @@ public class ExchangeIntegral extends IdEntity {
 	private Date cteateDate;
 	private String status;
 	private Integer isdelete;
+	public ExchangeIntegral() {
+	}
+
+	public ExchangeIntegral(Long id) {
+		this.id = id;
+	} 
+	
 	public String getGoodsName() {
 		return goodsName;
 	}

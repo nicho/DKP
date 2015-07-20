@@ -41,7 +41,10 @@
 					<td><fmt:formatDate value="${task.cteateDate}" pattern="yyyy年MM月dd日 HH时mm分ss秒" /></td> 
 					<td>${task.cteateUser.name}</td>
 
-					<td><a href="#" onclick="confirmDelete('${ctx}/exchangeIntegral/delete/${task.id}')">删除</a>&nbsp;</td>
+					<td>
+					<a href="#" onclick="confirmDelete('${ctx}/exchangeIntegral/delete/${task.id}')">删除</a>&nbsp;
+					<a href="${ctx}/exchangeIntegral/apply/${task.id}"  >申请兑换</a>&nbsp;
+					</td>
 
 				</tr>
 			</c:forEach>

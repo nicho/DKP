@@ -20,8 +20,9 @@
 	<select id="getUserAllUserlist" parameterType="long" resultMap="userMap">
 		SELECT u.*  FROM wx_user u  WHERE u.isdelete=0 
 	</select>
-	
-	  
+   <select id="getUserAllUserIntegrallist" parameterType="long" resultMap="userMap">
+		SELECT u.*  FROM wx_user u  WHERE u.isdelete=0  order by u.integral desc
+	</select>
  
 	
 	 

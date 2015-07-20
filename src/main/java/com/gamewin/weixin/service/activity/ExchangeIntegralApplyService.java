@@ -5,6 +5,7 @@
  *******************************************************************************/
 package com.gamewin.weixin.service.activity;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +22,11 @@ import org.springside.modules.persistence.SearchFilter;
 import org.springside.modules.persistence.SearchFilter.Operator;
 
 import com.gamewin.weixin.entity.ExchangeIntegralApply;
+import com.gamewin.weixin.entity.IntegralHistory;
+import com.gamewin.weixin.entity.User;
 import com.gamewin.weixin.repository.ExchangeIntegralApplyDao;
+import com.gamewin.weixin.repository.IntegralHistoryDao;
+import com.gamewin.weixin.repository.UserDao;
 
 // Spring Bean的标识.
 @Component
@@ -30,7 +35,10 @@ import com.gamewin.weixin.repository.ExchangeIntegralApplyDao;
 public class ExchangeIntegralApplyService {
 
 	private ExchangeIntegralApplyDao exchangeIntegralApplyDao;
-
+	@Autowired
+	private UserDao userDao;
+	@Autowired
+	private IntegralHistoryDao integralHistoryDao;
 	public ExchangeIntegralApply getExchangeIntegralApply(Long id) {
 		return exchangeIntegralApplyDao.findOne(id);
 	}
@@ -38,7 +46,32 @@ public class ExchangeIntegralApplyService {
 	public void saveExchangeIntegralApply(ExchangeIntegralApply entity) {
 		exchangeIntegralApplyDao.save(entity);
 	}
-
+	public void saveExchangeIntegralApplyApproval(ExchangeIntegralApply entity) { 
+		exchangeIntegralApplyDao.save(entity);
+		
+		if("pass".equals(entity.getStatus()))
+		{
+			//审批通过后，给积分
+			User user=entity.getCteateUser();
+			user.setIntegral(entity.getIntegral());
+			userDao.save(user);
+			 
+			// 记录日志	
+			IntegralHistory ih=new IntegralHistory();
+			ih.setExchangeIntegralApply(entity);
+			ih.setCreateDate(new Date());
+			ih.setDescription("使用物品:'"+entity.getExchangeIntegral().getGoodsName()+"',兑换积分:"+entity.getIntegral());
+			ih.setIntegral(entity.getIntegral());
+			ih.setIsdelete(0);
+			ih.setMark("+");
+			ih.setUser(user);
+			ih.setStatus("Y");
+			ih.setTitle("物品兑换积分");
+			integralHistoryDao.save(ih);
+		}
+		
+	}
+	
 	public void deleteExchangeIntegralApply(Long id) {
 		exchangeIntegralApplyDao.delete(id);
 	}

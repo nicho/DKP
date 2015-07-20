@@ -43,7 +43,13 @@ function confirmPass(url)
 		window.location.href=url;
 	}
 }
-
+function confirmReject(url)
+{
+	if(confirm("确认拒绝？"))
+	{
+		window.location.href=url;
+	}
+}
 
 </script>
 </head>

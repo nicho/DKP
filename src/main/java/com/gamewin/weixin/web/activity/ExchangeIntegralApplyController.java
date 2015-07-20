@@ -83,7 +83,7 @@ public class ExchangeIntegralApplyController {
 		// 将搜索条件编码成字符串，用于排序，分页的URL
 		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
 
-		return "exchangeIntegralApply/exchangeIntegralApplyList";
+		return "exchangeIntegralApply/myExchangeIntegralApplyList";
 	}
 	@RequestMapping(value = "approvalList",method = RequestMethod.GET)
 	public String approvalList(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
@@ -118,7 +118,7 @@ public class ExchangeIntegralApplyController {
 
 		try {
 			Long exchangeIntegralId =Long.parseLong(request.getParameter("exchangeIntegralId"));
-			ExchangeIntegral exchangeIntegral=new ExchangeIntegral(exchangeIntegralId);
+			ExchangeIntegral exchangeIntegral=exchangeIntegralService.getExchangeIntegral(exchangeIntegralId);
 			newExchangeIntegralApply.setIntegral(exchangeIntegral.getIntegral()*newExchangeIntegralApply.getNumber());
 			newExchangeIntegralApply.setExchangeIntegral(exchangeIntegral);
 			newExchangeIntegralApply.setCteateUser(createuser);
@@ -144,13 +144,25 @@ public class ExchangeIntegralApplyController {
 		return user.id;
 	}
 
-	@RequestMapping(value = "delete/{id}")
-	public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+		
+	@RequestMapping(value = "approval/{id}")
+	public String approval(@PathVariable("id") Long id, RedirectAttributes redirectAttributes, ServletRequest request) {
 		ExchangeIntegralApply exchangeIntegralApply = exchangeIntegralApplyService.getExchangeIntegralApply(id);
-		exchangeIntegralApply.setIsdelete(1);
-		exchangeIntegralApplyService.saveExchangeIntegralApply(exchangeIntegralApply);
-		redirectAttributes.addFlashAttribute("message", "删除申请成功");
-		return "redirect:/exchangeIntegral/";
-	}
+		String status=request.getParameter("status");
+		User user = new User(getCurrentUserId());
+		if(("pass".equals(status) || "reject".equals(status)) && "Approval".equals(exchangeIntegralApply.getStatus()))
+		{
+			exchangeIntegralApply.setApprovalUser(user);
+			exchangeIntegralApply.setStatus(status);
+			exchangeIntegralApplyService.saveExchangeIntegralApplyApproval(exchangeIntegralApply); 
+			redirectAttributes.addFlashAttribute("message", "审批成功");
+		}
+		else
+		{
+			redirectAttributes.addFlashAttribute("message", "非法操作");
+		}
 
+		return "redirect:/exchangeIntegralApply/approvalList";
+	}
+	
 }

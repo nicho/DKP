@@ -80,7 +80,40 @@ public class ExchangeGoodsController {
 
 		return "exchangeGoods/exchangeGoodsList";
 	}
+	@RequestMapping(value = "mylist",method = RequestMethod.GET)
+	public String mylist(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
+			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request) {
+		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
+		Long userId = getCurrentUserId();
 
+		Page<ExchangeGoods> exchangeGoodss = exchangeGoodsService.getAllExchangeGoodsMy(userId, searchParams, pageNumber, pageSize, sortType);
+
+		model.addAttribute("exchangeGoodss", exchangeGoodss);
+		model.addAttribute("sortType", sortType);
+		model.addAttribute("sortTypes", sortTypes);
+		// 将搜索条件编码成字符串，用于排序，分页的URL
+		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
+
+		return "exchangeGoods/myExchangeGoodsList";
+	}
+	@RequestMapping(value = "alllist",method = RequestMethod.GET)
+	public String alllist(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
+			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request) {
+		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
+		Long userId = getCurrentUserId();
+
+		Page<ExchangeGoods> exchangeGoodss = exchangeGoodsService.getAllExchangeGoods(userId, searchParams, pageNumber, pageSize, sortType);
+
+		model.addAttribute("exchangeGoodss", exchangeGoodss);
+		model.addAttribute("sortType", sortType);
+		model.addAttribute("sortTypes", sortTypes);
+		// 将搜索条件编码成字符串，用于排序，分页的URL
+		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
+
+		return "exchangeGoods/myExchangeGoodsList";
+	}
 	@RequestMapping(value = "create", method = RequestMethod.GET)
 	public String createForm(Model model) {
 		model.addAttribute("exchangeGoods", new ExchangeGoods());
@@ -101,8 +134,8 @@ public class ExchangeGoodsController {
 				User user = accountService.getUser(Long.parseLong(request.getParameter("userId")));
 				// 判断用户积分
 				if (user.getIntegral() >= newExchangeGoods.getIntegral()) {
-					newExchangeGoods.setCteateUser(createuser);
-					newExchangeGoods.setCteateDate(new Date());
+					newExchangeGoods.setCreateUser(createuser);
+					newExchangeGoods.setCreateDate(new Date());
 					newExchangeGoods.setUser(user);
 					newExchangeGoods.setIsdelete(0);
 					newExchangeGoods.setStatus("Y");
@@ -145,7 +178,7 @@ public class ExchangeGoodsController {
 		exchangeGoods.setIsdelete(1);
 		exchangeGoodsService.saveExchangeGoods(exchangeGoods);
 		redirectAttributes.addFlashAttribute("message", "删除拍卖物品'" + exchangeGoods.getGoodsName() + "'成功");
-		return "redirect:/exchangeIntegral/";
+		return "redirect:/exchangeGoods/";
 	}
 
 }

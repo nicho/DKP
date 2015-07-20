@@ -35,8 +35,9 @@ import com.gamewin.weixin.repository.UserDao;
 public class ExchangeGoodsService {
 
 	private ExchangeGoodsDao exchangeGoodsDao;
-
+	@Autowired
 	private UserDao userDao;
+	@Autowired
 	private IntegralHistoryDao integralHistoryDao;
 
 	public void saveExchangeGoodsToo(ExchangeGoods entity, User user) {
@@ -85,7 +86,14 @@ public class ExchangeGoodsService {
 
 		return exchangeGoodsDao.findAll(spec, pageRequest);
 	}
-
+	public Page<ExchangeGoods> getAllExchangeGoodsMy(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
+		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
+		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
+		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));
+		filters.put("createUser", new SearchFilter("createUser", Operator.EQ, userId));
+		Specification<ExchangeGoods> spec = DynamicSpecifications.bySearchFilter(filters.values(), ExchangeGoods.class);
+		return exchangeGoodsDao.findAll(spec, pageRequest);
+	}
 	/**
 	 * 创建分页请求.
 	 */

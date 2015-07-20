@@ -6,7 +6,7 @@
 
 <html>
 <head>
-<title>兑换积分申请列表</title>
+<title>我的兑换积分申请列表</title>
 </head>
 
 <body>
@@ -30,10 +30,8 @@
 				<th>申请描述</th>
 				<th>总积分</th>
 				<th>申请人</th>
-				<th>申请时间</th>
-				<th>审批人</th>
-				<th>状态</th>
-				<th>管理</th>
+				<th>申请时间</th> 
+				<th>状态</th> 
 			</tr>
 		</thead>
 		<tbody>
@@ -43,10 +41,9 @@
 					<td><fmt:formatNumber value="${task.exchangeIntegral.integral}" pattern="##.#"/></td>
 					<td>${task.number}</td>
 					<td>${task.description}</td>
-					<td><fmt:formatNumber value="${task.integral}" pattern="##.##"/></td>
+					<td><fmt:formatNumber value="${task.integral}" pattern="##.#"/></td>
 					<td>${task.cteateUser.name}</td>
-					<td><fmt:formatDate value="${task.cteateDate}" pattern="yyyy年MM月dd日 HH时mm分ss秒" /></td>
-					<td>${task.approvalUser.name}</td>
+					<td><fmt:formatDate value="${task.cteateDate}" pattern="yyyy年MM月dd日 HH时mm分ss秒" /></td> 
 					<td> 
 					<c:choose>
 							<c:when test="${task.status eq 'Approval'}">审批中</c:when>
@@ -54,12 +51,7 @@
 							<c:when test="${task.status eq 'reject'}">审批拒绝</c:when> 
 						</c:choose>
 					</td>
-					<td> 
-						<c:if test="${task.status eq 'Approval'}">
-						<a href="#" onclick="confirmPass('${ctx}/exchangeIntegralApply/approval/${task.id}?status=pass')">审批通过</a>&nbsp;
-						<a href="#" onclick="confirmReject('${ctx}/exchangeIntegralApply/approval/${task.id}?status=reject')">审批拒绝</a>&nbsp;
-						</c:if>
-					</td>
+					 
 
 				</tr>
 			</c:forEach>

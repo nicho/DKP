@@ -20,7 +20,7 @@ public class IntegralHistory extends IdEntity {
 	private Integer isdelete;
 	private Activity activity;
 	private ExchangeGoods exchangeGoods;
-	private ExchangeIntegral exchangeIntegral;
+	private ExchangeIntegralApply exchangeIntegralApply;
 	
 	
 	
@@ -43,18 +43,20 @@ public class IntegralHistory extends IdEntity {
 	public void setExchangeGoods(ExchangeGoods exchangeGoods) {
 		this.exchangeGoods = exchangeGoods;
 	}
-	@ManyToOne
-	@JoinColumn(name = "exchangeintegral_id")
-	public ExchangeIntegral getExchangeIntegral() {
-		return exchangeIntegral;
-	}
 
-	public void setExchangeIntegral(ExchangeIntegral exchangeIntegral) {
-		this.exchangeIntegral = exchangeIntegral;
-	}
+ 
 
 	public String getStatus() {
 		return status;
+	}
+	@ManyToOne
+	@JoinColumn(name = "exchangeintegralapply_id")
+	public ExchangeIntegralApply getExchangeIntegralApply() {
+		return exchangeIntegralApply;
+	}
+
+	public void setExchangeIntegralApply(ExchangeIntegralApply exchangeIntegralApply) {
+		this.exchangeIntegralApply = exchangeIntegralApply;
 	}
 
 	public void setStatus(String status) {

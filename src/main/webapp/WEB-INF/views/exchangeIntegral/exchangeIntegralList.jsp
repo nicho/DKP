@@ -36,7 +36,7 @@
 			<c:forEach items="${exchangeIntegrals.content}" var="task">
 				<tr>
 					<td>${task.goodsName}</td>
-					<td>${task.integral}</td>
+					<td><fmt:formatNumber value="${task.integral}" pattern="##.##"/></td>
 					<td>${task.description}</td>
 					<td><fmt:formatDate value="${task.cteateDate}" pattern="yyyy年MM月dd日 HH时mm分ss秒" /></td> 
 					<td>${task.cteateUser.name}</td>

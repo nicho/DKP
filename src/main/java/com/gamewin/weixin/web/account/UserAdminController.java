@@ -11,11 +11,9 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.validation.Valid;
 
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,7 +26,6 @@ import org.springside.modules.web.Servlets;
 
 import com.gamewin.weixin.entity.User;
 import com.gamewin.weixin.service.account.AccountService;
-import com.gamewin.weixin.service.account.ShiroDbRealm.ShiroUser;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 
@@ -82,7 +79,35 @@ public class UserAdminController {
 
 		return "account/adminUserList";
 	}
+	/**
+	 * 用户积分列表
+	 * @param pageNumber
+	 * @param pageSize
+	 * @param sortType
+	 * @param model
+	 * @param request
+	 * @return
+	 */ 
+	@RequestMapping(value = "integralList",method = RequestMethod.GET)
+	public String integrallist(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
+			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request) {
+		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 
+		List<User> users = accountService.getUserAllUserIntegrallist(searchParams, pageNumber, pageSize, sortType);
+
+		PageInfo<User> page = new PageInfo<User>(users);
+		model.addAttribute("page", page);
+		model.addAttribute("usersx", users);
+
+		model.addAttribute("sortType", sortType);
+		model.addAttribute("sortTypes", sortTypes);
+		model.addAttribute("allStatus", allStatus);
+		// 将搜索条件编码成字符串，用于排序，分页的URL
+		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
+
+		return "account/integralList";
+	}
 	@RequiresRoles("admin")
 	@RequestMapping(value = "update/{id}", method = RequestMethod.GET)
 	public String updateForm(@PathVariable("id") Long id, Model model) {

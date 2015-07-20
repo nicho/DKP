@@ -14,8 +14,8 @@ public class ExchangeGoods extends IdEntity {
 	private String description;
 	private Double integral;
 	private User user;
-	private User cteateUser;
-	private Date cteateDate;
+	private User createUser;
+	private Date createDate;
 	private String status;
 	private Integer isdelete;
 
@@ -68,23 +68,24 @@ public class ExchangeGoods extends IdEntity {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
 	@ManyToOne
 	@JoinColumn(name = "create_user_id")
-	public User getCteateUser() {
-		return cteateUser;
+	public User getCreateUser() {
+		return createUser;
 	}
 
-	public void setCteateUser(User cteateUser) {
-		this.cteateUser = cteateUser;
+	public void setCreateUser(User createUser) {
+		this.createUser = createUser;
 	}
 
-	public Date getCteateDate() {
-		return cteateDate;
+	public Date getCreateDate() {
+		return createDate;
 	}
 
-	public void setCteateDate(Date cteateDate) {
-		this.cteateDate = cteateDate;
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 
+
+ 
 }

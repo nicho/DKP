@@ -22,13 +22,13 @@
 		    <div class="control-group">
 				<label class="control-label">申请物品:</label>
 				<div class="controls">
-					<input type="text" id="goodsName"  value="${exchangeIntegral.goodsName}" class="input-large required"/>
+					<input type="text" id="goodsName"  value="${exchangeIntegral.goodsName}" class="input-large " readonly="readonly"/>
 				</div>
 			</div>
 					    <div class="control-group">
 				<label class="control-label">积分:</label>
 				<div class="controls">
-					<input type="text" id="integral"  value="${exchangeIntegral.integral}" class="input-large required digits"/>
+					<input type="text" id="integral"  value="${exchangeIntegral.integral}" class="input-large  " readonly="readonly"/>
 				</div>
 			</div>
 				 			    <div class="control-group">

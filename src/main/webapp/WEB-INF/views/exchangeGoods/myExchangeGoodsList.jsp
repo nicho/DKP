@@ -20,7 +20,7 @@
 		</div>
 
 	</div>
-	<div><a class="btn" href="${ctx}/exchangeGoods/create">拍卖登记</a></div> <br>
+	 
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
@@ -30,7 +30,7 @@
 				<th>买受人</th>
 				<th>时间</th>
 				<th>登记人</th>
-				<th>管理</th>
+				 
 			</tr>
 		</thead>
 		<tbody>
@@ -43,7 +43,7 @@
 					<td><fmt:formatDate value="${task.createDate}" pattern="yyyy年MM月dd日 HH时mm分ss秒" /></td>
 					<td>${task.createUser.name}</td>
 
-					<td><a href="#" onclick="confirmDelete('${ctx}/exchangeGoods/delete/${task.id}')">删除</a>&nbsp;</td>
+					 
 
 				</tr>
 			</c:forEach>

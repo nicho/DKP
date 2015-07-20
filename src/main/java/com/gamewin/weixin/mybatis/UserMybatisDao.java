@@ -19,4 +19,5 @@ import com.gamewin.weixin.entity.User;
 public interface UserMybatisDao {
 
 	List<User> getUserAllUserlist();
+	List<User> getUserAllUserIntegrallist();
 }

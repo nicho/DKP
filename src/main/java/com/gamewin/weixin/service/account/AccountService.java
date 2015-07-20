@@ -210,4 +210,9 @@ public class AccountService {
 		List<User> userList = userMybatisDao.getUserAllUserlist();
 		return userList;
 	}
+	public List<User> getUserAllUserIntegrallist(Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
+		PageHelper.startPage(pageNumber, pageSize);
+		List<User> userList = userMybatisDao.getUserAllUserIntegrallist();
+		return userList;
+	}
 }

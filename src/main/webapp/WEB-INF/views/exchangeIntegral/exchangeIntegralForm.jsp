@@ -27,7 +27,7 @@
 					    <div class="control-group">
 				<label class="control-label">可兑换积分:</label>
 				<div class="controls">
-					<input type="text" id="integral" name="integral" value=" " class="input-large required digits"/>
+					<input type="text" id="integral" name="integral" value=" " class="input-large required number"/>
 				</div>
 			</div>   
 				  

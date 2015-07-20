@@ -40,7 +40,7 @@
 					<td>${task.description}</td>
 					<td><fmt:formatNumber value="${task.integral}" pattern="##.##"/></td>
 					<td>${task.user.name}</td>
-					<td><fmt:formatDate value="${task.createDate}" pattern="yyyy年MM月dd日 HH时mm分ss秒" /></td>
+					<td><fmt:formatDate value="${task.createDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 					<td>${task.createUser.name}</td>
 
 					<td><a href="#" onclick="confirmDelete('${ctx}/exchangeGoods/delete/${task.id}')">删除</a>&nbsp;</td>

@@ -47,13 +47,13 @@
 			 <div class="control-group">
 				<label for="task_title" class="control-label">开始时间:</label>
 				<div class="controls">
-					<input type="text" id="startDateStr" name="startDateStr"  value="<fmt:formatDate  value="${activity.startDate}" type="both" pattern="yyyy年MM月dd日 HH时mm分ss秒" />" class="input-large required"  disabled="disabled"  />
+					<input type="text" id="startDateStr" name="startDateStr"  value="<fmt:formatDate  value="${activity.startDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss" />" class="input-large required"  disabled="disabled"  />
 				</div>
 			</div>	
 			 <div class="control-group">
 				<label for="task_title" class="control-label">结束时间:</label>
 				<div class="controls">
-					<input type="text" id="endDateStr" name="endDateStr"  value="<fmt:formatDate  value="${activity.endDate}" type="both" pattern="yyyy年MM月dd日 HH时mm分ss秒" />" class="input-large required"   disabled="disabled" />
+					<input type="text" id="endDateStr" name="endDateStr"  value="<fmt:formatDate  value="${activity.endDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss" />" class="input-large required"   disabled="disabled" />
 				</div>
 			</div>	
 									 <div class="control-group">
@@ -68,6 +68,7 @@
 					<textarea id="codes" rows="5" name="activityExplain" style="  width: 500px;"  class="input-large" disabled="disabled">${activity.activityExplain}</textarea>
 				</div>
 			</div>	
+			 <c:if test="${task.status eq 'pass'}">
 		  <div class="control-group">
 				<label class="control-label">网站链接:</label>
 				<div class="controls">
@@ -80,7 +81,7 @@
 					 <img src="${HttpImageUrl}/image/${activity.qrCodeUrl}" />
 				</div>
 			</div>
-	 
+	 </c:if>
 		</fieldset>
 	</form>
 	<script>

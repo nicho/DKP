@@ -58,13 +58,13 @@
 			 <div class="control-group">
 				<label for="task_title" class="control-label">开始时间:</label>
 				<div class="controls">
-					<input type="text" id="startDateStr" name="startDateStr"  value="<fmt:formatDate  value="${task.startDate}" type="both" pattern="yyyy年MM月dd日 HH时mm分ss秒" />" class="input-large required" onclick="WdatePicker({dateFmt:'yyyy年MM月dd日 HH时mm分ss秒'})"  />
+					<input type="text" id="startDateStr" name="startDateStr"  value="<fmt:formatDate  value="${task.startDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss" />" class="input-large required" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  />
 				</div>
 			</div>	
 			 <div class="control-group">
 				<label for="task_title" class="control-label">结束时间:</label>
 				<div class="controls">
-					<input type="text" id="endDateStr" name="endDateStr"  value="<fmt:formatDate  value="${task.endDate}" type="both" pattern="yyyy年MM月dd日 HH时mm分ss秒" />" class="input-large required"  onclick="WdatePicker({dateFmt:'yyyy年MM月dd日 HH时mm分ss秒'})" />
+					<input type="text" id="endDateStr" name="endDateStr"  value="<fmt:formatDate  value="${task.endDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss" />" class="input-large required"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
 				</div>
 			</div>	
 									 <div class="control-group">

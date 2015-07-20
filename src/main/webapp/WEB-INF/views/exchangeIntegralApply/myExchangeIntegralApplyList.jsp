@@ -43,7 +43,7 @@
 					<td>${task.description}</td>
 					<td><fmt:formatNumber value="${task.integral}" pattern="##.#"/></td>
 					<td>${task.cteateUser.name}</td>
-					<td><fmt:formatDate value="${task.cteateDate}" pattern="yyyy年MM月dd日 HH时mm分ss秒" /></td> 
+					<td><fmt:formatDate value="${task.cteateDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td> 
 					<td> 
 					<c:choose>
 							<c:when test="${task.status eq 'Approval'}">审批中</c:when>

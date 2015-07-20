@@ -57,7 +57,22 @@ public class ActivityService {
 
 		return activityDao.findAll(spec, pageRequest);
 	}
-	
+	public Page<Activity> getAllProcessActivty(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
+		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
+		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
+		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));
+		filters.put("status", new SearchFilter("status", Operator.EQ, "process"));
+		Specification<Activity> spec = DynamicSpecifications.bySearchFilter(filters.values(), Activity.class);
+		return activityDao.findAll(spec, pageRequest);
+	}
+	public Page<Activity> getAllmyfqActivity(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
+		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
+		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
+		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));
+		filters.put("createUser", new SearchFilter("createUser", Operator.EQ, userId));
+		Specification<Activity> spec = DynamicSpecifications.bySearchFilter(filters.values(), Activity.class);
+		return activityDao.findAll(spec, pageRequest);
+	}
 	/**
 	 * 创建分页请求.
 	 */
@@ -78,6 +93,7 @@ public class ActivityService {
 	private Specification<Activity> buildSpecification(Long userId, Map<String, Object> searchParams) {
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
 		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));
+		filters.put("status", new SearchFilter("status", Operator.EQ, "pass"));
 		Specification<Activity> spec = DynamicSpecifications.bySearchFilter(filters.values(), Activity.class);
 		return spec;
 	}

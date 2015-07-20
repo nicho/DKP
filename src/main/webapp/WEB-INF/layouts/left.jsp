@@ -14,20 +14,17 @@
 	<h1>个人页面</h1>
 		<div class="submenu">
 		<a id="myTask" href="${ctx}/activity/create">发起活动</a> 
-		<a id="myTask" href="${ctx}/manageTask/myTask">我参与的活动</a>  
+		<a id="myTask" href="${ctx}/activity/myActivity">我参与的活动</a>  
+		<a id="myTask" href="${ctx}/activity/myfqActivity">我发起的活动</a>  
 		<a id="myTask" href="${ctx}/exchangeGoods/mylist">我兑换的物品</a>
 		<a id="myTask" href="${ctx}/exchangeIntegralApply">我贡献的物品</a>  
 	</div>
-	 <h1>积分</h1>
-		<div class="submenu">
-		<a id="account-tab" href="${ctx}/exchangeIntegral">贡献物品</a> 
-		<a id="account-tab" href="${ctx}/exchangeGoods">物品拍卖登记</a> 
+	 <h1>系统管理</h1> 
 		 
-		
-	</div>
-
-	<h1>系统管理</h1>
 	<div class="submenu">
+	<a id="account-tab" href="${ctx}/exchangeIntegral">贡献物品</a> 
+		<a id="account-tab" href="${ctx}/exchangeGoods">物品拍卖登记</a> 
+		<a id="myTask" href="${ctx}/activity/approvalList">活动申请审核</a>
 		<a id="myTask" href="${ctx}/exchangeIntegralApply/approvalList">贡献物品审核</a>
 		<shiro:hasAnyRoles name="admin">
 			<a id="account-tab" href="${ctx}/admin/user">帐号管理</a>  

@@ -52,12 +52,11 @@
 					<td><c:if test="${task.status eq 'pass'}">审批通过</c:if><c:if test="${task.status eq 'process'}">审批中</c:if><c:if test="${task.status eq 'reject'}">审批拒绝</c:if><c:if test="${task.status eq 'N'}">失效</c:if></td>
 					<td>${task.createUser.gameName}</td>
 
-					<td><a href="${ctx}/activity/view/${task.id}">查看</a> &nbsp; 
-						<a href="${ctx}/activityUser/list/${task.id}">参与的会员</a>  &nbsp; 
-						 <c:if test="${task.status eq 'Y'}">
-							<a href="#" onclick="confirmDisabled('${ctx}/activity/disabled/${task.id}')">失效</a>
+					<td><a href="${ctx}/activity/view/${task.id}">查看</a> &nbsp;  
+						 <c:if test="${task.status eq 'process'}">
+						<a href="#" onclick="confirmPass('${ctx}/activity/approval/${task.id}?status=pass')">审批通过</a>&nbsp;
+						<a href="#" onclick="confirmReject('${ctx}/activity/approval/${task.id}?status=reject')">审批拒绝</a>&nbsp;
 						</c:if>
-						
 					</td>
 						
 				</tr>

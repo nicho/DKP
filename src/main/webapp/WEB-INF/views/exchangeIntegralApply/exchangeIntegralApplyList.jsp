@@ -45,7 +45,7 @@
 					<td>${task.description}</td>
 					<td><fmt:formatNumber value="${task.integral}" pattern="##.##"/></td>
 					<td>${task.cteateUser.name}</td>
-					<td><fmt:formatDate value="${task.cteateDate}" pattern="yyyy年MM月dd日 HH时mm分ss秒" /></td>
+					<td><fmt:formatDate value="${task.cteateDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 					<td>${task.approvalUser.name}</td>
 					<td> 
 					<c:choose>

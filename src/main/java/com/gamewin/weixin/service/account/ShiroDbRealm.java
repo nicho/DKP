@@ -102,6 +102,27 @@ public class ShiroDbRealm extends AuthorizingRealm {
 		public String getIntegral() {
 			return StringUtil.subZeroAndDot(integral+"");
 		}
+
+		public String getRolesName() {
+			String name="";
+			if("admin".equals(roles))
+			{
+				name="管理员";
+			}else if("Head".equals(roles))
+			{
+				name="团长";
+			}else if("OneLevel".equals(roles))
+			{
+				name="一级";
+			}else if("TwoLevel".equals(roles))
+			{
+				name="二级";
+			}else if("ThreeLevel".equals(roles))
+			{
+				name="三级";
+			} 
+			return name;
+		}
 		public String getName() {
 			return name;
 		}

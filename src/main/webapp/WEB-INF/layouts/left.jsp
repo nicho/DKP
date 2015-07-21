@@ -14,7 +14,7 @@
 	<h1>个人页面</h1>
 		<div class="submenu">
 		<a id="myTask" href="${ctx}/activity/create">发起活动</a> 
-		<a id="myTask" href="${ctx}/activity/myActivity">我参与的活动</a>  
+		<a id="myTask" href="${ctx}/activityUser/myActivity">我参与的活动</a>  
 		<a id="myTask" href="${ctx}/activity/myfqActivity">我发起的活动</a>  
 		<a id="myTask" href="${ctx}/exchangeGoods/mylist">我兑换的物品</a>
 		<a id="myTask" href="${ctx}/exchangeIntegralApply">我贡献的物品</a>  

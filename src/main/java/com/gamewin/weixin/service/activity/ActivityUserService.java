@@ -31,6 +31,15 @@ public class ActivityUserService {
 
 	private ActivityUserDao activityUserDao;
 
+	public Boolean findByActivityUser(Long userid, Long actid) {
+		List<ActivityUser> list = activityUserDao.findByActivityUser(userid, actid);
+		if (list != null && list.size() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public ActivityUser getActivityUser(Long id) {
 		return activityUserDao.findOne(id);
 	}
@@ -58,7 +67,14 @@ public class ActivityUserService {
 
 		return activityUserDao.findAll(spec, pageRequest);
 	}
-
+	public Page<ActivityUser> getMyActivityUser(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
+		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
+		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
+		filters.put("user", new SearchFilter("user", Operator.EQ, userId));
+		Specification<ActivityUser> spec = DynamicSpecifications.bySearchFilter(filters.values(), ActivityUser.class);
+		return activityUserDao.findAll(spec, pageRequest);
+	}
+	
 	/**
 	 * 创建分页请求.
 	 */

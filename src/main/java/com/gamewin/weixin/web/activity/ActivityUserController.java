@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.ServletRequest;
 
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springside.modules.web.Servlets;
 
 import com.gamewin.weixin.entity.ActivityUser;
+import com.gamewin.weixin.service.account.ShiroDbRealm.ShiroUser;
 import com.gamewin.weixin.service.activity.ActivityUserService;
 import com.gamewin.weixin.service.valueSet.ValueSetService;
 import com.google.common.collect.Maps;
@@ -71,5 +73,26 @@ public class ActivityUserController {
 		return "activityUser/activityUserList";
 	}
 
-	  
+	@RequestMapping(value = "myActivity", method = RequestMethod.GET)
+	public String myActivity(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
+			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model,
+			ServletRequest request) {
+		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
+		Long userId = getCurrentUserId();
+		Page<ActivityUser> activityUsers = activityUserService.getMyActivityUser(userId, searchParams, pageNumber,
+				pageSize, sortType);
+
+		model.addAttribute("activityUsers", activityUsers);
+		model.addAttribute("sortType", sortType);
+		model.addAttribute("sortTypes", sortTypes);
+		// 将搜索条件编码成字符串，用于排序，分页的URL
+		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
+
+		return "activityUser/myActivityUserList";
+	}
+	private Long getCurrentUserId() {
+		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
+		return user.id;
+	}
 }

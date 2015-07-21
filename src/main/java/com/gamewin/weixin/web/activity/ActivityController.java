@@ -29,10 +29,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springside.modules.web.Servlets;
 
 import com.gamewin.weixin.entity.Activity;
+import com.gamewin.weixin.entity.ActivityUser;
 import com.gamewin.weixin.entity.User;
 import com.gamewin.weixin.entity.ValueSet;
 import com.gamewin.weixin.service.account.ShiroDbRealm.ShiroUser;
 import com.gamewin.weixin.service.activity.ActivityService;
+import com.gamewin.weixin.service.activity.ActivityUserService;
 import com.gamewin.weixin.service.valueSet.ValueSetService;
 import com.gamewin.weixin.util.MobileContants;
 import com.gamewin.weixin.web.util.QRCodeUtil;
@@ -62,7 +64,8 @@ public class ActivityController {
 	@Autowired
 	private ActivityService activityService;
 	
-
+	@Autowired
+	private ActivityUserService activityUserService;
 	@Autowired
 	private ValueSetService valueSetService;
 	@RequestMapping(method = RequestMethod.GET)
@@ -257,5 +260,38 @@ public class ActivityController {
 		}
 
 		return "redirect:/exchangeIntegralApply/approvalList";
+	}
+	
+	
+	@RequestMapping(value = "registerActivity/{id}", method = RequestMethod.GET)
+	public String registerActivity(@PathVariable("id") Long id,Model model,ServletRequest request) {
+		
+		Activity activity=activityService.getActivity(id);
+		model.addAttribute("activity", activity); 
+		List<ValueSet> ActivityTypeList=valueSetService.getActivityTypeAll("ActivityType");
+		model.addAttribute("ActivityTypeList", ActivityTypeList);
+		 
+		return "activity/activityRegister";
+	}
+	
+	@RequestMapping(value = "registerActivity", method = RequestMethod.POST)
+	public String registerActivity(@Valid Long activityId, RedirectAttributes redirectAttributes, ServletRequest request) {
+		User user = new User(getCurrentUserId());
+		Activity activity=activityService.getActivity(activityId);
+		if(activity!=null && activityUserService.findByActivityUser(getCurrentUserId(), activityId)==false)
+		{
+			ActivityUser au=new ActivityUser();
+			au.setActivity(activity);
+			au.setUser(user);
+			au.setCreateDate(new Date());
+			activityUserService.saveActivityUser(au);
+			redirectAttributes.addFlashAttribute("message", "活动登记成功");
+			return "redirect:/activity/view/"+activityId;
+					
+		}else
+		{
+			redirectAttributes.addFlashAttribute("message", "活动不存在");
+		}
+		return "redirect:/activity/";
 	}
 }

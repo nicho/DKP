@@ -10,13 +10,17 @@
 	<link rel="stylesheet" type="text/css" href="${ctx}/static/easyui/demo.css">
 	<script type="text/javascript" src="${ctx}/static/easyui/jquery.easyui.min.js"></script>
 
-	<title>查看活动</title>
+	<title>活动登记</title>
 </head>
 
 <body>
-	<form id="inputForm" action="${ctx}/activity/${action}" method="post" class="form-horizontal">  
+	<form id="inputForm" action="${ctx}/activity/registerActivity" method="post" class="form-horizontal">  
+	<input type="hidden" name="activityId" value="${activity.id}">
 		<fieldset>
-			<legend><small>查看活动</small></legend>
+			<legend><small>活动登记</small></legend>
+			 <div class="form-actions">
+				<input id="submit_btn" class="btn btn-primary" type="submit" value="活动登记"/>&nbsp;	 
+			</div>
 			 <div class="control-group">
 				<label class="control-label">活动级别:</label>
 				<div class="controls">
@@ -68,20 +72,7 @@
 					<textarea id="codes" rows="5" name="activityExplain" style="  width: 500px;"  class="input-large" disabled="disabled">${activity.activityExplain}</textarea>
 				</div>
 			</div>	
-			 <c:if test="${task.status eq 'pass'}">
-		  <div class="control-group">
-				<label class="control-label">网站链接:</label>
-				<div class="controls">
-					<a href="#" onclick="window.open('${activity.webUrl}')">${activity.webUrl}</a>
-				</div>
-			</div>
-		 <div class="control-group">
-				<label class="control-label">二维码:</label>
-				<div class="controls">
-					 <img src="${HttpImageUrl}/image/${activity.qrCodeUrl}" />
-				</div>
-			</div>
-	 </c:if>
+		 
 		</fieldset>
 	</form>
 	<script>

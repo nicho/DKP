@@ -221,7 +221,7 @@ public class ActivityController {
 		String nowDate=sdf.format(new Date());
 		
 		String imageUrl = entity.getTitle()  + "-" + entity.getId() + ".jpg";
-		String url =  MobileContants.YM+"/activity/join?activityId="+entity.getId(); // 
+		String url =  MobileContants.YM+"/activity/registerActivity/"+entity.getId(); // 
 		
 		File file =new File(filePath+nowDate);    
 		// 如果文件夹不存在则创建

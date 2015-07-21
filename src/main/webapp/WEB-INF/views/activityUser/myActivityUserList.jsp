@@ -54,7 +54,7 @@
 					<td><c:if test="${task.activity.status eq 'pass'}">审批通过</c:if> <c:if test="${task.activity.status eq 'process'}">审批中</c:if> <c:if test="${task.activity.status eq 'reject'}">审批拒绝</c:if> <c:if
 							test="${task.activity.status eq 'N'}">失效</c:if></td>  
 					<td>${task.activity.createUser.gameName}</td>    
-					<td><fmt:formatDate value="${task.cteateDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>  
+					<td><fmt:formatDate value="${task.createDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>  
 					<td><a href="${ctx}/activity/view/${task.activity.id}">查看</a> &nbsp;</td>
 				</tr>
 			</c:forEach>

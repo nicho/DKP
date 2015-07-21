@@ -68,7 +68,7 @@
 					<textarea id="codes" rows="5" name="activityExplain" style="  width: 500px;"  class="input-large" disabled="disabled">${activity.activityExplain}</textarea>
 				</div>
 			</div>	
-			 <c:if test="${task.status eq 'pass'}">
+			 <c:if test="${activity.status eq 'pass'}">
 		  <div class="control-group">
 				<label class="control-label">网站链接:</label>
 				<div class="controls">

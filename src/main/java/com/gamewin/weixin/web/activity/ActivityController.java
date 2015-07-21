@@ -160,7 +160,7 @@ public class ActivityController {
 			redirectAttributes.addFlashAttribute("message", "创建活动失败");
 		}
 		
-		return "redirect:/activity/";
+		return "redirect:/activity/myfqActivity";
 	}
 
 	/**
@@ -259,7 +259,7 @@ public class ActivityController {
 			redirectAttributes.addFlashAttribute("message", "非法操作");
 		}
 
-		return "redirect:/exchangeIntegralApply/approvalList";
+		return "redirect:/activity/approvalList";
 	}
 	
 	

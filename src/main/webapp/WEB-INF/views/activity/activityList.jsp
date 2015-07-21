@@ -54,6 +54,7 @@
 
 					<td><a href="${ctx}/activity/view/${task.id}">查看</a> &nbsp; 
 						<a href="${ctx}/activityUser/list/${task.id}">参与的会员</a>  &nbsp; 
+						<a href="${ctx}/activityUser/list/${task.id}">活动确认</a>  &nbsp; 
 						 <c:if test="${task.status eq 'Y'}">
 							<a href="#" onclick="confirmDisabled('${ctx}/activity/disabled/${task.id}')">失效</a>
 						</c:if>

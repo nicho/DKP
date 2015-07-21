@@ -32,7 +32,7 @@ public class ActivityUserService {
 	private ActivityUserDao activityUserDao;
 
 	public Boolean findByActivityUser(Long userid, Long actid) {
-		List<ActivityUser> list = activityUserDao.findByActivityUser(userid, actid);
+		List<ActivityUser> list = activityUserDao.getByActuser(userid, actid);
 		if (list != null && list.size() > 0) {
 			return true;
 		} else {

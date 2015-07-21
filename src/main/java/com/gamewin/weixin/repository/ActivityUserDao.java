@@ -14,6 +14,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import com.gamewin.weixin.entity.ActivityUser;
 
 public interface ActivityUserDao extends PagingAndSortingRepository<ActivityUser, Long>, JpaSpecificationExecutor<ActivityUser> {
-	@Query("SELECT t FROM ActivityUser t WHERE t.user.id =1? AND t.activity.id=2?")
-	List<ActivityUser> findByActivityUser(Long userid,Long actid);
+	@Query("SELECT t FROM ActivityUser t WHERE t.user.id = ?1 AND t.activity.id = ?2")
+	List<ActivityUser> getByActuser(Long userid,Long actid);
 }

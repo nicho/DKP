@@ -5,6 +5,7 @@
  *******************************************************************************/
 package com.gamewin.weixin.web.activity;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springside.modules.web.Servlets;
 
 import com.gamewin.weixin.entity.ActivityUser;
+import com.gamewin.weixin.entity.ValueSet;
 import com.gamewin.weixin.service.account.ShiroDbRealm.ShiroUser;
 import com.gamewin.weixin.service.activity.ActivityUserService;
 import com.gamewin.weixin.service.valueSet.ValueSetService;
@@ -88,7 +90,8 @@ public class ActivityUserController {
 		model.addAttribute("sortTypes", sortTypes);
 		// 将搜索条件编码成字符串，用于排序，分页的URL
 		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
-
+		List<ValueSet> ActivityTypeList=valueSetService.getActivityTypeAll("ActivityType");
+		model.addAttribute("ActivityTypeList", ActivityTypeList);
 		return "activityUser/myActivityUserList";
 	}
 	private Long getCurrentUserId() {

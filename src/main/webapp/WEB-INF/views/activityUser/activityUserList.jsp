@@ -37,8 +37,17 @@
 					<td>${task.activity.title}</td>
 					<td>${task.user.name}</td>
 					<td>${task.user.gameName}</td>
-					<td>${task.user.roles}</td> 
-					<td><fmt:formatDate value="${task.cteateDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>   
+					<td>
+					<c:choose>
+							<c:when test="${user.user.roles eq 'admin'}">管理员</c:when>
+							<c:when test="${user.user.roles eq 'Head'}">团长</c:when>
+							<c:when test="${user.user.roles eq 'OneLevel'}">一级</c:when>
+							<c:when test="${user.user.roles eq 'TwoLevel'}">二级</c:when>
+							<c:when test="${user.user.roles eq 'ThreeLevel'}">三级</c:when>
+							<c:otherwise>会员</c:otherwise>
+						</c:choose>
+					</td> 
+					<td><fmt:formatDate value="${task.createDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>   
 				</tr>
 			</c:forEach>
 		</tbody>

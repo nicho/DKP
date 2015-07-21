@@ -190,7 +190,7 @@ public class ActivityController {
 		model.addAttribute("ActivityTypeList", ActivityTypeList);
 		
 		  
-		if("Y".equals(activity.getStatus()))
+		if("pass".equals(activity.getStatus()))
 		{  
 			
 			String filePath = MobileContants.IMAGEURL+"\\" ;

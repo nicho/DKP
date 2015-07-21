@@ -148,8 +148,8 @@ public class ActivityController {
 		String startDateStr = request.getParameter("startDateStr");
 		String endDateStr = request.getParameter("endDateStr");
 		try { 
-			newActivity.setStartDate(DateUtils.parseDate(startDateStr, "yyyy年MM月dd日 HH时mm分ss秒"));
-			newActivity.setEndDate(DateUtils.parseDate(endDateStr, "yyyy年MM月dd日 HH时mm分ss秒"));
+			newActivity.setStartDate(DateUtils.parseDate(startDateStr, "yyyy-MM-dd HH:mm:ss"));
+			newActivity.setEndDate(DateUtils.parseDate(endDateStr, "yyyy-MM-dd HH:mm:ss"));
 			newActivity.setCreateDate(new Date());
 			newActivity.setCreateUser(user);
 			newActivity.setIsdelete(0);

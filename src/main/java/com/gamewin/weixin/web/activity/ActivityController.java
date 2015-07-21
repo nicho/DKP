@@ -220,7 +220,7 @@ public class ActivityController {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		String nowDate=sdf.format(new Date());
 		
-		String imageUrl = entity.getTitle()  + "-" + entity.getId() + ".jpg";
+		String imageUrl = entity.getActivityType()  + "-" + entity.getId() + ".jpg";
 		String url =  MobileContants.YM+"/activity/registerActivity/"+entity.getId(); // 
 		
 		File file =new File(filePath+nowDate);    

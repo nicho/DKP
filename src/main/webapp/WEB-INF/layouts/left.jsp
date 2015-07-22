@@ -24,7 +24,7 @@
 	<div class="submenu">
 	<a id="account-tab" href="${ctx}/exchangeIntegral">贡献物品</a> 
 		<a id="account-tab" href="${ctx}/exchangeGoods">物品拍卖登记</a> 
-		<a id="myTask" href="${ctx}/activity/confirmList">活动确认审核</a>
+		<a id="myTask" href="${ctx}/activity/approvalConfirmList">活动确认审核</a>
 		<a id="myTask" href="${ctx}/activity/approvalList">活动申请审核</a>
 		<a id="myTask" href="${ctx}/exchangeIntegralApply/approvalList">贡献物品审核</a>
 		<shiro:hasAnyRoles name="admin">

@@ -65,6 +65,15 @@ public class ActivityService {
 		Specification<Activity> spec = DynamicSpecifications.bySearchFilter(filters.values(), Activity.class);
 		return activityDao.findAll(spec, pageRequest);
 	}
+	public Page<Activity> getAllConfirmProcessActivty(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
+		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
+		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
+		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));
+		filters.put("status", new SearchFilter("status", Operator.EQ, "ConfirmProcess"));
+		Specification<Activity> spec = DynamicSpecifications.bySearchFilter(filters.values(), Activity.class);
+		return activityDao.findAll(spec, pageRequest);
+	}
+	
 	public Page<Activity> getAllmyfqActivity(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);

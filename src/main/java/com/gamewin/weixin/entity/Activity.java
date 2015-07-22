@@ -24,8 +24,18 @@ public class Activity extends IdEntity {
 	private Date updateDate;
 	private Double integral;
 	private User approveUser;
+	private User confirmUser;
 	private String status;
 	private Integer isdelete;
+	@ManyToOne
+	@JoinColumn(name = "confirm_user_id")
+	public User getConfirmUser() {
+		return confirmUser;
+	}
+
+	public void setConfirmUser(User confirmUser) {
+		this.confirmUser = confirmUser;
+	}
 
 	public String getStatus() {
 		return status;

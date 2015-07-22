@@ -5,6 +5,7 @@
  *******************************************************************************/
 package com.gamewin.weixin.service.activity;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,7 +61,12 @@ public class ActivityUserService {
 	public void setActivityUserDao(ActivityUserDao activityUserDao) {
 		this.activityUserDao = activityUserDao;
 	}
-
+	public List<ActivityUser> getAllActivityUser(Long activityId) {
+		Map<String, SearchFilter> filters = new HashMap<String, SearchFilter>();
+		filters.put("activity", new SearchFilter("activity", Operator.EQ, activityId));
+		Specification<ActivityUser> spec = DynamicSpecifications.bySearchFilter(filters.values(), ActivityUser.class);
+		return activityUserDao.findAll(spec);
+	}
 	public Page<ActivityUser> getAllActivityUser(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
 		Specification<ActivityUser> spec = buildSpecification(userId, searchParams);

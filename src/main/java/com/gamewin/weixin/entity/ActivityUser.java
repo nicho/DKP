@@ -13,6 +13,14 @@ public class ActivityUser extends IdEntity {
 	private Activity activity; 
 	private User user;
 	private Date createDate;
+	private String status;
+	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	@ManyToOne
 	@JoinColumn(name = "activity_id")
 	public Activity getActivity() {

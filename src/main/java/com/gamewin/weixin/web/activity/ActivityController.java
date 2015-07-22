@@ -111,7 +111,7 @@ public class ActivityController {
 			model.addAttribute("ActivityTypeList", ActivityTypeList);
 			return "activity/activityList";
 		}
-	//审批用户
+	//审批发起活动
 	@RequestMapping(value = "approvalList", method = RequestMethod.GET)
 	public String approvalList(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
@@ -121,6 +121,29 @@ public class ActivityController {
 		Long userId = getCurrentUserId();
 
 		Page<Activity> activitys = activityService.getAllProcessActivty(userId, searchParams, pageNumber, pageSize, sortType);
+
+		model.addAttribute("activitys", activitys);
+		model.addAttribute("sortType", sortType);
+		model.addAttribute("sortTypes", sortTypes);
+		// 将搜索条件编码成字符串，用于排序，分页的URL
+		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
+
+		
+		List<ValueSet> ActivityTypeList=valueSetService.getActivityTypeAll("ActivityType");
+		model.addAttribute("ActivityTypeList", ActivityTypeList);
+		return "activity/approvalActivityList";
+	}
+	
+	//审批确认活动
+	@RequestMapping(value = "approvalConfirmList", method = RequestMethod.GET)
+	public String approvalConfirmList(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
+			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model,
+			ServletRequest request) {
+		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
+		Long userId = getCurrentUserId();
+
+		Page<Activity> activitys = activityService.getAllConfirmProcessActivty(userId, searchParams, pageNumber, pageSize, sortType);
 
 		model.addAttribute("activitys", activitys);
 		model.addAttribute("sortType", sortType);
@@ -261,7 +284,17 @@ public class ActivityController {
 
 		return "redirect:/activity/approvalList";
 	}
-	
+	@RequestMapping(value = "approvalConfirm/{id}")
+	public String approvalConfirm(@PathVariable("id") Long id,Model model, RedirectAttributes redirectAttributes, ServletRequest request) {
+		Activity activity=activityService.getActivity(id);
+		model.addAttribute("activity", activity); 
+		List<ValueSet> ActivityTypeList=valueSetService.getActivityTypeAll("ActivityType");
+		model.addAttribute("ActivityTypeList", ActivityTypeList);
+		
+		List<ActivityUser> activityUsers = activityUserService.getAllActivityUser(id);
+		model.addAttribute("activityUsers", activityUsers);
+		return "activity/approvalConfirm";
+	}
 	
 	@RequestMapping(value = "registerActivity/{id}", method = RequestMethod.GET)
 	public String registerActivity(@PathVariable("id") Long id,Model model,ServletRequest request) {
@@ -294,4 +327,69 @@ public class ActivityController {
 		}
 		return "redirect:/activity/";
 	}
+	
+	@RequestMapping(value = "confirmActivity/{id}", method = RequestMethod.GET)
+	public String confirmActivity(@PathVariable("id") Long id,Model model,ServletRequest request) {
+		
+		Activity activity=activityService.getActivity(id);
+		model.addAttribute("activity", activity); 
+		List<ValueSet> ActivityTypeList=valueSetService.getActivityTypeAll("ActivityType");
+		model.addAttribute("ActivityTypeList", ActivityTypeList);
+		
+		List<ActivityUser> activityUsers = activityUserService.getAllActivityUser(id);
+		model.addAttribute("activityUsers", activityUsers);
+		return "activity/activityConfirm";
+	}
+	@RequestMapping(value = "activityConfirm", method = RequestMethod.POST)
+	public String activityConfirm(@Valid Long activityId, RedirectAttributes redirectAttributes, ServletRequest request) {
+		User user = new User(getCurrentUserId());
+		Activity activity=activityService.getActivity(activityId);
+		if(activity!=null)
+		{
+			
+			if("AssociationActivity".equals(activity.getActivityType()))
+			{ 
+				activity.setStatus("ConfirmProcess");
+				activity.setUpdateDate(new Date());
+				activityService.saveActivity(activity);
+				redirectAttributes.addFlashAttribute("message", "活动确认提交审核成功"); 
+			}else if("PersonalActivities".equals(activity.getActivityType()))
+			{
+				activity.setStatus("ConfirmPass");
+				activity.setUpdateDate(new Date());
+				activity.setConfirmUser(user);
+				activityService.saveActivity(activity);
+				redirectAttributes.addFlashAttribute("message", "活动确认成功"); 
+			}
+					
+		}else
+		{
+			redirectAttributes.addFlashAttribute("message", "活动不存在");
+		}
+		return "redirect:/activity/myfqActivity";
+	}
+	
+	@RequestMapping(value = "approvalConfirm", method = RequestMethod.POST)
+	public String approvalConfirm(@Valid Long activityId, RedirectAttributes redirectAttributes, ServletRequest request) {
+		User user = new User(getCurrentUserId());
+		Activity activity=activityService.getActivity(activityId);
+		if(activity!=null)
+		{
+			
+			if("AssociationActivity".equals(activity.getActivityType()))
+			{ 
+				activity.setStatus("ConfirmPass");
+				activity.setUpdateDate(new Date());
+				activity.setConfirmUser(user);
+				activityService.saveActivity(activity);
+				redirectAttributes.addFlashAttribute("message", "活动确认成功"); 
+			} 
+					
+		}else
+		{
+			redirectAttributes.addFlashAttribute("message", "活动不存在");
+		}
+		return "redirect:/activity/approvalConfirmList";
+	}
+	
 }

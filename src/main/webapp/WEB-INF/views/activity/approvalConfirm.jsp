@@ -86,7 +86,7 @@
 		<tbody>
 			<c:forEach items="${activityUsers}" var="task">
 				<tr>
-					<td><input  name="chk_list"  id="chk_list_${vstatus.index+1}" type="checkbox"  value="${task.user.id}"  <c:if test="${task.user.status eq 'Y'}">checked</c:if> disabled="disabled" /></td>
+					<td><input  name="chk_list"  id="chk_list_${vstatus.index+1}" type="checkbox"  value="${task.user.id}"  <c:if test="${task.status eq 'Y'}">checked</c:if> disabled="disabled" /></td>
 					<td>${task.user.name}</td>
 					<td>${task.user.gameName}</td>
 					<td>

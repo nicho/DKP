@@ -59,8 +59,7 @@
 					<c:if test="${task.activity.status eq 'ConfirmProcess'}">活动确认审批中</c:if>
 					<c:if test="${task.activity.status eq 'ConfirmReject'}">活动确认审批拒绝</c:if>
 					<c:if test="${task.activity.status eq 'ConfirmPass'}">活动结束</c:if>
-					<c:if test="${task.activity.status eq 'N'}">失效</c:if>
-					<c:if test="${task.activity.status eq 'pass'}">审批通过</c:if>
+					<c:if test="${task.activity.status eq 'N'}">失效</c:if> 
 					</td>
 							
 					<td>${task.activity.createUser.gameName}</td>    

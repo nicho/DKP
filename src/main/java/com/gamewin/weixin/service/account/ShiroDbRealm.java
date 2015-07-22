@@ -100,7 +100,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
 			this.integral=integral;
 		}
 		public String getIntegral() {
-			return StringUtil.subZeroAndDot(integral+"");
+			return StringUtil.subZeroAndDot(((double)Math.floor(integral*100))/100+"");
 		}
 
 		public String getRolesName() {

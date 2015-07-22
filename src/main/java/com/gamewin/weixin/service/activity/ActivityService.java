@@ -5,6 +5,7 @@
  *******************************************************************************/
 package com.gamewin.weixin.service.activity;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +22,12 @@ import org.springside.modules.persistence.SearchFilter;
 import org.springside.modules.persistence.SearchFilter.Operator;
 
 import com.gamewin.weixin.entity.Activity;
+import com.gamewin.weixin.entity.IntegralHistory;
+import com.gamewin.weixin.entity.User;
 import com.gamewin.weixin.repository.ActivityDao;
+import com.gamewin.weixin.repository.ActivityUserDao;
+import com.gamewin.weixin.repository.IntegralHistoryDao;
+import com.gamewin.weixin.repository.UserDao;
 
 // Spring Bean的标识.
 @Component
@@ -30,6 +36,12 @@ import com.gamewin.weixin.repository.ActivityDao;
 public class ActivityService {
 
 	private ActivityDao activityDao;
+	@Autowired
+	private ActivityUserDao activityUserDao;
+	@Autowired
+	private UserDao userDao;
+	@Autowired
+	private IntegralHistoryDao integralHistoryDao;
 
 	public Activity getActivity(Long id) {
 		return activityDao.findOne(id);
@@ -37,6 +49,72 @@ public class ActivityService {
 
 	public void saveActivity(Activity entity) {
 		activityDao.save(entity);
+	}
+
+	public void saveActivityApprovalConfirm(Activity entity) {
+		activityDao.save(entity);
+
+		List<User> userList = activityUserDao.getActConfirmuser(entity.getId());
+
+		if (userList != null && userList.size() > 0) {
+			Double integer = entity.getIntegral();
+			Double pInteger = integer / userList.size();
+			for (int i = 0; i < userList.size(); i++) {
+				User user = userList.get(i);
+				user.setIntegral(user.getIntegral() + pInteger);
+				userDao.save(user);
+
+				// 记录日志
+				IntegralHistory ih = new IntegralHistory();
+				ih.setActivity(entity);
+				ih.setCreateDate(new Date());
+				ih.setDescription("参与公会活动:'" + entity.getTitle() + "',获得积分:" + pInteger);
+				ih.setIntegral(pInteger);
+				ih.setIsdelete(0);
+				ih.setMark("+");
+				ih.setUser(user);
+				ih.setStatus("Y");
+				ih.setTitle("参与公会活动获得积分");
+				integralHistoryDao.save(ih);
+			}
+		}
+	}
+
+	public void saveActivityConfirmPass(Activity entity, Long[] chk_list) {
+		activityDao.save(entity);
+		activityUserDao.updateConfirmProcessByUserId(chk_list, entity.getId());
+
+		List<User> userList = activityUserDao.getActConfirmuser(entity.getId());
+
+		if (userList != null && userList.size() > 0) {
+			Double integer = entity.getIntegral();
+			Double pInteger = integer / userList.size();
+			for (int i = 0; i < userList.size(); i++) {
+				User user = userList.get(i);
+				user.setIntegral(user.getIntegral() + pInteger);
+				userDao.save(user);
+
+				// 记录日志
+				IntegralHistory ih = new IntegralHistory();
+				ih.setActivity(entity);
+				ih.setCreateDate(new Date());
+				ih.setDescription("参与个人活动:'" + entity.getTitle() + "',获得积分:" + pInteger);
+				ih.setIntegral(pInteger);
+				ih.setIsdelete(0);
+				ih.setMark("+");
+				ih.setUser(user);
+				ih.setStatus("Y");
+				ih.setTitle("参与个人活动获得积分");
+				integralHistoryDao.save(ih);
+			}
+		}
+	}
+
+	public void saveActivityConfirmProcess(Activity entity, Long[] chk_list) {
+		activityDao.save(entity);
+
+		activityUserDao.updateConfirmProcessByUserId(chk_list, entity.getId());
+
 	}
 
 	public void deleteActivity(Long id) {
@@ -51,12 +129,14 @@ public class ActivityService {
 	public void setActivityDao(ActivityDao activityDao) {
 		this.activityDao = activityDao;
 	}
+
 	public Page<Activity> getAllActivity(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
 		Specification<Activity> spec = buildSpecification(userId, searchParams);
 
 		return activityDao.findAll(spec, pageRequest);
 	}
+
 	public Page<Activity> getAllProcessActivty(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
@@ -65,6 +145,7 @@ public class ActivityService {
 		Specification<Activity> spec = DynamicSpecifications.bySearchFilter(filters.values(), Activity.class);
 		return activityDao.findAll(spec, pageRequest);
 	}
+
 	public Page<Activity> getAllConfirmProcessActivty(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
@@ -73,7 +154,7 @@ public class ActivityService {
 		Specification<Activity> spec = DynamicSpecifications.bySearchFilter(filters.values(), Activity.class);
 		return activityDao.findAll(spec, pageRequest);
 	}
-	
+
 	public Page<Activity> getAllmyfqActivity(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
@@ -82,6 +163,7 @@ public class ActivityService {
 		Specification<Activity> spec = DynamicSpecifications.bySearchFilter(filters.values(), Activity.class);
 		return activityDao.findAll(spec, pageRequest);
 	}
+
 	/**
 	 * 创建分页请求.
 	 */

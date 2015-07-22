@@ -10,7 +10,7 @@
 	<link rel="stylesheet" type="text/css" href="${ctx}/static/easyui/demo.css">
 	<script type="text/javascript" src="${ctx}/static/easyui/jquery.easyui.min.js"></script>
 
-	<title>活动登记</title>
+	<title>活动确认</title>
 	
 	<script lang="javascript" type="text/javascript">
 $(document).ready(function() {

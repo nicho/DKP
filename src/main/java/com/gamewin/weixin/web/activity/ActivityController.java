@@ -341,26 +341,36 @@ public class ActivityController {
 		return "activity/activityConfirm";
 	}
 	@RequestMapping(value = "activityConfirm", method = RequestMethod.POST)
-	public String activityConfirm(@Valid Long activityId, RedirectAttributes redirectAttributes, ServletRequest request) {
+	public String activityConfirm(@Valid Long activityId,@Valid Long [] chk_list, RedirectAttributes redirectAttributes, ServletRequest request) {
 		User user = new User(getCurrentUserId());
 		Activity activity=activityService.getActivity(activityId);
 		if(activity!=null)
 		{
-			
-			if("AssociationActivity".equals(activity.getActivityType()))
-			{ 
-				activity.setStatus("ConfirmProcess");
-				activity.setUpdateDate(new Date());
-				activityService.saveActivity(activity);
-				redirectAttributes.addFlashAttribute("message", "活动确认提交审核成功"); 
-			}else if("PersonalActivities".equals(activity.getActivityType()))
+			if(chk_list!=null && chk_list.length>0)
 			{
-				activity.setStatus("ConfirmPass");
-				activity.setUpdateDate(new Date());
-				activity.setConfirmUser(user);
-				activityService.saveActivity(activity);
-				redirectAttributes.addFlashAttribute("message", "活动确认成功"); 
+				if("AssociationActivity".equals(activity.getActivityType()))
+				{ 
+					//公会活动
+					activity.setStatus("ConfirmProcess");
+					activity.setUpdateDate(new Date());
+					activityService.saveActivityConfirmProcess(activity,chk_list);
+					  
+					redirectAttributes.addFlashAttribute("message", "活动确认提交审核成功"); 
+				}else if("PersonalActivities".equals(activity.getActivityType()))
+				{
+					activity.setStatus("ConfirmPass");
+					activity.setUpdateDate(new Date());
+					activity.setConfirmUser(user);
+					activityService.saveActivityConfirmPass(activity,chk_list);
+					
+					redirectAttributes.addFlashAttribute("message", "活动确认成功"); 
+				}
+			}else
+			{
+				redirectAttributes.addFlashAttribute("message", "活动确认失败.没有选任何人"); 
 			}
+			
+			
 					
 		}else
 		{
@@ -381,7 +391,7 @@ public class ActivityController {
 				activity.setStatus("ConfirmPass");
 				activity.setUpdateDate(new Date());
 				activity.setConfirmUser(user);
-				activityService.saveActivity(activity);
+				activityService.saveActivityApprovalConfirm(activity);
 				redirectAttributes.addFlashAttribute("message", "活动确认成功"); 
 			} 
 					

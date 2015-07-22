@@ -6,7 +6,7 @@
 
 <html>
 <head>
-<title>最近活动列表</title>
+<title>我发起的活动列表</title>
 </head>
 
 <body>
@@ -63,7 +63,16 @@
 					<td>${task.createUser.gameName}</td>
 
 					<td><a href="${ctx}/activity/view/${task.id}">查看</a> &nbsp; 
-						<a href="${ctx}/activityUser/list/${task.id}">参与的会员</a>  &nbsp;  
+						<a href="${ctx}/activityUser/list/${task.id}">参与的会员</a>  &nbsp; 
+						
+						<c:if test="${task.status eq 'pass'}">
+							<a href="${ctx}/activity/confirmActivity/${task.id}">活动确认</a>  &nbsp; 
+						</c:if>
+						
+						 <c:if test="${task.status eq 'Y'}">
+							<a href="#" onclick="confirmDisabled('${ctx}/activity/disabled/${task.id}')">失效</a>
+						</c:if>
+						
 					</td>
 						
 				</tr>

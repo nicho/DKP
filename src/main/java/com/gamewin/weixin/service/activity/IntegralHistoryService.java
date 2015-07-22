@@ -79,6 +79,7 @@ public class IntegralHistoryService {
 	private Specification<IntegralHistory> buildSpecification(Long userId, Map<String, Object> searchParams) {
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
 		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));
+		filters.put("user", new SearchFilter("user", Operator.EQ, userId));
 		Specification<IntegralHistory> spec = DynamicSpecifications.bySearchFilter(filters.values(), IntegralHistory.class);
 		return spec;
 	}

@@ -67,7 +67,7 @@
 						</c:choose></td>
 					<td>${user.email}</td>
 					<td>${user.phone}</td>
-					<td><fmt:formatNumber value="${user.integral}" pattern="##.#"/></td>
+					<td><a href="${ctx}/integralHistory/myIntegeral/${user.id}"><fmt:formatNumber value="${user.integral}" pattern="##.##"/></a></td>
 					<td>${allStatus[user.status]}&nbsp;</td>
 					<td><shiro:hasAnyRoles name="admin">
 							<a href="${ctx}/admin/user/update/${user.id}">修改</a>&nbsp; 

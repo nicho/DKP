@@ -109,7 +109,7 @@ public class ActivityController {
 			
 			List<ValueSet> ActivityTypeList=valueSetService.getActivityTypeAll("ActivityType");
 			model.addAttribute("ActivityTypeList", ActivityTypeList);
-			return "activity/activityList";
+			return "activity/myactivityList";
 		}
 	//审批发起活动
 	@RequestMapping(value = "approvalList", method = RequestMethod.GET)
@@ -154,7 +154,7 @@ public class ActivityController {
 		
 		List<ValueSet> ActivityTypeList=valueSetService.getActivityTypeAll("ActivityType");
 		model.addAttribute("ActivityTypeList", ActivityTypeList);
-		return "activity/approvalActivityList";
+		return "activity/approvalConfirmActivityList";
 	}
 	@RequestMapping(value = "create", method = RequestMethod.GET)
 	public String createForm(Model model) {
@@ -176,11 +176,20 @@ public class ActivityController {
 			newActivity.setCreateDate(new Date());
 			newActivity.setCreateUser(user);
 			newActivity.setIsdelete(0);
-			newActivity.setStatus("process");
-			activityService.saveActivity(newActivity);
-			redirectAttributes.addFlashAttribute("message", "创建活动成功");
+			if("AssociationActivity".equals(newActivity.getfType()))
+			{ 
+				newActivity.setStatus("process");
+				activityService.saveActivity(newActivity);  
+				redirectAttributes.addFlashAttribute("message", "活动确认提交审核成功"); 
+			}else if("PersonalActivities".equals(newActivity.getfType()))
+			{ 
+				newActivity.setStatus("pass"); 
+				activityService.saveActivityGRCreate(newActivity);   
+				redirectAttributes.addFlashAttribute("message", "创建个人活动成功,活动积分已扣除.");
+			}
+			
 		} catch (Exception e) {
-			redirectAttributes.addFlashAttribute("message", "创建活动失败");
+			redirectAttributes.addFlashAttribute("message", "创建活动失败"+e.getMessage());
 		}
 		
 		return "redirect:/activity/myfqActivity";
@@ -348,7 +357,7 @@ public class ActivityController {
 		{
 			if(chk_list!=null && chk_list.length>0)
 			{
-				if("AssociationActivity".equals(activity.getActivityType()))
+				if("AssociationActivity".equals(activity.getfType()))
 				{ 
 					//公会活动
 					activity.setStatus("ConfirmProcess");
@@ -356,7 +365,7 @@ public class ActivityController {
 					activityService.saveActivityConfirmProcess(activity,chk_list);
 					  
 					redirectAttributes.addFlashAttribute("message", "活动确认提交审核成功"); 
-				}else if("PersonalActivities".equals(activity.getActivityType()))
+				}else if("PersonalActivities".equals(activity.getfType()))
 				{
 					activity.setStatus("ConfirmPass");
 					activity.setUpdateDate(new Date());
@@ -386,7 +395,7 @@ public class ActivityController {
 		if(activity!=null)
 		{
 			
-			if("AssociationActivity".equals(activity.getActivityType()))
+			if("AssociationActivity".equals(activity.getfType()))
 			{ 
 				activity.setStatus("ConfirmPass");
 				activity.setUpdateDate(new Date());

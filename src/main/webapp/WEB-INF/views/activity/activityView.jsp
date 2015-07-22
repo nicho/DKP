@@ -14,6 +14,10 @@
 </head>
 
 <body>
+	<c:if test="${not empty message}">
+		<div id="message" class="alert alert-success">
+			<button data-dismiss="alert" class="close">×</button>${message}</div>
+	</c:if>
 	<form id="inputForm" action="${ctx}/activity/${action}" method="post" class="form-horizontal">  
 		<fieldset>
 			<legend><small>查看活动</small></legend>

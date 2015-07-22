@@ -51,8 +51,18 @@
 					<td><fmt:formatNumber value="${task.activity.integral}" pattern="##.##" /></td>  
 					<td>${task.activity.activityExplain}</td>  
 					<td><fmt:formatDate value="${task.activity.startDate}" pattern="yyyy-MM-dd HH:mm:ss" /> 至 <fmt:formatDate value="${task.activity.endDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>  
-					<td><c:if test="${task.activity.status eq 'pass'}">审批通过</c:if> <c:if test="${task.activity.status eq 'process'}">审批中</c:if> <c:if test="${task.activity.status eq 'reject'}">审批拒绝</c:if> <c:if
-							test="${task.activity.status eq 'N'}">失效</c:if></td>  
+				 
+								 	<td>
+					<c:if test="${task.activity.status eq 'pass'}">活动进行中</c:if>
+					<c:if test="${task.activity.status eq 'process'}">活动发起审批中</c:if>
+					<c:if test="${task.activity.status eq 'reject'}">活动发起审批拒绝</c:if>
+					<c:if test="${task.activity.status eq 'ConfirmProcess'}">活动确认审批中</c:if>
+					<c:if test="${task.activity.status eq 'ConfirmReject'}">活动确认审批拒绝</c:if>
+					<c:if test="${task.activity.status eq 'ConfirmPass'}">活动结束</c:if>
+					<c:if test="${task.activity.status eq 'N'}">失效</c:if>
+					<c:if test="${task.activity.status eq 'pass'}">审批通过</c:if>
+					</td>
+							
 					<td>${task.activity.createUser.gameName}</td>    
 					<td><fmt:formatDate value="${task.createDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>  
 					<td><a href="${ctx}/activity/view/${task.activity.id}">查看</a> &nbsp;</td>

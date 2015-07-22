@@ -19,10 +19,7 @@
 	<input type="hidden" name="activityId" value="${activity.id}">
 	<input type="hidden"  id="approvalStatus" name="approvalStatus" value="">
 		<fieldset>
-			<legend><small>活动登记</small></legend>
-			 <div class="form-actions">
-				<input id="submit_btn" class="btn btn-primary" type="submit" value="活动登记"/>&nbsp;	 
-			</div>
+			<legend><small>活动确认审核</small></legend> 
 			 <div class="control-group">
 				<label class="control-label">活动级别:</label>
 				<div class="controls">

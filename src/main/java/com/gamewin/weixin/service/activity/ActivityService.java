@@ -46,7 +46,32 @@ public class ActivityService {
 	public Activity getActivity(Long id) {
 		return activityDao.findOne(id);
 	}
-
+	public void saveActivityGRCreate(Activity entity) throws Exception {
+	
+		//个人活动,扣除积分
+		User user=userDao.findOne(entity.getCreateUser().getId());
+		if(user.getIntegral()>=entity.getIntegral())
+		{
+			activityDao.save(entity);
+			user.setIntegral(user.getIntegral()-entity.getIntegral());
+			userDao.save(user);
+			// 记录日志
+			IntegralHistory ih = new IntegralHistory();
+			ih.setActivity(entity);
+			ih.setCreateDate(new Date());
+			ih.setDescription("发布个人活动:'" + entity.getTitle()+ "',扣除积分:" + entity.getIntegral());
+			ih.setIntegral(entity.getIntegral());
+			ih.setIsdelete(0);
+			ih.setMark("+");
+			ih.setUser(entity.getCreateUser());
+			ih.setStatus("Y");
+			ih.setTitle("发布个人活动扣除积分");
+			integralHistoryDao.save(ih);
+		}else{
+			throw new Exception("用户积分不足!");
+		}
+	
+	}
 	public void saveActivity(Activity entity) {
 		activityDao.save(entity);
 	}
@@ -183,8 +208,7 @@ public class ActivityService {
 	 */
 	private Specification<Activity> buildSpecification(Long userId, Map<String, Object> searchParams) {
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
-		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));
-		filters.put("status", new SearchFilter("status", Operator.EQ, "pass"));
+		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0")); 
 		Specification<Activity> spec = DynamicSpecifications.bySearchFilter(filters.values(), Activity.class);
 		return spec;
 	}

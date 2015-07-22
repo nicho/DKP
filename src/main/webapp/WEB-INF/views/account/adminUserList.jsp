@@ -69,18 +69,13 @@
 					<td>${user.phone}</td>
 					<td><a href="${ctx}/integralHistory/myIntegeral/${user.id}"><fmt:formatNumber value="${user.integral}" pattern="##.##"/></a></td>
 					<td>${allStatus[user.status]}&nbsp;</td>
-					<td><shiro:hasAnyRoles name="admin">
+					<td>
+					<shiro:hasAnyRoles name="admin,Head">
 							<a href="${ctx}/admin/user/update/${user.id}">修改</a>&nbsp; 
-							<a href="#"
-								onclick="confirmDelete('${ctx}/admin/user/delete/${user.id}')">删除</a>&nbsp; 
-					</shiro:hasAnyRoles> <a href="#"
-						onclick="confirmDisabled('${ctx}/admin/user/disabled/${user.id}')">失效</a>&nbsp;
-						<shiro:hasAnyRoles name="admin">
-							<c:if test="${user.roles eq 'ThreeAdmin'}">
-								<a href="#"
-									onclick="confirmtisheng('${ctx}/admin/user/upTwoAdmin/${user.id}')">提升为二级分销商</a>&nbsp;
-							</c:if>
-						</shiro:hasAnyRoles></td>
+							<a href="#" 	onclick="confirmDelete('${ctx}/admin/user/delete/${user.id}')">删除</a>&nbsp; 
+					 		<a href="#"	onclick="confirmDisabled('${ctx}/admin/user/disabled/${user.id}')">失效</a>&nbsp;
+					</shiro:hasAnyRoles>
+
 				</tr>
 			</c:forEach>
 		</tbody>

@@ -22,15 +22,26 @@
 	 <h1>系统管理</h1> 
 		 
 	<div class="submenu">
-	<a id="account-tab" href="${ctx}/exchangeIntegral">贡献物品</a> 
-		<a id="account-tab" href="${ctx}/exchangeGoods">物品拍卖登记</a> 
-		<a id="myTask" href="${ctx}/activity/approvalConfirmList">活动确认审核</a>
-		<a id="myTask" href="${ctx}/activity/approvalList">活动申请审核</a>
-		<a id="myTask" href="${ctx}/exchangeIntegralApply/approvalList">贡献物品审核</a>
-		<shiro:hasAnyRoles name="admin">
-			<a id="account-tab" href="${ctx}/admin/user">帐号管理</a>  
+		
+		
+		<a id="account-tab" href="${ctx}/exchangeIntegral">贡献物品</a> 
+		
+ 
+		<shiro:hasAnyRoles name="admin,Head">
+			<a id="account-tab" href="${ctx}/exchangeGoods">物品拍卖登记</a> 
+			<a id="myTask" href="${ctx}/exchangeIntegralApply/approvalList">贡献物品审核</a>
 		</shiro:hasAnyRoles>
-		<a id="account-tab" href="${ctx}/valueSet">活动类型设置</a>  
+		
+		
+		<shiro:hasAnyRoles name="admin,Head,OneLevel,TwoLevel,ThreeLevel">
+			<a id="myTask" href="${ctx}/activity/approvalConfirmList">活动确认审核</a>
+			<a id="myTask" href="${ctx}/activity/approvalList">活动申请审核</a>
+		
+			<a id="account-tab" href="${ctx}/admin/user">帐号管理</a>   
+			<a id="account-tab" href="${ctx}/valueSet">活动类型设置</a>  
+		</shiro:hasAnyRoles>
+		
+		
 		<a id="account-tab" href="${ctx}/profile">资料修改</a>
 	</div>
 

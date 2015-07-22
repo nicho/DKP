@@ -13,6 +13,8 @@ import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -62,7 +64,8 @@ public class ExchangeGoodsController {
 
 	@Autowired
 	private ValueSetService valueSetService;
-
+	
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
@@ -80,6 +83,7 @@ public class ExchangeGoodsController {
 
 		return "exchangeGoods/exchangeGoodsList";
 	}
+	
 	@RequestMapping(value = "mylist",method = RequestMethod.GET)
 	public String mylist(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
@@ -114,6 +118,7 @@ public class ExchangeGoodsController {
 
 		return "exchangeGoods/myExchangeGoodsList";
 	}
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(value = "create", method = RequestMethod.GET)
 	public String createForm(Model model) {
 		model.addAttribute("exchangeGoods", new ExchangeGoods());
@@ -122,7 +127,7 @@ public class ExchangeGoodsController {
 		model.addAttribute("userList", accountService.getAllUserDto());
 		return "exchangeGoods/exchangeGoodsForm";
 	}
-
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(value = "create", method = RequestMethod.POST)
 	public String create(@Valid ExchangeGoods newExchangeGoods, RedirectAttributes redirectAttributes, ServletRequest request) {
 		User createuser = new User(getCurrentUserId());
@@ -162,7 +167,7 @@ public class ExchangeGoodsController {
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 		return user.id;
 	}
-
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(value = "disabled/{id}")
 	public String disabled(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
 		ExchangeGoods exchangeGoods = exchangeGoodsService.getExchangeGoods(id);
@@ -171,7 +176,7 @@ public class ExchangeGoodsController {
 		redirectAttributes.addFlashAttribute("message", "失效拍卖'" + exchangeGoods.getGoodsName() + "'成功");
 		return "redirect:/exchangeGoods/";
 	}
-
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(value = "delete/{id}")
 	public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
 		ExchangeGoods exchangeGoods = exchangeGoodsService.getExchangeGoods(id);

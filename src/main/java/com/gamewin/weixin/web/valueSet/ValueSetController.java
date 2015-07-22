@@ -10,6 +10,8 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.validation.Valid;
 
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -49,6 +51,7 @@ public class ValueSetController {
 	@Autowired
 	private ValueSetService valueSetService;
 
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
@@ -67,14 +70,14 @@ public class ValueSetController {
 
 		return "valueSet/valueSetList";
 	}
-
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(value = "create", method = RequestMethod.GET)
 	public String createForm(Model model) {
 		model.addAttribute("valueSet", new ValueSet());
 		model.addAttribute("action", "create");
 		return "valueSet/valueSetForm";
 	}
-
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(value = "create", method = RequestMethod.POST)
 	public String create(@Valid ValueSet newValueSet, RedirectAttributes redirectAttributes, ServletRequest request) {
 
@@ -85,7 +88,7 @@ public class ValueSetController {
 
 		return "redirect:/valueSet/";
 	}
-
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(value = "disabled/{id}")
 	public String disabled(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
 		ValueSet valueSet = valueSetService.getValueSet(id);

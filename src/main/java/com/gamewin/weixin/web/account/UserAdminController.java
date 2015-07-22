@@ -58,7 +58,7 @@ public class UserAdminController {
 
  
 
-	@RequiresRoles(value = { "admin", "TwoAdmin", "ThreeAdmin" }, logical = Logical.OR)
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
@@ -108,14 +108,14 @@ public class UserAdminController {
 
 		return "account/integralList";
 	}
-	@RequiresRoles("admin")
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(value = "update/{id}", method = RequestMethod.GET)
 	public String updateForm(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("user", accountService.getUser(id)); 
 		return "account/adminUserForm";
 	}
 
-	@RequiresRoles("admin")
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(value = "update", method = RequestMethod.POST)
 	public String update(@Valid @ModelAttribute("user") User user, RedirectAttributes redirectAttributes, ServletRequest request) { 
 		accountService.updateUser(user);
@@ -123,21 +123,9 @@ public class UserAdminController {
 		return "redirect:/admin/user";
 	}
 
-	@RequiresRoles("admin")
-	@RequestMapping(value = "upTwoAdmin/{id}", method = RequestMethod.GET)
-	public String update(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
+ 
 
-		User user = accountService.getUser(id);
-		if (user != null && "ThreeAdmin".equals(user.getRoles())) {
-			user.setRoles("TwoAdmin");
-			accountService.updateUser(user);
-		}
-
-		redirectAttributes.addFlashAttribute("message", "更新用户" + user.getLoginName() + "为二级经销商");
-		return "redirect:/admin/user";
-	}
-
-	@RequiresRoles(value = { "admin", "TwoAdmin", "ThreeAdmin" }, logical = Logical.OR)
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(value = "disabled/{id}")
 	public String disabled(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
 		User user = accountService.getUser(id);
@@ -147,7 +135,7 @@ public class UserAdminController {
 		return "redirect:/admin/user";
 	}
  
-	@RequiresRoles(value = { "admin", "TwoAdmin", "ThreeAdmin" }, logical = Logical.OR)
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(value = "delete/{id}")
 	public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
 		User user = accountService.getUser(id);

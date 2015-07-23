@@ -5,8 +5,6 @@
  *******************************************************************************/
 package com.gamewin.weixin.web.account;
 
-import java.util.List;
-
 import javax.servlet.ServletRequest;
 import javax.validation.Valid;
 
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.gamewin.weixin.entity.User;
-import com.gamewin.weixin.model.UserDto;
 import com.gamewin.weixin.service.account.AccountService;
 
 /**
@@ -43,6 +40,7 @@ public class RegisterController {
 	@RequestMapping(method = RequestMethod.POST)
 	public String register(@Valid User user, RedirectAttributes redirectAttributes, ServletRequest request) {
 		user.setIsdelete(0);
+		user.setIntegral(0.0);
 		user.setStatus("enabled");
 		accountService.registerUser(user);
 		redirectAttributes.addFlashAttribute("message", "注册成功.");

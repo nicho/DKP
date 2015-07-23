@@ -82,7 +82,7 @@
 		 <div class="control-group">
 				<label class="control-label">二维码:</label>
 				<div class="controls">
-					 <img src="${HttpImageUrl}/image/${activity.qrCodeUrl}" />
+					 <img src="${HttpImageUrl}/image/${activity.qrCodeUrl}" width="350px" height="350px"/>
 				</div>
 			</div>
 	 </c:if>

@@ -11,7 +11,7 @@
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link type="image/x-icon" href="${ctx}/static/images/favicon.ico" rel="shortcut icon">
 <link href="${ctx}/static/bootstrap/2.3.2/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/static/bootstrap/2.3.2/css/bootstrap-responsive.min.css" rel="stylesheet">

@@ -72,8 +72,7 @@ public class ActivityController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
-			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model,
-			ServletRequest request) {
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		Long userId = getCurrentUserId();
 
@@ -94,13 +93,11 @@ public class ActivityController {
 	@RequestMapping(value = "myfqActivity", method = RequestMethod.GET)
 	public String myfqActivity(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
-			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model,
-			ServletRequest request) {
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		Long userId = getCurrentUserId();
 
-		Page<Activity> activitys = activityService.getAllmyfqActivity(userId, searchParams, pageNumber, pageSize,
-				sortType);
+		Page<Activity> activitys = activityService.getAllmyfqActivity(userId, searchParams, pageNumber, pageSize, sortType);
 
 		model.addAttribute("activitys", activitys);
 		model.addAttribute("sortType", sortType);
@@ -113,50 +110,56 @@ public class ActivityController {
 		return "activity/myactivityList";
 	}
 
-	// 审批发起活动
+	// 活动申请审核页面加载
 	@RequestMapping(value = "approvalList", method = RequestMethod.GET)
 	public String approvalList(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
-			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model,
-			ServletRequest request) {
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request,RedirectAttributes redirectAttributes) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		Long userId = getCurrentUserId();
+		try {
+			Page<Activity> activitys = activityService.getAllProcessActivty(userId, searchParams, pageNumber, pageSize, sortType);
 
-		Page<Activity> activitys = activityService.getAllProcessActivty(userId, searchParams, pageNumber, pageSize,
-				sortType);
+			model.addAttribute("activitys", activitys);
+			model.addAttribute("sortType", sortType);
+			model.addAttribute("sortTypes", sortTypes);
+			// 将搜索条件编码成字符串，用于排序，分页的URL
+			model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
 
-		model.addAttribute("activitys", activitys);
-		model.addAttribute("sortType", sortType);
-		model.addAttribute("sortTypes", sortTypes);
-		// 将搜索条件编码成字符串，用于排序，分页的URL
-		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
-
-		List<ValueSet> ActivityTypeList = valueSetService.getActivityTypeAll("ActivityType");
-		model.addAttribute("ActivityTypeList", ActivityTypeList);
-		return "activity/approvalActivityList";
+			List<ValueSet> ActivityTypeList = valueSetService.getActivityTypeAll("ActivityType");
+			model.addAttribute("ActivityTypeList", ActivityTypeList);
+			return "activity/approvalActivityList";
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("message", e.getMessage());
+			return "redirect:/activity/activityList";
+		}
 	}
 
 	// 审批确认活动
 	@RequestMapping(value = "approvalConfirmList", method = RequestMethod.GET)
 	public String approvalConfirmList(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
-			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model,
-			ServletRequest request) {
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request,
+			RedirectAttributes redirectAttributes) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		Long userId = getCurrentUserId();
+		try {
+			Page<Activity> activitys = activityService.getAllConfirmProcessActivty(userId, searchParams, pageNumber, pageSize, sortType);
 
-		Page<Activity> activitys = activityService.getAllConfirmProcessActivty(userId, searchParams, pageNumber,
-				pageSize, sortType);
+			model.addAttribute("activitys", activitys);
+			model.addAttribute("sortType", sortType);
+			model.addAttribute("sortTypes", sortTypes);
+			// 将搜索条件编码成字符串，用于排序，分页的URL
+			model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
 
-		model.addAttribute("activitys", activitys);
-		model.addAttribute("sortType", sortType);
-		model.addAttribute("sortTypes", sortTypes);
-		// 将搜索条件编码成字符串，用于排序，分页的URL
-		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
+			List<ValueSet> ActivityTypeList = valueSetService.getActivityTypeAll("ActivityType");
+			model.addAttribute("ActivityTypeList", ActivityTypeList);
+			return "activity/approvalConfirmActivityList";
 
-		List<ValueSet> ActivityTypeList = valueSetService.getActivityTypeAll("ActivityType");
-		model.addAttribute("ActivityTypeList", ActivityTypeList);
-		return "activity/approvalConfirmActivityList";
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("message", e.getMessage());
+			return "redirect:/activity/activityList";
+		}
 	}
 
 	@RequestMapping(value = "create", method = RequestMethod.GET)
@@ -179,7 +182,7 @@ public class ActivityController {
 			newActivity.setCreateDate(new Date());
 			newActivity.setCreateUser(user);
 			newActivity.setIsdelete(0);
-			if ("AssociationActivity".equals(newActivity.getfType())) { 
+			if ("AssociationActivity".equals(newActivity.getfType())) {
 				newActivity.setStatus("process");
 				activityService.saveActivityGHCreate(newActivity);
 				redirectAttributes.addFlashAttribute("message", "活动确认提交审核成功");
@@ -283,8 +286,7 @@ public class ActivityController {
 	}
 
 	@RequestMapping(value = "approvalConfirm/{id}")
-	public String approvalConfirm(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes,
-			ServletRequest request) {
+	public String approvalConfirm(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes, ServletRequest request) {
 		Activity activity = activityService.getActivity(id);
 		model.addAttribute("activity", activity);
 		List<ValueSet> ActivityTypeList = valueSetService.getActivityTypeAll("ActivityType");
@@ -339,8 +341,7 @@ public class ActivityController {
 	}
 
 	@RequestMapping(value = "activityConfirm", method = RequestMethod.POST)
-	public String activityConfirm(@Valid Long activityId, @Valid Long[] chk_list,
-			RedirectAttributes redirectAttributes, ServletRequest request) {
+	public String activityConfirm(@Valid Long activityId, @Valid Long[] chk_list, RedirectAttributes redirectAttributes, ServletRequest request) {
 		try {
 			User user = new User(getCurrentUserId());
 			Activity activity = activityService.getActivity(activityId);
@@ -383,27 +384,23 @@ public class ActivityController {
 			if (activity != null) {
 
 				if ("AssociationActivity".equals(activity.getfType())) {
-					String approvalStatus=request.getParameter("approvalStatus");
-					if(!StringUtils.isEmpty(approvalStatus))
-					{
-						if("Y".equals(approvalStatus))
-						{
+					String approvalStatus = request.getParameter("approvalStatus");
+					if (!StringUtils.isEmpty(approvalStatus)) {
+						if ("Y".equals(approvalStatus)) {
 							activity.setStatus("ConfirmPass");
 							activity.setUpdateDate(new Date());
 							activity.setConfirmUser(user);
 							activityService.saveActivityApprovalConfirm(activity);
 							redirectAttributes.addFlashAttribute("message", "活动确认审批通过,活动积分已进入用户账户.活动已结束");
-					
-						}else
-						{
+
+						} else {
 							activity.setStatus("ConfirmReject");
 							activity.setUpdateDate(new Date());
 							activity.setConfirmUser(user);
 							activityService.saveActivity(activity);
 							redirectAttributes.addFlashAttribute("message", "活动确认审批拒绝");
 						}
-						
-						
+
 					}
 				} else {
 					redirectAttributes.addFlashAttribute("message", "不是公会活动");

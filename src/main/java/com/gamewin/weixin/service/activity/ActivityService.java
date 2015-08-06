@@ -45,24 +45,24 @@ public class ActivityService {
 	private IntegralHistoryDao integralHistoryDao;
 	@Autowired
 	private ActivityUserMybatisDao activityUserMybatisDao;
-	  
+
 	public Activity getActivity(Long id) {
 		return activityDao.findOne(id);
 	}
+
 	public void saveActivityGRCreate(Activity entity) throws Exception {
-	
-		//个人活动,扣除积分
-		User user=userDao.findOne(entity.getCreateUser().getId());
-		if(user.getIntegral()>=entity.getIntegral())
-		{
+		entity.setLevel(0);
+		// 个人活动,扣除积分
+		User user = userDao.findOne(entity.getCreateUser().getId());
+		if (user.getIntegral() >= entity.getIntegral()) {
 			activityDao.save(entity);
-			user.setIntegral(user.getIntegral()-entity.getIntegral());
+			user.setIntegral(user.getIntegral() - entity.getIntegral());
 			userDao.save(user);
 			// 记录日志
 			IntegralHistory ih = new IntegralHistory();
 			ih.setActivity(entity);
 			ih.setCreateDate(new Date());
-			ih.setDescription("发布个人活动:'" + entity.getTitle()+ "',扣除积分:" + entity.getIntegral());
+			ih.setDescription("发布个人活动:'" + entity.getTitle() + "',扣除积分:" + entity.getIntegral());
 			ih.setIntegral(entity.getIntegral());
 			ih.setIsdelete(0);
 			ih.setMark("-");
@@ -70,38 +70,49 @@ public class ActivityService {
 			ih.setStatus("Y");
 			ih.setTitle("发布个人活动扣除积分");
 			integralHistoryDao.save(ih);
-		}else{
+		} else {
 			throw new Exception("用户积分不足!");
 		}
-	
+
 	}
+
 	public void saveActivity(Activity entity) {
 		activityDao.save(entity);
 	}
-	
-	public void saveActivityGHCreate(Activity entity)  throws Exception{
-		User user=userDao.findOne(entity.getCreateUser().getId());
-		Double integral1=500.0;
-		Double integral2=100.0;
-		Double integral3=30.0;
-		if(integral1.equals(entity.getIntegral()) && (!"admin".equals(user.getRoles()) || !"Head".equals(user.getRoles()) || !"OneLevel".equals(user.getRoles())))
-		{
+
+	public void saveActivityGHCreate(Activity entity) throws Exception {
+		User user = userDao.findOne(entity.getCreateUser().getId());
+		Double integral1 = 500.0;
+		Double integral2 = 100.0;
+		Double integral3 = 30.0;
+		if (integral1.equals(entity.getIntegral())) {
+			entity.setLevel(1);
+		} else if (integral2.equals(entity.getIntegral())) {
+			entity.setLevel(2);
+		} else if (integral3.equals(entity.getIntegral())) {
+			entity.setLevel(3);
+		}
+
+		if (integral1.equals(entity.getIntegral())
+				&& (!"admin".equals(user.getRoles()) || !"Head".equals(user.getRoles()) || !"OneLevel".equals(user.getRoles()))) {
 			throw new Exception("用户权限不足,无法发布≤500人公会活动");
 		}
-		if(integral2.equals(entity.getIntegral()) && (!"admin".equals(user.getRoles()) || !"Head".equals(user.getRoles()) || !"OneLevel".equals(user.getRoles()) || !"TwoLevel".equals(user.getRoles())))
-		{
+		if (integral2.equals(entity.getIntegral())
+				&& (!"admin".equals(user.getRoles()) || !"Head".equals(user.getRoles()) || !"OneLevel".equals(user.getRoles()) || !"TwoLevel"
+						.equals(user.getRoles()))) {
 			throw new Exception("用户权限不足,无法发布≤100人公会活动");
 		}
-		if(integral3.equals(entity.getIntegral()) && (!"admin".equals(user.getRoles()) || !"Head".equals(user.getRoles()) || !"OneLevel".equals(user.getRoles()) || !"TwoLevel".equals(user.getRoles()) || !"ThreeLevel".equals(user.getRoles())))
-		{
+		if (integral3.equals(entity.getIntegral())
+				&& (!"admin".equals(user.getRoles()) || !"Head".equals(user.getRoles()) || !"OneLevel".equals(user.getRoles())
+						|| !"TwoLevel".equals(user.getRoles()) || !"ThreeLevel".equals(user.getRoles()))) {
 			throw new Exception("用户权限不足,无法发布≤30人公会活动");
 		}
-		
+
 		activityDao.save(entity);
 	}
-	
+
 	public void saveActivityApprovalConfirm(Activity entity) throws Exception {
-	 
+
 		List<User> userList = activityUserDao.getActConfirmuser(entity.getId());
 
 		if (userList != null && userList.size() > 0) {
@@ -126,18 +137,15 @@ public class ActivityService {
 				ih.setTitle("参与公会活动获得积分");
 				integralHistoryDao.save(ih);
 			}
-		}else
-		{
+		} else {
 			throw new Exception("无获得用户");
 		}
 	}
 
-	public void saveActivityConfirmPass(Activity entity, Long [] chk_list) throws Exception {
-		
-		
-		Integer updatecount=activityUserMybatisDao.updateUserStatus(chk_list, entity.getId());
-		if(updatecount>0)
-		{
+	public void saveActivityConfirmPass(Activity entity, Long[] chk_list) throws Exception {
+
+		Integer updatecount = activityUserMybatisDao.updateUserStatus(chk_list, entity.getId());
+		if (updatecount > 0) {
 			activityDao.save(entity);
 			List<User> userList = activityUserDao.getActConfirmuser(entity.getId());
 
@@ -163,23 +171,18 @@ public class ActivityService {
 					integralHistoryDao.save(ih);
 				}
 			}
-		}else
-		{
+		} else {
 			throw new Exception("用户更新状态失败!");
 		}
 
-		
 	}
 
 	public void saveActivityConfirmProcess(Activity entity, Long[] chk_list) throws Exception {
-		
 
-		Integer updatecount=activityUserMybatisDao.updateUserStatus(chk_list, entity.getId());
-		if(updatecount>0)
-		{
-			activityDao.save(entity); 
-		}else
-		{
+		Integer updatecount = activityUserMybatisDao.updateUserStatus(chk_list, entity.getId());
+		if (updatecount > 0) {
+			activityDao.save(entity);
+		} else {
 			throw new Exception("用户更新状态失败!");
 		}
 
@@ -205,20 +208,45 @@ public class ActivityService {
 		return activityDao.findAll(spec, pageRequest);
 	}
 
-	public Page<Activity> getAllProcessActivty(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
+	public Page<Activity> getAllProcessActivty(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType)
+			throws Exception {
+		User user = userDao.findOne(userId);
+
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
 		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));
 		filters.put("status", new SearchFilter("status", Operator.EQ, "process"));
+
+		if ("admin".equals(user.getRoles()) || "Head".equals(user.getRoles())) {
+			filters.put("level", new SearchFilter("level", Operator.LTE, 1));
+		} else if ("OneLevel".equals(user.getRoles())) {
+			filters.put("level", new SearchFilter("level", Operator.LTE, 2));
+		} else if ("TwoLevel".equals(user.getRoles())) {
+			filters.put("level", new SearchFilter("level", Operator.LTE, 3));
+		} else {
+			throw new Exception("权限不足!");
+		}
+
 		Specification<Activity> spec = DynamicSpecifications.bySearchFilter(filters.values(), Activity.class);
 		return activityDao.findAll(spec, pageRequest);
 	}
 
-	public Page<Activity> getAllConfirmProcessActivty(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
+	public Page<Activity> getAllConfirmProcessActivty(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType)
+			throws Exception {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
 		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));
 		filters.put("status", new SearchFilter("status", Operator.EQ, "ConfirmProcess"));
+		User user = userDao.findOne(userId);
+		if ("admin".equals(user.getRoles()) || "Head".equals(user.getRoles())) {
+			filters.put("level", new SearchFilter("level", Operator.LTE, 1));
+		} else if ("OneLevel".equals(user.getRoles())) {
+			filters.put("level", new SearchFilter("level", Operator.LTE, 2));
+		} else if ("TwoLevel".equals(user.getRoles())) {
+			filters.put("level", new SearchFilter("level", Operator.LTE, 3));
+		} else {
+			throw new Exception("权限不足!");
+		}
 		Specification<Activity> spec = DynamicSpecifications.bySearchFilter(filters.values(), Activity.class);
 		return activityDao.findAll(spec, pageRequest);
 	}
@@ -251,7 +279,7 @@ public class ActivityService {
 	 */
 	private Specification<Activity> buildSpecification(Long userId, Map<String, Object> searchParams) {
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
-		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));  
+		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));
 		Specification<Activity> spec = DynamicSpecifications.bySearchFilter(filters.values(), Activity.class);
 		return spec;
 	}

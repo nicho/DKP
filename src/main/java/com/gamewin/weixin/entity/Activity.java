@@ -26,7 +26,17 @@ public class Activity extends IdEntity {
 	private User approveUser;
 	private User confirmUser;
 	private String status;
+	private Integer level;
 	private Integer isdelete;
+	
+	public Integer getLevel() {
+		return level;
+	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "confirm_user_id")
 	public User getConfirmUser() {

@@ -33,7 +33,7 @@
 		</shiro:hasAnyRoles>
 		
 		
-		<shiro:hasAnyRoles name="admin,Head,OneLevel,TwoLevel,ThreeLevel">
+		<shiro:hasAnyRoles name="admin,Head,OneLevel,TwoLevel">
 			<a id="myTask" href="${ctx}/activity/approvalConfirmList">活动确认审核</a>
 			<a id="myTask" href="${ctx}/activity/approvalList">活动申请审核</a>
 		

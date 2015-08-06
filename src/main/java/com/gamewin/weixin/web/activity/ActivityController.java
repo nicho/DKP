@@ -179,9 +179,9 @@ public class ActivityController {
 			newActivity.setCreateDate(new Date());
 			newActivity.setCreateUser(user);
 			newActivity.setIsdelete(0);
-			if ("AssociationActivity".equals(newActivity.getfType())) {
+			if ("AssociationActivity".equals(newActivity.getfType())) { 
 				newActivity.setStatus("process");
-				activityService.saveActivity(newActivity);
+				activityService.saveActivityGHCreate(newActivity);
 				redirectAttributes.addFlashAttribute("message", "活动确认提交审核成功");
 			} else if ("PersonalActivities".equals(newActivity.getfType())) {
 				newActivity.setStatus("pass");

@@ -78,7 +78,28 @@ public class ActivityService {
 	public void saveActivity(Activity entity) {
 		activityDao.save(entity);
 	}
-
+	
+	public void saveActivityGHCreate(Activity entity)  throws Exception{
+		User user=userDao.findOne(entity.getCreateUser().getId());
+		Double integral1=500.0;
+		Double integral2=100.0;
+		Double integral3=30.0;
+		if(integral1.equals(entity.getIntegral()) && (!"admin".equals(user.getRoles()) || !"Head".equals(user.getRoles()) || !"OneLevel".equals(user.getRoles())))
+		{
+			throw new Exception("用户权限不足,无法发布≤500人公会活动");
+		}
+		if(integral2.equals(entity.getIntegral()) && (!"admin".equals(user.getRoles()) || !"Head".equals(user.getRoles()) || !"OneLevel".equals(user.getRoles()) || !"TwoLevel".equals(user.getRoles())))
+		{
+			throw new Exception("用户权限不足,无法发布≤100人公会活动");
+		}
+		if(integral3.equals(entity.getIntegral()) && (!"admin".equals(user.getRoles()) || !"Head".equals(user.getRoles()) || !"OneLevel".equals(user.getRoles()) || !"TwoLevel".equals(user.getRoles()) || !"ThreeLevel".equals(user.getRoles())))
+		{
+			throw new Exception("用户权限不足,无法发布≤30人公会活动");
+		}
+		
+		activityDao.save(entity);
+	}
+	
 	public void saveActivityApprovalConfirm(Activity entity) throws Exception {
 	 
 		List<User> userList = activityUserDao.getActConfirmuser(entity.getId());

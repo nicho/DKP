@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %>  
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
@@ -23,7 +24,9 @@
 					<select name="fType" class="required">
 						<option value="">请选择</option>
 						<option value="PersonalActivities">个人活动</option>
-						<option value="AssociationActivity">公会活动</option>
+						<shiro:hasAnyRoles name="admin,Head,OneLevel,TwoLevel,ThreeLevel">
+							<option value="AssociationActivity">公会活动</option>
+						</shiro:hasAnyRoles>
 					</select>
 				</div>
 			</div>
@@ -47,11 +50,15 @@
 									 <div class="control-group">
 				<label class="control-label">人数规模:</label>
 				<div class="controls">
-					<select name="personCount" class="required">
-						<option value="">请选择</option>
-						<option value="≤30">≤30</option>
-						<option value="≤100">≤100</option>
-						<option value="≤500">≤500</option> 
+					<select name="personCount" class="required" onchange="">
+						<option value="">请选择</option> 
+						<option value="≤30">≤30</option> 
+						<shiro:hasAnyRoles name="admin,Head,OneLevel,TwoLevel">
+							<option value="≤100">≤100</option>
+						</shiro:hasAnyRoles>
+						<shiro:hasAnyRoles name="admin,Head,OneLevel">
+							<option value="≤500">≤500</option> 
+						</shiro:hasAnyRoles>
 					</select>
 				</div>
 			</div>

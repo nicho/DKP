@@ -82,30 +82,35 @@ public class ActivityService {
 
 	public void saveActivityGHCreate(Activity entity) throws Exception {
 		User user = userDao.findOne(entity.getCreateUser().getId());
-		Double integral1 = 500.0;
-		Double integral2 = 100.0;
-		Double integral3 = 30.0;
-		if (integral1.equals(entity.getIntegral())) {
+		String integral1 = "≤500";
+		String integral2 = "≤100";
+		String integral3 = "≤30";
+
+		if ("admin".equals(user.getRoles()) || "Head".equals(user.getRoles())) {
 			entity.setLevel(1);
-		} else if (integral2.equals(entity.getIntegral())) {
+		} else if ("OneLevel".equals(user.getRoles())) {
+			entity.setLevel(1);
+		} else if ("TwoLevel".equals(user.getRoles())) {
 			entity.setLevel(2);
-		} else if (integral3.equals(entity.getIntegral())) {
+		} else if ("ThreeLevel".equals(user.getRoles())) {
 			entity.setLevel(3);
 		}
 
-		if (integral1.equals(entity.getIntegral())
-				&& (!"admin".equals(user.getRoles()) || !"Head".equals(user.getRoles()) || !"OneLevel".equals(user.getRoles()))) {
-			throw new Exception("用户权限不足,无法发布≤500人公会活动");
-		}
-		if (integral2.equals(entity.getIntegral())
-				&& (!"admin".equals(user.getRoles()) || !"Head".equals(user.getRoles()) || !"OneLevel".equals(user.getRoles()) || !"TwoLevel"
-						.equals(user.getRoles()))) {
-			throw new Exception("用户权限不足,无法发布≤100人公会活动");
-		}
-		if (integral3.equals(entity.getIntegral())
-				&& (!"admin".equals(user.getRoles()) || !"Head".equals(user.getRoles()) || !"OneLevel".equals(user.getRoles())
-						|| !"TwoLevel".equals(user.getRoles()) || !"ThreeLevel".equals(user.getRoles()))) {
-			throw new Exception("用户权限不足,无法发布≤30人公会活动");
+		if (integral1.equals(entity.getPersonCount())
+				&& ("admin".equals(user.getRoles()) || "Head".equals(user.getRoles()) || "OneLevel".equals(user
+						.getRoles()))) {
+			entity.setIntegral(500.0);
+		} else if (integral2.equals(entity.getPersonCount())
+				&& ("admin".equals(user.getRoles()) || "Head".equals(user.getRoles())
+						|| "OneLevel".equals(user.getRoles()) || "TwoLevel".equals(user.getRoles()))) {
+			entity.setIntegral(100.0);
+		} else if (integral3.equals(entity.getPersonCount())
+				&& ("admin".equals(user.getRoles()) || "Head".equals(user.getRoles())
+						|| "OneLevel".equals(user.getRoles()) || "TwoLevel".equals(user.getRoles()) || "ThreeLevel"
+							.equals(user.getRoles()))) {
+			entity.setIntegral(30.0);
+		} else {
+			throw new Exception("用户权限不足,无法发布" + entity.getPersonCount() + "人公会活动");
 		}
 
 		activityDao.save(entity);
@@ -201,15 +206,16 @@ public class ActivityService {
 		this.activityDao = activityDao;
 	}
 
-	public Page<Activity> getAllActivity(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
+	public Page<Activity> getAllActivity(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize,
+			String sortType) {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
 		Specification<Activity> spec = buildSpecification(userId, searchParams);
 
 		return activityDao.findAll(spec, pageRequest);
 	}
 
-	public Page<Activity> getAllProcessActivty(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType)
-			throws Exception {
+	public Page<Activity> getAllProcessActivty(Long userId, Map<String, Object> searchParams, int pageNumber,
+			int pageSize, String sortType) throws Exception {
 		User user = userDao.findOne(userId);
 
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
@@ -218,11 +224,11 @@ public class ActivityService {
 		filters.put("status", new SearchFilter("status", Operator.EQ, "process"));
 
 		if ("admin".equals(user.getRoles()) || "Head".equals(user.getRoles())) {
-			filters.put("level", new SearchFilter("level", Operator.LTE, 1));
+			filters.put("level", new SearchFilter("level", Operator.GTE, 1));
 		} else if ("OneLevel".equals(user.getRoles())) {
-			filters.put("level", new SearchFilter("level", Operator.LTE, 2));
+			filters.put("level", new SearchFilter("level", Operator.GTE, 2));
 		} else if ("TwoLevel".equals(user.getRoles())) {
-			filters.put("level", new SearchFilter("level", Operator.LTE, 3));
+			filters.put("level", new SearchFilter("level", Operator.GTE, 3));
 		} else {
 			throw new Exception("权限不足!");
 		}
@@ -231,19 +237,19 @@ public class ActivityService {
 		return activityDao.findAll(spec, pageRequest);
 	}
 
-	public Page<Activity> getAllConfirmProcessActivty(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType)
-			throws Exception {
+	public Page<Activity> getAllConfirmProcessActivty(Long userId, Map<String, Object> searchParams, int pageNumber,
+			int pageSize, String sortType) throws Exception {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
 		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));
 		filters.put("status", new SearchFilter("status", Operator.EQ, "ConfirmProcess"));
 		User user = userDao.findOne(userId);
 		if ("admin".equals(user.getRoles()) || "Head".equals(user.getRoles())) {
-			filters.put("level", new SearchFilter("level", Operator.LTE, 1));
+			filters.put("level", new SearchFilter("level", Operator.GTE, 1));
 		} else if ("OneLevel".equals(user.getRoles())) {
-			filters.put("level", new SearchFilter("level", Operator.LTE, 2));
+			filters.put("level", new SearchFilter("level", Operator.GTE, 2));
 		} else if ("TwoLevel".equals(user.getRoles())) {
-			filters.put("level", new SearchFilter("level", Operator.LTE, 3));
+			filters.put("level", new SearchFilter("level", Operator.GTE, 3));
 		} else {
 			throw new Exception("权限不足!");
 		}
@@ -251,7 +257,8 @@ public class ActivityService {
 		return activityDao.findAll(spec, pageRequest);
 	}
 
-	public Page<Activity> getAllmyfqActivity(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
+	public Page<Activity> getAllmyfqActivity(Long userId, Map<String, Object> searchParams, int pageNumber,
+			int pageSize, String sortType) {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
 		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));

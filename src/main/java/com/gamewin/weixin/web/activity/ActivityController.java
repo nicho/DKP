@@ -183,7 +183,7 @@ public class ActivityController {
 			newActivity.setCreateUser(user);
 			newActivity.setIsdelete(0);
 			if ("AssociationActivity".equals(newActivity.getfType())) {
-				newActivity.setStatus("process");
+				newActivity.setStatus("process"); 
 				activityService.saveActivityGHCreate(newActivity);
 				redirectAttributes.addFlashAttribute("message", "活动确认提交审核成功");
 			} else if ("PersonalActivities".equals(newActivity.getfType())) {
@@ -322,7 +322,7 @@ public class ActivityController {
 			return "redirect:/activity/view/" + activityId;
 
 		} else {
-			redirectAttributes.addFlashAttribute("message", "活动不存在");
+			redirectAttributes.addFlashAttribute("message", "活动不存在,或您已经参与了活动.");
 		}
 		return "redirect:/activity/";
 	}

@@ -21,7 +21,7 @@
 			 <div class="control-group">
 				<label class="control-label">活动级别:</label>
 				<div class="controls">
-					<select name="fType" class="required">
+					<select name="fType" class="required" onclick="onchangefType(this)">
 						<option value="">请选择</option>
 						<option value="PersonalActivities">个人活动</option>
 						<shiro:hasAnyRoles name="admin,Head,OneLevel,TwoLevel,ThreeLevel">
@@ -74,12 +74,15 @@
 					<input type="text" id="endDateStr" name="endDateStr"  value="<fmt:formatDate  value="${task.endDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss" />" class="input-large required"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
 				</div>
 			</div>	
-									 <div class="control-group">
+			
+			
+		   <div class="control-group" id="jifenDiv" style="display:none;">
 				<label class="control-label">活动积分:</label>
 				<div class="controls">
 					<input type="text" id="integral" name="integral" value="${user.integral}" class="input-large required digits"/>
 				</div>
 			</div>
+			
 			<div class="control-group">
 				<label for="description" class="control-label">活动说明:</label>
 				<div class="controls">
@@ -95,7 +98,17 @@
 		</fieldset>
 	</form>
 	<script>
-	 
+	 function onchangefType(obj)
+	 {
+		 	if(obj.value=="PersonalActivities")
+			 { 
+		 		$('#jifenDiv').attr("style","display:block;");
+			 }
+		 	if(obj.value=="AssociationActivity")
+			 { 
+		 		$('#jifenDiv').attr("style","display:none;");
+			 }
+	 }
 		$(document).ready(function() {  
 			//聚焦第一个输入框
 			$("#task_gameName").focus();

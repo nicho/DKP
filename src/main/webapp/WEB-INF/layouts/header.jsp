@@ -10,7 +10,7 @@
 		<shiro:guest>
 			<a href="${ctx}/login">登录</a>
 		</shiro:guest>
-		<shiro:user>你好, <shiro:principal property="name" />。<font color='red'>积分：<shiro:principal property="integral" />
+		<shiro:user>你好, <shiro:principal property="name" />。<font color='blue'>积分：<a href="${ctx}/integralHistory/myIntegeral/<shiro:principal property="id" />"><shiro:principal property="integral" /></a>
 			</font>，权限：<shiro:principal property="rolesName" />
 			<a href="${ctx}/logout">退出登录</a>
 		</shiro:user>
@@ -39,13 +39,13 @@
 					<li><a id="account-tab" href="${ctx}/exchangeIntegral">贡献物品</a></li>
 					<shiro:hasAnyRoles name="admin,Head">
 						<li><a id="account-tab" href="${ctx}/exchangeGoods">物品拍卖登记</a></li>
-						<li><a id="myTask" href="${ctx}/exchangeIntegralApply/approvalList">贡献物品审核</a></li>
+						<li><a id="myTask" href="${ctx}/exchangeIntegralApply/approvalList">贡献物品审核</a></li> 
+						<li><a id="account-tab" href="${ctx}/admin/user">帐号管理</a></li>
+						<li><a id="account-tab" href="${ctx}/valueSet">活动类型设置</a></li>
 					</shiro:hasAnyRoles>
 					<shiro:hasAnyRoles name="admin,Head,OneLevel,TwoLevel,ThreeLevel">
 						<li><a id="myTask" href="${ctx}/activity/approvalConfirmList">活动确认审核</a></li>
 						<li><a id="myTask" href="${ctx}/activity/approvalList">活动申请审核</a></li>
-						<li><a id="account-tab" href="${ctx}/admin/user">帐号管理</a></li>
-						<li><a id="account-tab" href="${ctx}/valueSet">活动类型设置</a></li>
 					</shiro:hasAnyRoles>
 					<li><a id="account-tab" href="${ctx}/profile">资料修改</a></li>
 				</ul>

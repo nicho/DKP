@@ -12,6 +12,8 @@ import javax.servlet.ServletRequest;
 import javax.validation.Valid;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -85,6 +87,7 @@ public class ExchangeIntegralApplyController {
 
 		return "exchangeIntegralApply/myExchangeIntegralApplyList";
 	}
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(value = "approvalList",method = RequestMethod.GET)
 	public String approvalList(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
@@ -144,7 +147,7 @@ public class ExchangeIntegralApplyController {
 		return user.id;
 	}
 
-		
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(value = "approval/{id}")
 	public String approval(@PathVariable("id") Long id, RedirectAttributes redirectAttributes, ServletRequest request) {
 		ExchangeIntegralApply exchangeIntegralApply = exchangeIntegralApplyService.getExchangeIntegralApply(id);

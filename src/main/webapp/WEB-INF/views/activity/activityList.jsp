@@ -63,7 +63,9 @@
 					<td>${task.createUser.gameName}</td>
 
 					<td><a href="${ctx}/activity/view/${task.id}">查看</a> &nbsp; 
-						<a href="${ctx}/activityUser/list/${task.id}">参与的会员</a>  &nbsp;  
+						<a href="${ctx}/activityUser/list/${task.id}">已登记的会员</a>  &nbsp;  
+						<c:if test="${task.status eq 'pass'}">
+						<a href="${ctx}/activity/registerActivity/${task.id}">参与活动</a>  &nbsp;  </c:if>
 					</td>
 						
 				</tr>

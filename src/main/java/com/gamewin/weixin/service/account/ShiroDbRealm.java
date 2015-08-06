@@ -102,7 +102,9 @@ public class ShiroDbRealm extends AuthorizingRealm {
 		public String getIntegral() {
 			return StringUtil.subZeroAndDot(((double)Math.floor(integral*100))/100+"");
 		}
-
+		public Long getId() {
+			return id;
+		}
 		public String getRolesName() {
 			String name="";
 			if("admin".equals(roles))

@@ -12,6 +12,8 @@ import javax.servlet.ServletRequest;
 import javax.validation.Valid;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -77,14 +79,14 @@ public class ExchangeIntegralController {
 		 
 		return "exchangeIntegral/exchangeIntegralList";
 	}
-
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(value = "create", method = RequestMethod.GET)
 	public String createForm(Model model) {
 		model.addAttribute("exchangeIntegral", new ExchangeIntegral());
 		model.addAttribute("action", "create"); 
 		return "exchangeIntegral/exchangeIntegralForm";
 	}
-
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(value = "create", method = RequestMethod.POST)
 	public String create(@Valid ExchangeIntegral newExchangeIntegral, RedirectAttributes redirectAttributes, ServletRequest request) {
 		 User user = new User(getCurrentUserId()); 
@@ -109,7 +111,7 @@ public class ExchangeIntegralController {
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 		return user.id;
 	}
-
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(value = "disabled/{id}")
 	public String disabled(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
 		ExchangeIntegral exchangeIntegral = exchangeIntegralService.getExchangeIntegral(id);
@@ -118,7 +120,7 @@ public class ExchangeIntegralController {
 		redirectAttributes.addFlashAttribute("message", "失效兑换物品'" + exchangeIntegral.getGoodsName() + "'成功");
 		return "redirect:/exchangeIntegral/";
 	}
-	
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(value = "delete/{id}")
 	public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
 		ExchangeIntegral exchangeIntegral = exchangeIntegralService.getExchangeIntegral(id);

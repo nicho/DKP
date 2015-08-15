@@ -21,7 +21,7 @@
 			<legend>
 				<small>活动登记</small>
 			</legend>
-<div class="visible-desktop">
+<div class="hidden-desktop">
 	<div class="control-group">
 				<label class="control-label">活动级别:<c:if test="${activity.fType eq 'PersonalActivities'}">个人活动</c:if> <c:if test="${activity.fType eq 'AssociationActivity'}">公会活动</c:if></label>
 
@@ -59,7 +59,7 @@
 			</div>
 </div>
 
- <div class="hidden-desktop">
+<div class="visible-desktop"> 
 			 <div class="control-group">
 				<label class="control-label">活动级别:</label>
 				<div class="controls">

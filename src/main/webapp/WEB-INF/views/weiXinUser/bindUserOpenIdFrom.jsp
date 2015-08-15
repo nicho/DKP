@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>《DKP》公会系统:</title>
+<title>DKP系统:</title>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
@@ -22,23 +22,21 @@
 <link href="${ctx}/static/styles/default.css" type="text/css" rel="stylesheet" />
 <script src="${ctx}/static/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
 <script src="${ctx}/static/jquery-validation/1.11.1/jquery.validate.min.js" type="text/javascript"></script>
-<script src="${ctx}/static/jquery-validation/1.11.1/messages_bs_zh.js" type="text/javascript"></script> 
-<script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
+<script src="${ctx}/static/jquery-validation/1.11.1/messages_bs_zh.js" type="text/javascript"></script>
+ 
 </head>
 
 <body> 
 	<div class="container" style="width:50%">
 	<div id="header" style="border-bottom: 0 solid #658a16;">
 	<div id="title">
-	    <h1><a href="${ctx}">《DKP》公会系统</a><small>--离恨天</small> </h1>  
+	    <h1><a href="${ctx}">DKP</a><small>--绑定微信用户</small> </h1>  
 	</div>
 </div>
 		<div id="content" >
-			<form id="loginForm" action="${ctx}/login" method="post" class="form-horizontal">
-	    <c:if test="${not empty message}">
-	     <div class="alert alert-success controls input-large">
-			<button data-dismiss="alert" class="close">×</button>${message}</div>
-		</c:if>
+   <form id="loginForm" action="${ctx}/weixinUser/updateBindUserOpenId" method="post" class="form-horizontal">
+   <input type="hidden" name="code" value="${code}">
+   <input type="hidden" name="grant_type" value="${grant_type}">
 		<%
 			String error = (String) request.getAttribute(FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
 			if(error != null){
@@ -75,29 +73,16 @@
 		</div>
 				
 		<div class="control-group">
-			<div class="controls">
-				<label class="checkbox" for="rememberMe"><input type="checkbox" id="rememberMe" name="rememberMe" checked/> 记住我</label>
-				<input id="submit_btn" class="btn btn-primary" type="submit" value="登录"/> &nbsp;&nbsp;&nbsp;&nbsp;<a class="btn" href="${ctx}/register">注册</a>
-			 	 <div id="login_container"></div>
+			<div class="controls"> 
+				<input id="submit_btn" class="btn btn-primary" type="submit" value="绑定"/>  
+			 	 
 			</div>
 		</div>
-		
 	</form>
 
 	<script>
 		$(document).ready(function() {
 			$("#loginForm").validate();
-			
-			
-			   var obj = new WxLogin({
-                   id:"login_container", 
-                   appid: "wxf867a7a208f34432", 
-                   scope: "snsapi_login", 
-                   redirect_uri: "http://dkp.lihentian.com/DKP/weixinUser/bindUserOpenId",
-                   state: "",
-                   style: "",
-                   href: ""
-                 });
 		});
 	</script>
 		</div>

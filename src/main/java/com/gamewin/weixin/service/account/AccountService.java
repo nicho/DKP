@@ -86,7 +86,10 @@ public class AccountService {
 	public User findUserByLoginName(String loginName) {
 		return userDao.findByLoginName(loginName);
 	}
-
+	public User findByWeixinOpenid(String weixinOpenid) {
+		return userDao.findByWeixinOpenid(weixinOpenid);
+	}
+	
 	public void registerUser(User user) {
 		entryptPassword(user);
 		user.setRoles("user");

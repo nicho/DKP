@@ -44,14 +44,19 @@ public class WeiXinUserController {
 		if(user!=null)
 		{
 			Subject subject = SecurityUtils.getSubject(); 
-			subject.login(new UsernamePasswordToken(user.getLoginName(), user.getWeixinOpenPwd(), true));
-			if (subject.isAuthenticated()) { 
-				redirectAttributes.addFlashAttribute("message", "登录成功");
-				return "redirect:/activity";
-			}else
-			{
+			try {
+				subject.login(new UsernamePasswordToken(user.getLoginName(), user.getWeixinOpenPwd(), true));
+				if (subject.isAuthenticated()) { 
+					redirectAttributes.addFlashAttribute("message", "登录成功");
+					return "redirect:/activity";
+				}else
+				{
+					model.addAttribute("message", "密码错误!请重新输入密码绑定!");
+				}
+			} catch (Exception e) {
 				model.addAttribute("message", "密码错误!请重新输入密码绑定!");
-			}
+			} 
+			
 		}else
 		{
 			model.addAttribute("openId", openId);

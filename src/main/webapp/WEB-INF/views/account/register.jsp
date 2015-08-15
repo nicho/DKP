@@ -56,11 +56,12 @@
 <div class="container">
 	<div id="header">
 	<div id="title">
-	    <h1><a href="${ctx}">《宝箱》微信公众号推广系统</a><small>--二维码</small>
+	    <h1><a href="${ctx}">DKP</a><small>--离恨天</small>
 	    </h1>
 	    	</div>
 </div>
 	<form id="inputForm" action="${ctx}/register" method="post" class="form-horizontal">
+	<input type="hidden" name="openId" value="${openId}">
 		<fieldset>
 			<legend><small>用户注册</small></legend>
 			<div class="control-group">

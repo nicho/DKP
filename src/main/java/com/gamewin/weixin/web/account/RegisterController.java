@@ -8,6 +8,10 @@ package com.gamewin.weixin.web.account;
 import javax.servlet.ServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,18 +37,35 @@ public class RegisterController {
 	private AccountService accountService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String registerForm(Model model) { 
+	public String registerForm(Model model, ServletRequest request) {
+		String openId = request.getParameter("openId");
+		model.addAttribute("openId", openId);
 		return "account/register";
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String register(@Valid User user, RedirectAttributes redirectAttributes, ServletRequest request) {
+		String openId = request.getParameter("openId");
+		if (!StringUtils.isEmpty(openId)) {
+			user.setWeixinOpenid(openId);
+			user.setWeixinOpenPwd(user.getPlainPassword());
+		}
 		user.setIsdelete(0);
 		user.setIntegral(0.0);
 		user.setStatus("enabled");
 		accountService.registerUser(user);
-		redirectAttributes.addFlashAttribute("message", "注册成功.");
-		return "redirect:/login";
+
+		Subject subject = SecurityUtils.getSubject();
+
+		subject.login(new UsernamePasswordToken(user.getLoginName(), user.getWeixinOpenPwd(), true));
+		if (subject.isAuthenticated()) {
+			redirectAttributes.addFlashAttribute("message", "登录成功");
+			return "redirect:/activity";
+		} else {
+			redirectAttributes.addFlashAttribute("message", "登录失败.");
+			return "redirect:/login";
+		}
+
 	}
 
 	/**

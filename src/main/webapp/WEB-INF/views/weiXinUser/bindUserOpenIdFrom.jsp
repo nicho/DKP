@@ -79,8 +79,7 @@
 				
 		<div class="control-group">
 			<div class="controls"> 
-				<input id="submit_btn" class="btn btn-primary" type="submit" value="绑定"/>  
-			 	 
+				<input id="submit_btn" class="btn btn-primary" type="submit" value="绑定"/>  &nbsp;&nbsp;&nbsp;&nbsp;<a class="btn" href="${ctx}/register?openId=${openId}">注册</a>
 			</div>
 		</div>
 	</form>

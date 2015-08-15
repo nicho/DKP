@@ -7,6 +7,8 @@
 <html>
 <head>
 <title>最近活动列表</title>
+
+<link href="${ctx}/static/styles/dkp.css" type="text/css" rel="stylesheet" />
 </head>
 
 <body>
@@ -22,6 +24,7 @@
 	</div>
 	<div></div>
 	<br>
+	<div class="visible-desktop"> 
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
@@ -72,6 +75,47 @@
 			</c:forEach>
 		</tbody>
 	</table>
+	</div>
+<div class="hidden-desktop">
+  <div class="listleave_box">
+    <div class="listleave_bar">活动列表</div>
+    <ul>
+ 	<c:forEach items="${activitys.content}" var="task">
+      <li>
+        <div class="listleave_text">
+          <p><span>标题 </span>${task.title}</p>
+          <p><span>活动级别 </span><c:if test="${task.fType eq 'PersonalActivities'}">个人活动</c:if> <c:if test="${task.fType eq 'AssociationActivity'}">公会活动</c:if></p>
+          <p><span>活动类型 </span><c:forEach var="list" items="${ActivityTypeList}">
+							<c:if test="${list.id eq task.activityType}">${list.typeName}</c:if>
+						</c:forEach></p>
+          <p><span>人数规模 </span>${task.personCount}</p>
+          <p><span>活动积分 </span><fmt:formatNumber value="${task.integral}" pattern="##.##"/></p>
+		  <p><span>活动说明 </span>${task.activityExplain}</p>
+		  <p><span>响应时间 </span><fmt:formatDate value="${task.startDate}" pattern="yyyy-MM-dd HH:mm:ss" /> 至 <fmt:formatDate value="${task.endDate}" pattern="yyyy-MM-dd HH:mm:ss" /></p>
+		  <p><span>状态 </span><c:if test="${task.status eq 'pass'}">活动进行中</c:if>
+					<c:if test="${task.status eq 'process'}">活动发起审批中</c:if>
+					<c:if test="${task.status eq 'reject'}">活动发起审批拒绝</c:if>
+					<c:if test="${task.status eq 'ConfirmProcess'}">活动确认审批中</c:if>
+					<c:if test="${task.status eq 'ConfirmReject'}">活动确认审批拒绝</c:if>
+					<c:if test="${task.status eq 'ConfirmPass'}">活动结束</c:if>
+					<c:if test="${task.status eq 'N'}">失效</c:if></p>
+		  <p><span>发起人 </span>${task.createUser.gameName}</p>
+		  <p><span>操作 </span></p> 
+		  <div class="cl"></div>
+        </div>
+		<div class="morebtn">
+		<input name="" type="button" class="orangebtn2" value="查看" onClick="location.href='${ctx}/activity/view/${task.id}'">
+		<input name="" type="button" class="orangebtn2" value="已登记的会员" onClick="location.href='${ctx}/activityUser/list/${task.id}'">
+		<input name="" type="button" class="orangebtn2" value="参与活动" onClick="location.href='${ctx}/activity/registerActivity/${task.id}'">
+		 
+		</div>
+   		
+      </li>
+     </c:forEach> 
+    </ul>
+    <div class="cl"></div>
+  </div>
+ </div>
 
 	<tags:pagination page="${activitys}" paginationSize="10" />
 

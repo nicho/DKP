@@ -57,7 +57,7 @@ public class RegisterController {
 
 		Subject subject = SecurityUtils.getSubject();
 
-		subject.login(new UsernamePasswordToken(user.getLoginName(), user.getWeixinOpenPwd(), true));
+		subject.login(new UsernamePasswordToken(user.getLoginName(), user.getPlainPassword(), true));
 		if (subject.isAuthenticated()) {
 			redirectAttributes.addFlashAttribute("message", "登录成功");
 			return "redirect:/activity";

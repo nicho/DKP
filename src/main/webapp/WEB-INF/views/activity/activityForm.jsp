@@ -33,7 +33,7 @@
 						 <div class="control-group">
 				<label class="control-label">标题:</label>
 				<div class="controls">
-					<input type="text" id="title" name="title" value=" " class="input-large required"/>
+					<input type="text" id="title" name="title" value="" class="input-large required"/>
 				</div>
 			</div>
 						 <div class="control-group">

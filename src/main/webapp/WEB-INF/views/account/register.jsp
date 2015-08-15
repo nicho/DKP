@@ -56,7 +56,7 @@
 <div class="container">
 	<div id="header">
 	<div id="title">
-	    <h1><a href="${ctx}">DKP</a><small>--离恨天</small>
+	    <h1><a href="${ctx}">《DKP》公会系统</a><small>--离恨天</small>
 	    </h1>
 	    	</div>
 </div>

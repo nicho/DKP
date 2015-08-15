@@ -27,6 +27,10 @@
 </head>
 
 <body> 
+	<c:if test="${not empty message}">
+		<div id="message" class="alert alert-success">
+			<button data-dismiss="alert" class="close">×</button>${message}</div>
+	</c:if>
 	<div class="container" style="width:50%">
 	<div id="header" style="border-bottom: 0 solid #658a16;">
 	<div id="title">

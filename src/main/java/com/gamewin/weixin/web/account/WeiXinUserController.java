@@ -39,6 +39,7 @@ public class WeiXinUserController {
 		model.addAttribute("grant_type", grant_type);
 		
 		String openId = MobileHttpClient.getUserOpenIdByCode(code);
+		model.addAttribute("openId", openId);
 		System.out.println(" openId:"+openId);
 		User user=accountService.findByWeixinOpenid(openId);
 		if(user!=null)
@@ -57,10 +58,7 @@ public class WeiXinUserController {
 				model.addAttribute("message", "密码错误!请重新输入密码绑定!");
 			} 
 			
-		}else
-		{
-			model.addAttribute("openId", openId);
-		}
+		} 
 		return "weiXinUser/bindUserOpenIdFrom";
 		
 	}

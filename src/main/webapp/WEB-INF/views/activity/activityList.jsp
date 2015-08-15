@@ -16,6 +16,7 @@
 		<div id="message" class="alert alert-success">
 			<button data-dismiss="alert" class="close">×</button>${message}</div>
 	</c:if>
+	<div class="visible-desktop"> 
 	<div class="row">
 		<div class="span4 offset7">
 			<form class="form-search" action="#"></form>
@@ -24,7 +25,7 @@
 	</div>
 	<div></div>
 	<br>
-	<div class="visible-desktop"> 
+	
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
@@ -51,7 +52,7 @@
 					<td>${task.personCount}</td>
 					<td><fmt:formatNumber value="${task.integral}" pattern="##.##"/></td>
 					<td>${task.activityExplain}</td>
-					<td><fmt:formatDate value="${task.startDate}" pattern="yyyy-MM-dd HH:mm:ss" /> 至 <fmt:formatDate value="${task.endDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+					<td><fmt:formatDate value="${task.startDate}" pattern="yyyy-MM-dd HH:mm:ss" /> 至  <fmt:formatDate value="${task.endDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 					<td>
 					
 					<c:if test="${task.status eq 'pass'}">活动进行中</c:if>
@@ -91,7 +92,8 @@
           <p><span>人数规模 </span>${task.personCount}</p>
           <p><span>活动积分 </span><fmt:formatNumber value="${task.integral}" pattern="##.##"/></p>
 		  <p><span>活动说明 </span>${task.activityExplain}</p>
-		  <p><span>响应时间 </span><fmt:formatDate value="${task.startDate}" pattern="yyyy-MM-dd HH:mm:ss" /> 至 <fmt:formatDate value="${task.endDate}" pattern="yyyy-MM-dd HH:mm:ss" /></p>
+		  <p><span>响应时间 </span><fmt:formatDate value="${task.startDate}" pattern="yyyy-MM-dd HH:mm:ss" /> </p>
+		  <p><span> 至 </span>  <fmt:formatDate value="${task.endDate}" pattern="yyyy-MM-dd HH:mm:ss" /></p>
 		  <p><span>状态 </span><c:if test="${task.status eq 'pass'}">活动进行中</c:if>
 					<c:if test="${task.status eq 'process'}">活动发起审批中</c:if>
 					<c:if test="${task.status eq 'reject'}">活动发起审批拒绝</c:if>
@@ -99,8 +101,7 @@
 					<c:if test="${task.status eq 'ConfirmReject'}">活动确认审批拒绝</c:if>
 					<c:if test="${task.status eq 'ConfirmPass'}">活动结束</c:if>
 					<c:if test="${task.status eq 'N'}">失效</c:if></p>
-		  <p><span>发起人 </span>${task.createUser.gameName}</p>
-		  <p><span>操作 </span></p> 
+		  <p><span>发起人 </span>${task.createUser.gameName}</p> 
 		  <div class="cl"></div>
         </div>
 		<div class="morebtn">

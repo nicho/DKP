@@ -52,9 +52,12 @@ public class WeiXinUserController {
 					return "redirect:/activity";
 				}else
 				{
+					
+					model.addAttribute("username",user.getLoginName());
 					model.addAttribute("message", "密码错误!请重新输入密码绑定!");
 				}
 			} catch (Exception e) {
+				model.addAttribute("username",user.getLoginName());
 				model.addAttribute("message", "密码错误!请重新输入密码绑定!");
 			} 
 			

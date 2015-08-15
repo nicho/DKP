@@ -106,6 +106,25 @@ public class ExchangeIntegralApplyController {
 
 		return "exchangeIntegralApply/exchangeIntegralApplyList";
 	}
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
+	@RequestMapping(value = "approvalAllList",method = RequestMethod.GET)
+	public String approvalAllList(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
+			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request) {
+		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
+		Long userId = getCurrentUserId();
+	 
+		Page<ExchangeIntegralApply> exchangeIntegralApplys = exchangeIntegralApplyService.getAllExchangeIntegralAllList(userId, searchParams,
+				pageNumber, pageSize, sortType);
+
+		model.addAttribute("exchangeIntegralApplys", exchangeIntegralApplys);
+		model.addAttribute("sortType", sortType);
+		model.addAttribute("sortTypes", sortTypes);
+		// 将搜索条件编码成字符串，用于排序，分页的URL
+		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
+
+		return "exchangeIntegralApply/exchangeIntegralList";
+	}
 	@RequestMapping(value = "create/{id}", method = RequestMethod.GET)
 	public String createForm(@PathVariable("id") Long id,Model model) {
 		model.addAttribute("exchangeIntegralApply", new ExchangeIntegralApply());

@@ -30,7 +30,7 @@
 		<shiro:hasAnyRoles name="admin,Head">
 			<a id="account-tab" href="${ctx}/exchangeGoods">物品拍卖登记</a> 
 			<a id="myTask" href="${ctx}/exchangeIntegralApply/approvalList">贡献物品审核</a>
-			
+			<a id="myTask" href="${ctx}/exchangeIntegralApply/approvalAllList">历史贡献物品</a> 
 			<a id="account-tab" href="${ctx}/admin/user">帐号管理</a>   
 			<a id="account-tab" href="${ctx}/valueSet">活动类型设置</a>  
 		</shiro:hasAnyRoles>

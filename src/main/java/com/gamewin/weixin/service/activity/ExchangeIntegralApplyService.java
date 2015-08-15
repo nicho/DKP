@@ -53,7 +53,7 @@ public class ExchangeIntegralApplyService {
 		{
 			//审批通过后，给积分
 			User user=entity.getCteateUser();
-			user.setIntegral(entity.getIntegral());
+			user.setIntegral(user.getIntegral()+entity.getIntegral());
 			userDao.save(user);
 			 
 			// 记录日志	
@@ -101,7 +101,15 @@ public class ExchangeIntegralApplyService {
 		Specification<ExchangeIntegralApply> spec = DynamicSpecifications.bySearchFilter(filters.values(), ExchangeIntegralApply.class);
 		return exchangeIntegralApplyDao.findAll(spec, pageRequest);
 	}
-	
+	public Page<ExchangeIntegralApply> getAllExchangeIntegralAllList(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize,
+			String sortType) {
+		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
+		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
+		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0")); 
+		filters.put("status", new SearchFilter("status", Operator.EQ, "pass"));
+		Specification<ExchangeIntegralApply> spec = DynamicSpecifications.bySearchFilter(filters.values(), ExchangeIntegralApply.class);
+		return exchangeIntegralApplyDao.findAll(spec, pageRequest);
+	}
 	/**
 	 * 创建分页请求.
 	 */

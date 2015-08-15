@@ -6,7 +6,7 @@
 
 <html>
 <head>
-<title>兑换积分申请列表</title>
+<title>贡献物品审核</title>
 </head>
 
 <body>

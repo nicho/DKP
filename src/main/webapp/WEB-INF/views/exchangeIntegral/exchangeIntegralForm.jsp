@@ -21,13 +21,13 @@
 		    <div class="control-group">
 				<label class="control-label">物品名称:</label>
 				<div class="controls">
-					<input type="text" id="goodsName" name="goodsName" value=" " class="input-large required"/>
+					<input type="text" id="goodsName" name="goodsName" value="" class="input-large required"/>
 				</div>
 			</div>
 					    <div class="control-group">
 				<label class="control-label">可兑换积分:</label>
 				<div class="controls">
-					<input type="text" id="integral" name="integral" value=" " class="input-large required number"/>
+					<input type="text" id="integral" name="integral" value="" class="input-large required number"/>
 				</div>
 			</div>   
 				  

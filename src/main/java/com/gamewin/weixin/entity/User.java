@@ -36,7 +36,16 @@ public class User extends IdEntity {
 	private String email;
 	private String phone;
 	private String weixinOpenid;
+	private String weixinOpenPwd;
 	private Double integral;
+
+	public String getWeixinOpenPwd() {
+		return weixinOpenPwd;
+	}
+
+	public void setWeixinOpenPwd(String weixinOpenPwd) {
+		this.weixinOpenPwd = weixinOpenPwd;
+	}
 
 	public Double getIntegral() {
 		return integral;

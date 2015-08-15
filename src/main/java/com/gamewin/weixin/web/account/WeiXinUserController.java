@@ -35,20 +35,26 @@ public class WeiXinUserController {
 	public String bindUserOpenId(HttpServletRequest request, HttpServletResponse response, Model model,RedirectAttributes redirectAttributes) throws Exception {
 		String code = request.getParameter("code");
 		String grant_type = request.getParameter("grant_type");
-		model.addAttribute("code", code);
+		
 		model.addAttribute("grant_type", grant_type);
 		
 		String openId = MobileHttpClient.getUserOpenIdByCode(code);
+		System.out.println(" openId:"+openId);
 		User user=accountService.findByWeixinOpenid(openId);
 		if(user!=null)
 		{
-			Subject subject = SecurityUtils.getSubject();
-			subject.login(new UsernamePasswordToken(user.getLoginName(), user.getPassword(), true));
-			System.out.println("用户是否登录了:"+subject.isAuthenticated());
+			Subject subject = SecurityUtils.getSubject(); 
+			subject.login(new UsernamePasswordToken(user.getLoginName(), user.getWeixinOpenPwd(), true));
 			if (subject.isAuthenticated()) { 
 				redirectAttributes.addFlashAttribute("message", "登录成功");
 				return "redirect:/activity";
+			}else
+			{
+				model.addAttribute("message", "密码错误!请重新输入密码绑定!");
 			}
+		}else
+		{
+			model.addAttribute("openId", openId);
 		}
 		return "weiXinUser/bindUserOpenIdFrom";
 		
@@ -56,7 +62,7 @@ public class WeiXinUserController {
 
 	@RequestMapping(value = "updateBindUserOpenId", method = { RequestMethod.GET, RequestMethod.POST })
 	public String updateBindUserOpenId(HttpServletRequest request, HttpServletResponse response, Model model) {
-		String code = request.getParameter("code");
+		String openId = request.getParameter("openId");
 		// String grant_type = request.getParameter("grant_type");
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
@@ -66,19 +72,19 @@ public class WeiXinUserController {
 			if (subject.isAuthenticated()) {
 				ShiroUser user = (ShiroUser) subject.getPrincipal();
 				User usr = accountService.getUser(user.id);
-				if (StringUtils.isEmpty(usr.getWeixinOpenid())) {
-					if (!StringUtils.isEmpty(code)) {
-						String openId = MobileHttpClient.getUserOpenIdByCode(code);
-						if (!StringUtils.isEmpty(openId)) {
-
+				if (StringUtils.isEmpty(usr.getWeixinOpenid()) || !password.equals(usr.getWeixinOpenPwd())) {
+					 
+						if (!StringUtils.isEmpty(openId)) { 
 							usr.setWeixinOpenid(openId);
+							usr.setWeixinOpenPwd(password);
 							accountService.updateUser(usr);
 							model.addAttribute("message", "绑定成功!");
+							return "redirect:/activity";
 						} else {
-							model.addAttribute("message", "绑定失效,请重新绑定");
+							model.addAttribute("message", "获取微信用户失效,请重新绑定");
 						}
 
-					}
+				 
 				}else
 				{
 					model.addAttribute("message", "用户已绑定过.无需重复绑定!");
@@ -87,8 +93,8 @@ public class WeiXinUserController {
 				model.addAttribute("message", "用户名/密码错误");
 			}
 		} catch (Exception e) {
-			model.addAttribute("message", "绑定失效,请重新绑定");
+			model.addAttribute("message", "绑定异常,请重新绑定");
 		}
-		return "weiXinUser/bindUserOpenIdView";
+		return "redirect:/login";
 	}
 }

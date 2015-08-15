@@ -37,6 +37,7 @@
    <form id="loginForm" action="${ctx}/weixinUser/updateBindUserOpenId" method="post" class="form-horizontal">
    <input type="hidden" name="code" value="${code}">
    <input type="hidden" name="grant_type" value="${grant_type}">
+   <input type="hidden" name="openId" value="${openId}">
 		<%
 			String error = (String) request.getAttribute(FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
 			if(error != null){

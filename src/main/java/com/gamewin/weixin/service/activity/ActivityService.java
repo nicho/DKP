@@ -46,6 +46,11 @@ public class ActivityService {
 	@Autowired
 	private ActivityUserMybatisDao activityUserMybatisDao;
 
+	public void updateActivityClose(Long id) {
+		Activity ac=activityDao.findOne(id);
+		ac.setStatus("close");
+		activityDao.save(ac);
+	}
 	public Activity getActivity(Long id) {
 		return activityDao.findOne(id);
 	}
@@ -213,7 +218,16 @@ public class ActivityService {
 
 		return activityDao.findAll(spec, pageRequest);
 	}
+	public Page<Activity> getPassActivity(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize,
+			String sortType) {
+		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
+		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
+		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));
+		filters.put("status", new SearchFilter("status", Operator.EQ, "pass"));
+		Specification<Activity> spec = DynamicSpecifications.bySearchFilter(filters.values(), Activity.class);
 
+		return activityDao.findAll(spec, pageRequest);
+	}
 	public Page<Activity> getAllProcessActivty(Long userId, Map<String, Object> searchParams, int pageNumber,
 			int pageSize, String sortType) throws Exception {
 		User user = userDao.findOne(userId);

@@ -114,7 +114,9 @@
 
 		</div>		
 			<div class="form-actions">
-				<input id="submit_btn" class="btn btn-primary" type="submit" value="活动登记" />&nbsp;
+				<c:if test="${isclose eq 'Y'}"><a href="${ctx}/activity">活动已停止登记,点击进入最近活动列表</a></c:if>
+				<c:if test="${isclose != 'Y'}"><input id="submit_btn" class="btn btn-primary" type="submit" value="活动登记" />&nbsp;</c:if>
+				
 			</div>
 		</fieldset>
 	</form>
@@ -129,6 +131,8 @@
 					form.submit();
 				}
 			});
+			
+		 
 		});
 	</script>
 </body>

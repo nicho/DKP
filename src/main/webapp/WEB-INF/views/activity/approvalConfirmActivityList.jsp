@@ -51,6 +51,7 @@
 					<td><fmt:formatDate value="${task.startDate}" pattern="yyyy-MM-dd HH:mm:ss" /> 至 <fmt:formatDate value="${task.endDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 				 	<td>
 					<c:if test="${task.status eq 'pass'}">活动进行中</c:if>
+					<c:if test="${task.status eq 'close'}">活动停止登记</c:if>
 					<c:if test="${task.status eq 'process'}">活动发起审批中</c:if>
 					<c:if test="${task.status eq 'reject'}">活动发起审批拒绝</c:if>
 					<c:if test="${task.status eq 'ConfirmProcess'}">活动确认审批中</c:if>

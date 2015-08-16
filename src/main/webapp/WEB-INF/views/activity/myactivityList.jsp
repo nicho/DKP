@@ -52,6 +52,7 @@
 					<td>
 					
 					<c:if test="${task.status eq 'pass'}">活动进行中</c:if>
+					<c:if test="${task.status eq 'close'}">活动停止登记</c:if>
 					<c:if test="${task.status eq 'process'}">活动发起审批中</c:if>
 					<c:if test="${task.status eq 'reject'}">活动发起审批拒绝</c:if>
 					<c:if test="${task.status eq 'ConfirmProcess'}">活动确认审批中</c:if>
@@ -64,8 +65,10 @@
 
 					<td><a href="${ctx}/activity/view/${task.id}">查看</a> &nbsp; 
 						<a href="${ctx}/activityUser/list/${task.id}">参与的会员</a>  &nbsp; 
-						
 						<c:if test="${task.status eq 'pass'}">
+							<a href="${ctx}/activity/closeActivity/${task.id}">活动停止</a>  &nbsp; 
+						</c:if>
+						<c:if test="${task.status eq 'pass' || task.status eq 'close'}">
 							<a href="${ctx}/activity/confirmActivity/${task.id}">活动确认</a>  &nbsp; 
 						</c:if>
 						

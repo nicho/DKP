@@ -76,7 +76,7 @@ public class ActivityController {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		Long userId = getCurrentUserId();
 
-		Page<Activity> activitys = activityService.getAllActivity(userId, searchParams, pageNumber, pageSize, sortType);
+		Page<Activity> activitys = activityService.getPassActivity(userId, searchParams, pageNumber, pageSize, sortType);
 
 		model.addAttribute("activitys", activitys);
 		model.addAttribute("sortType", sortType);
@@ -304,10 +304,21 @@ public class ActivityController {
 		model.addAttribute("activity", activity);
 		List<ValueSet> ActivityTypeList = valueSetService.getActivityTypeAll("ActivityType");
 		model.addAttribute("ActivityTypeList", ActivityTypeList);
+		if(new Date().getTime()>activity.getEndDate().getTime())
+		{
+			model.addAttribute("isclose", "Y");
+			activityService.updateActivityClose(id);
+		} 
 
 		return "activity/activityRegister";
 	}
-
+	@RequestMapping(value = "closeActivity/{id}", method = RequestMethod.GET)
+	public String closeActivity(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes,ServletRequest request) { 
+		activityService.updateActivityClose(id); 
+		redirectAttributes.addFlashAttribute("message", "活动结束登记成功");
+		return "redirect:/activity/myfqActivity";
+	}
+	
 	@RequestMapping(value = "registerActivity", method = RequestMethod.POST)
 	public String registerActivity(@Valid Long activityId, RedirectAttributes redirectAttributes, ServletRequest request) {
 		User user = new User(getCurrentUserId());

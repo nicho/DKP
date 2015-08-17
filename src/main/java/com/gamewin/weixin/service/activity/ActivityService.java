@@ -256,7 +256,7 @@ public class ActivityService {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
 		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));
-		filters.put("status", new SearchFilter("status", Operator.EQ, "ConfirmProcess"));
+		
 		User user = userDao.findOne(userId);
 		if ("admin".equals(user.getRoles()) || "Head".equals(user.getRoles())) {
 			filters.put("level", new SearchFilter("level", Operator.GTE, 1));

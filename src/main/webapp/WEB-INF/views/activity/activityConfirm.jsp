@@ -10,7 +10,7 @@
 	<link rel="stylesheet" type="text/css" href="${ctx}/static/easyui/demo.css">
 	<script type="text/javascript" src="${ctx}/static/easyui/jquery.easyui.min.js"></script>
 
-	<title>活动确认</title>
+	<title>积分发放</title>
 	
 	<script lang="javascript" type="text/javascript">
 $(document).ready(function() {
@@ -35,7 +35,7 @@ $(document).ready(function() {
 	<form id="inputForm" action="${ctx}/activity/activityConfirm" method="post" class="form-horizontal">  
 	<input type="hidden" name="activityId" value="${activity.id}">
 		<fieldset>
-			<legend><small>活动确认</small></legend> 
+			<legend><small>积分发放</small></legend> 
 	<div class="hidden-desktop">
 	<div class="control-group">
 				<label class="control-label">活动级别:<c:if test="${activity.fType eq 'PersonalActivities'}">个人活动</c:if> <c:if test="${activity.fType eq 'AssociationActivity'}">公会活动</c:if></label>

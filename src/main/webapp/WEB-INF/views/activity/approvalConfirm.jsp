@@ -19,7 +19,7 @@
 	<input type="hidden" name="activityId" value="${activity.id}">
 	<input type="hidden"  id="approvalStatus" name="approvalStatus" value="">
 		<fieldset>
-			<legend><small>活动确认审核</small></legend> 
+			<legend><small>积分发放审核</small></legend> 
 	<div class="hidden-desktop">
 	<div class="control-group">
 				<label class="control-label">活动级别:<c:if test="${activity.fType eq 'PersonalActivities'}">个人活动</c:if> <c:if test="${activity.fType eq 'AssociationActivity'}">公会活动</c:if></label>

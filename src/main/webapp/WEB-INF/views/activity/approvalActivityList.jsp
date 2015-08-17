@@ -54,10 +54,10 @@
 					<c:if test="${task.status eq 'close'}">活动停止登记</c:if>
 					<c:if test="${task.status eq 'process'}">活动发起审批中</c:if>
 					<c:if test="${task.status eq 'reject'}">活动发起审批拒绝</c:if>
-					<c:if test="${task.status eq 'ConfirmProcess'}">活动确认审批中</c:if>
-					<c:if test="${task.status eq 'ConfirmReject'}">活动确认审批拒绝</c:if>
+					<c:if test="${task.status eq 'ConfirmProcess'}">积分发放审批中</c:if>
+					<c:if test="${task.status eq 'ConfirmReject'}">积分发放审批拒绝</c:if>
 					<c:if test="${task.status eq 'ConfirmPass'}">活动结束</c:if>
-					<c:if test="${task.status eq 'N'}">失效</c:if>
+					<c:if test="${task.status eq 'disabled'}">失效</c:if>
 					<c:if test="${task.status eq 'pass'}">审批通过</c:if>
 					</td>
 					<td>${task.createUser.gameName}</td>

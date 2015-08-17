@@ -2,11 +2,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
 <html>
 <head>
 <title>活动列表</title>
+	<script lang="javascript" type="text/javascript">
+	function deleteTask(id)
+	{
+		if(confirm("确认删除?"))
+		{
+			location.href="${ctx}/activity/delete/"+id;
+		}
+	}
+	</script>
 </head>
 
 <body>
@@ -33,7 +43,8 @@
 				<th>活动说明</th>
 				<th>响应时间</th>
 				<th>状态</th>
-				<th>发起人</th>
+				<th>发起人</th> 
+				<th>积分发放审核人</th>
 				<th>管理</th>
 			</tr>
 		</thead>
@@ -54,17 +65,22 @@
 					<c:if test="${task.status eq 'close'}">活动停止登记</c:if>
 					<c:if test="${task.status eq 'process'}">活动发起审批中</c:if>
 					<c:if test="${task.status eq 'reject'}">活动发起审批拒绝</c:if>
-					<c:if test="${task.status eq 'ConfirmProcess'}">活动确认审批中</c:if>
-					<c:if test="${task.status eq 'ConfirmReject'}">活动确认审批拒绝</c:if>
+					<c:if test="${task.status eq 'ConfirmProcess'}">积分发放审批中</c:if>
+					<c:if test="${task.status eq 'ConfirmReject'}">积分发放审批拒绝</c:if>
 					<c:if test="${task.status eq 'ConfirmPass'}">活动结束</c:if>
-					<c:if test="${task.status eq 'N'}">失效</c:if>
+					<c:if test="${task.status eq 'disabled'}">失效</c:if>
 					<c:if test="${task.status eq 'pass'}">审批通过</c:if>
-					</td>	<td>${task.createUser.gameName}</td>
+					</td>	
+					<td>${task.createUser.gameName}</td>
+					<td>${task.confirmUser.gameName}</td>
 
 					<td><a href="${ctx}/activity/view/${task.id}">查看</a> &nbsp;  
 						 <c:if test="${task.status eq 'ConfirmProcess'}">
-						<a href="${ctx}/activity/approvalConfirm/${task.id}" >审批</a>&nbsp; 
+							<a href="${ctx}/activity/approvalConfirm/${task.id}" >审批</a>&nbsp; 
 						</c:if>
+						<shiro:hasAnyRoles name="admin,Head"> 
+								<a href="#" onclick="deleteTask('${task.id}')">删除</a>&nbsp;  
+						</shiro:hasAnyRoles>
 					</td>
 						
 				</tr>

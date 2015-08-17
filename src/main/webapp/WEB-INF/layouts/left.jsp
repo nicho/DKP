@@ -37,7 +37,7 @@
 		
 		
 		<shiro:hasAnyRoles name="admin,Head,OneLevel,TwoLevel">
-			<a id="myTask" href="${ctx}/activity/approvalConfirmList">活动确认审核</a>
+			<a id="myTask" href="${ctx}/activity/approvalConfirmList">积分发放审核</a>
 			<a id="myTask" href="${ctx}/activity/approvalList">活动发起审核</a>
 		
 		</shiro:hasAnyRoles>

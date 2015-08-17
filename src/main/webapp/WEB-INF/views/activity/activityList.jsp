@@ -30,9 +30,9 @@
 		<thead>
 			<tr>
 				<th>标题</th>
-				<th>活动级别</th>
+				<!-- <th>活动级别</th>
 				<th>活动类型</th>
-				<th>人数规模</th>
+				<th>人数规模</th> -->
 				<th>活动积分</th>
 				<th>活动说明</th>
 				<th>响应时间</th>
@@ -45,11 +45,11 @@
 			<c:forEach items="${activitys.content}" var="task">
 				<tr>
 					<td>${task.title}</td>
-					<td><c:if test="${task.fType eq 'PersonalActivities'}">个人活动</c:if> <c:if test="${task.fType eq 'AssociationActivity'}">公会活动</c:if></td>
+					<!--<td><c:if test="${task.fType eq 'PersonalActivities'}">个人活动</c:if> <c:if test="${task.fType eq 'AssociationActivity'}">公会活动</c:if></td>
 					<td><c:forEach var="list" items="${ActivityTypeList}">
 							<c:if test="${list.id eq task.activityType}">${list.typeName}</c:if>
 						</c:forEach></td>
-					<td>${task.personCount}</td>
+					<td>${task.personCount}</td> -->
 					<td><fmt:formatNumber value="${task.integral}" pattern="##.##"/></td>
 					<td>${task.activityExplain}</td>
 					<td><fmt:formatDate value="${task.startDate}" pattern="yyyy-MM-dd HH:mm:ss" /> 至  <fmt:formatDate value="${task.endDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
@@ -59,10 +59,10 @@
 					<c:if test="${task.status eq 'close'}">活动停止登记</c:if>
 					<c:if test="${task.status eq 'process'}">活动发起审批中</c:if>
 					<c:if test="${task.status eq 'reject'}">活动发起审批拒绝</c:if>
-					<c:if test="${task.status eq 'ConfirmProcess'}">活动确认审批中</c:if>
-					<c:if test="${task.status eq 'ConfirmReject'}">活动确认审批拒绝</c:if>
+					<c:if test="${task.status eq 'ConfirmProcess'}">积分发放审批中</c:if>
+					<c:if test="${task.status eq 'ConfirmReject'}">积分发放审批拒绝</c:if>
 					<c:if test="${task.status eq 'ConfirmPass'}">活动结束</c:if>
-					<c:if test="${task.status eq 'N'}">失效</c:if>
+					<c:if test="${task.status eq 'disabled'}">失效</c:if>
 					
 					</td>
 					<td>${task.createUser.gameName}</td>
@@ -86,11 +86,11 @@
       <li>
         <div class="listleave_text">
           <p><span>标题 </span>${task.title}</p>
-          <p><span>活动级别 </span><c:if test="${task.fType eq 'PersonalActivities'}">个人活动</c:if> <c:if test="${task.fType eq 'AssociationActivity'}">公会活动</c:if></p>
+       <!--   <p><span>活动级别 </span><c:if test="${task.fType eq 'PersonalActivities'}">个人活动</c:if> <c:if test="${task.fType eq 'AssociationActivity'}">公会活动</c:if></p>
           <p><span>活动类型 </span><c:forEach var="list" items="${ActivityTypeList}">
 							<c:if test="${list.id eq task.activityType}">${list.typeName}</c:if>
 						</c:forEach></p>
-          <p><span>人数规模 </span>${task.personCount}</p>
+          <p><span>人数规模 </span>${task.personCount}</p> -->
           <p><span>活动积分 </span><fmt:formatNumber value="${task.integral}" pattern="##.##"/></p>
 		  <p><span>活动说明 </span>${task.activityExplain}</p>
 		  <p><span>响应时间 </span><fmt:formatDate value="${task.startDate}" pattern="yyyy-MM-dd HH:mm:ss" /> </p>
@@ -98,10 +98,10 @@
 		  <p><span>状态 </span><c:if test="${task.status eq 'pass'}">活动进行中</c:if>
 					<c:if test="${task.status eq 'process'}">活动发起审批中</c:if>
 					<c:if test="${task.status eq 'reject'}">活动发起审批拒绝</c:if>
-					<c:if test="${task.status eq 'ConfirmProcess'}">活动确认审批中</c:if>
-					<c:if test="${task.status eq 'ConfirmReject'}">活动确认审批拒绝</c:if>
+					<c:if test="${task.status eq 'ConfirmProcess'}">积分发放审批中</c:if>
+					<c:if test="${task.status eq 'ConfirmReject'}">积分发放审批拒绝</c:if>
 					<c:if test="${task.status eq 'ConfirmPass'}">活动结束</c:if>
-					<c:if test="${task.status eq 'N'}">失效</c:if></p>
+					<c:if test="${task.status eq 'disabled'}">失效</c:if></p>
 		  <p><span>发起人 </span>${task.createUser.gameName}</p> 
 		  <div class="cl"></div>
         </div>

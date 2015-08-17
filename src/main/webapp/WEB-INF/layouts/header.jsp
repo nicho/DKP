@@ -45,7 +45,7 @@
 						<li><a id="account-tab" href="${ctx}/valueSet">活动类型设置</a></li>
 					</shiro:hasAnyRoles>
 					<shiro:hasAnyRoles name="admin,Head,OneLevel,TwoLevel,ThreeLevel">
-						<li><a id="myTask" href="${ctx}/activity/approvalConfirmList">活动确认审核</a></li>
+						<li><a id="myTask" href="${ctx}/activity/approvalConfirmList">积分发放审核</a></li>
 						<li><a id="myTask" href="${ctx}/activity/approvalList">活动申请审核</a></li>
 					</shiro:hasAnyRoles>
 					<li><a id="account-tab" href="${ctx}/profile">资料修改</a></li>

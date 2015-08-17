@@ -56,8 +56,8 @@
 					<c:if test="${task.activity.status eq 'pass'}">活动进行中</c:if>
 					<c:if test="${task.activity.status eq 'process'}">活动发起审批中</c:if>
 					<c:if test="${task.activity.status eq 'reject'}">活动发起审批拒绝</c:if>
-					<c:if test="${task.activity.status eq 'ConfirmProcess'}">活动确认审批中</c:if>
-					<c:if test="${task.activity.status eq 'ConfirmReject'}">活动确认审批拒绝</c:if>
+					<c:if test="${task.activity.status eq 'ConfirmProcess'}">积分发放审批中</c:if>
+					<c:if test="${task.activity.status eq 'ConfirmReject'}">积分发放审批拒绝</c:if>
 					<c:if test="${task.activity.status eq 'ConfirmPass'}">活动结束</c:if>
 					<c:if test="${task.activity.status eq 'N'}">失效</c:if> 
 					</td>

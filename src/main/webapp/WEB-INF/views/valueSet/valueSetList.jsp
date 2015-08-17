@@ -35,7 +35,7 @@
 				<td>${task.typeExplain}</td>  
 				<td> 
 				<c:if test="${task.status eq 'Y'}">有效</c:if>
-				<c:if test="${task.status eq 'N'}">失效</c:if>
+				<c:if test="${task.status eq 'disabled'}">失效</c:if>
 				</td> 
 				<td> 
 				 <c:if test="${task.status eq 'Y'}"><a href="#" onclick ="confirmDisabled('${ctx}/gameCode/disabled/${task.id}')">失效</a> 

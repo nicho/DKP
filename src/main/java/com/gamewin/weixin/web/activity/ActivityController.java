@@ -17,6 +17,8 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -206,16 +208,26 @@ public class ActivityController {
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 		return user.id;
 	}
-
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(value = "disabled/{id}")
 	public String disabled(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
 		Activity activity = activityService.getActivity(id);
 		activity.setStatus("disabled");
 		activityService.saveActivity(activity);
 		redirectAttributes.addFlashAttribute("message", "失效任务'" + activity.getTitle() + "'成功");
-		return "redirect:/activity/";
+		return "redirect:/activity/approvalConfirmList/";
 	}
-
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
+	@RequestMapping(value = "delete/{id}")
+	public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+		Activity activity = activityService.getActivity(id);
+		activity.setStatus("disabled");
+		activity.setIsdelete(1);
+		activityService.saveActivity(activity);
+		redirectAttributes.addFlashAttribute("message", "删除任务'" + activity.getTitle() + "'成功");
+		return "redirect:/activity/approvalConfirmList/";
+	}
+	
 	@RequestMapping(value = "view/{id}", method = RequestMethod.GET)
 	public String view(@PathVariable("id") Long id, Model model, ServletRequest request) {
 

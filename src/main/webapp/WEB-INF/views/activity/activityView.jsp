@@ -22,25 +22,12 @@
 		<fieldset>
 			<legend><small>查看活动</small></legend>
 			<div class="hidden-desktop">
-	<div class="control-group">
-				<label class="control-label">活动级别:<c:if test="${activity.fType eq 'PersonalActivities'}">个人活动</c:if> <c:if test="${activity.fType eq 'AssociationActivity'}">公会活动</c:if></label>
-
-			</div>
+	 
 			<div class="control-group">
 				<label class="control-label">标题:${activity.title}</label>
 
 			</div>
-			<div class="control-group">
-				<label class="control-label">活动类型:<c:forEach var="list" items="${ActivityTypeList}">
-						<c:if test="${activity.activityType eq list.id}">  ${list.typeName} </c:if>
-					</c:forEach>
-				</label>
-
-			</div>
-			<div class="control-group">
-				<label class="control-label">人数规模:${activity.personCount}</label>
-
-			</div>
+		 
 			<div class="control-group">
 				<label for="task_title" class="control-label">开始时间:<fmt:formatDate value="${activity.startDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss" /></label>
 
@@ -60,33 +47,14 @@
 </div>
 
 <div class="visible-desktop"> 
-			 <div class="control-group">
-				<label class="control-label">活动级别:</label>
-				<div class="controls">
-					<c:if test="${activity.fType eq 'PersonalActivities'}">个人活动</c:if> <c:if test="${activity.fType eq 'AssociationActivity'}">公会活动</c:if>
-					
-				</div>
-			</div> 
+			 
 		    <div class="control-group">
 				<label class="control-label">标题:</label>
 				<div class="controls">
 					${activity.title}
 				</div>
 			</div>
-		 <div class="control-group">
-				<label class="control-label">活动类型:</label>
-				<div class="controls"> 
-						<c:forEach var="list" items="${ActivityTypeList}"> 
-							<c:if test="${activity.activityType eq list.id}">  ${list.typeName} </c:if>
-						</c:forEach> 
-				</div>
-			</div>
-		    <div class="control-group">
-				<label class="control-label">人数规模:</label>
-				<div class="controls"> 
-					${activity.personCount}
-				</div>
-			</div>
+	 
 			 <div class="control-group">
 				<label for="task_title" class="control-label">开始时间:</label>
 				<div class="controls">

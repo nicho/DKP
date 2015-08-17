@@ -57,8 +57,7 @@
 					<c:if test="${task.status eq 'ConfirmProcess'}">积分发放审批中</c:if>
 					<c:if test="${task.status eq 'ConfirmReject'}">积分发放审批拒绝</c:if>
 					<c:if test="${task.status eq 'ConfirmPass'}">活动结束</c:if>
-					<c:if test="${task.status eq 'disabled'}">失效</c:if>
-					<c:if test="${task.status eq 'pass'}">审批通过</c:if>
+					<c:if test="${task.status eq 'disabled'}">失效</c:if> 
 					</td>
 					<td>${task.createUser.gameName}</td>
 

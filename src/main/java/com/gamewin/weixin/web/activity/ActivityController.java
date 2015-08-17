@@ -227,7 +227,16 @@ public class ActivityController {
 		redirectAttributes.addFlashAttribute("message", "删除任务'" + activity.getTitle() + "'成功");
 		return "redirect:/activity/approvalConfirmList/";
 	}
-	
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
+	@RequestMapping(value = "deleteindex/{id}")
+	public String deleteindex(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+		Activity activity = activityService.getActivity(id);
+		activity.setStatus("disabled");
+		activity.setIsdelete(1);
+		activityService.saveActivity(activity);
+		redirectAttributes.addFlashAttribute("message", "删除任务'" + activity.getTitle() + "'成功");
+		return "redirect:/activity/";
+	}
 	@RequestMapping(value = "view/{id}", method = RequestMethod.GET)
 	public String view(@PathVariable("id") Long id, Model model, ServletRequest request) {
 

@@ -79,7 +79,7 @@
 		   <div class="control-group" id="jifenDiv" style="display:none;">
 				<label class="control-label">活动积分:</label>
 				<div class="controls">
-					<input type="text" id="integral" name="integral" value="${user.integral}" class="input-large required digits"/>
+					<input type="text" id="integral" name="integral" value="${user.integral}" class="input-large required digits" min="3"/>
 				</div>
 			</div>
 			

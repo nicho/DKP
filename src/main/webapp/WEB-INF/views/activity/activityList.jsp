@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
 <html>
@@ -9,6 +10,16 @@
 <title>最近活动列表</title>
 
 <link href="${ctx}/static/styles/dkp.css" type="text/css" rel="stylesheet" />
+
+	<script lang="javascript" type="text/javascript">
+	function deleteTask(id)
+	{
+		if(confirm("确认删除?"))
+		{
+			location.href="${ctx}/activity/deleteindex/"+id;
+		}
+	}
+	</script>
 </head>
 
 <body>
@@ -71,6 +82,10 @@
 						<a href="${ctx}/activityUser/list/${task.id}">已登记的会员</a>  &nbsp;  
 						<c:if test="${task.status eq 'pass'}">
 						<a href="${ctx}/activity/registerActivity/${task.id}">参与活动</a>  &nbsp;  </c:if>
+						
+					    <shiro:hasAnyRoles name="admin,Head"> 
+								<a href="#" onclick="deleteTask('${task.id}')">删除</a>&nbsp;  
+						</shiro:hasAnyRoles>
 					</td>
 						
 				</tr>

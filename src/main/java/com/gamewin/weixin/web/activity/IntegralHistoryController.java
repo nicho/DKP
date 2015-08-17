@@ -5,13 +5,10 @@
  *******************************************************************************/
 package com.gamewin.weixin.web.activity;
 
-import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
-import javax.validation.Valid;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springside.modules.web.Servlets;
 
 import com.gamewin.weixin.entity.IntegralHistory;
@@ -70,7 +66,10 @@ public class IntegralHistoryController {
 			ServletRequest request) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		 
-
+		User u=accountService.getUser(id);
+		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
+		user.setIntegral(u.getIntegral());
+		
 		Page<IntegralHistory> integralHistorys = integralHistoryService.getAllIntegralHistory(id, searchParams,
 				pageNumber, pageSize, sortType);
 

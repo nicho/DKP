@@ -102,6 +102,9 @@ public class ShiroDbRealm extends AuthorizingRealm {
 		public String getIntegral() {
 			return StringUtil.subZeroAndDot(((double)Math.floor(integral*100))/100+"");
 		}
+		public void setIntegral(Double integral) {
+			this.integral=integral;
+		}
 		public Long getId() {
 			return id;
 		}

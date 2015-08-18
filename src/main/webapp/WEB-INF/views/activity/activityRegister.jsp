@@ -10,82 +10,41 @@
 <link rel="stylesheet" type="text/css" href="${ctx}/static/easyui/themes/icon.css">
 <link rel="stylesheet" type="text/css" href="${ctx}/static/easyui/demo.css">
 <script type="text/javascript" src="${ctx}/static/easyui/jquery.easyui.min.js"></script>
+<link href="${ctx}/static/styles/dkp.css" type="text/css" rel="stylesheet" />
 
 <title>活动登记</title>
 </head>
 
 <body>
 	<form id="inputForm" action="${ctx}/activity/registerActivity" method="post" class="form-horizontal">
-		<input type="hidden" name="activityId" value="${activity.id}">
+		<input type="hidden" name="activityId" value="${activity.id}"> 
+		   
 		<fieldset>
 			<legend>
 				<small>活动登记</small>
 			</legend>
-<div class="hidden-desktop">
-	 
-			<div class="control-group">
-				<label class="control-label">标题:${activity.title}</label>
-
-			</div>
+			
+ <div class="bodycss">
+  <div class="view_box">
+    <ul>
+      <li><span>标题 </span>${activity.title}</li>
+      <li><span>开始时间 </span><fmt:formatDate value="${activity.startDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss" /></li>
+      <li><span>结束时间 </span><fmt:formatDate value="${activity.endDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss" /></li>
+      <li><span>活动积分 </span> ${activity.integral} </li> 
+      <li><span>活动说明 </span>
+        <div class="fl divwidth">${activity.activityExplain} </div>
+      </li>
+      <div class="cl"></div>
+    </ul> 
+  <div class="onebtn"> 
+    		 <c:if test="${isclose eq 'Y'}"><a href="${ctx}/activity">活动已停止登记,点击进入最近活动列表</a></c:if>
+			 <c:if test="${isclose != 'Y'}"><input id="submit_btn" class="orangebtn" type="submit" value="活动登记" />&nbsp;</c:if>
+  </div>
+    <div class="cl"></div>
+  </div> 
 		 
-			<div class="control-group">
-				<label for="task_title" class="control-label">开始时间:<fmt:formatDate value="${activity.startDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss" /></label>
-
-			</div>
-			<div class="control-group">
-				<label for="task_title" class="control-label">结束时间:<fmt:formatDate value="${activity.endDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss" /></label>
-
-			</div>
-			<div class="control-group">
-				<label class="control-label">活动积分: ${activity.integral}</label>
-
-			</div>
-			<div class="control-group">
-				<label for="description" class="control-label">活动说明:${activity.activityExplain}</label>
-
-			</div>
-</div>
-
-<div class="visible-desktop"> 
-			 
-		    <div class="control-group">
-				<label class="control-label">标题:</label>
-				<div class="controls">
-					${activity.title}
-				</div>
-			</div>
-		 
-			 <div class="control-group">
-				<label for="task_title" class="control-label">开始时间:</label>
-				<div class="controls">
-					${activity.startDate}
-				</div>
-			</div>	
-			 <div class="control-group">
-				<label for="task_title" class="control-label">结束时间:</label>
-				<div class="controls">
-				<fmt:formatDate  value="${activity.endDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss" />
-				</div>
-			</div>	
-									 <div class="control-group">
-				<label class="control-label">活动积分:</label>
-				<div class="controls">
-					${activity.integral}
-				</div>
-			</div>
-			<div class="control-group">
-				<label for="description" class="control-label">活动说明:</label>
-				<div class="controls">
-					 ${activity.activityExplain} 
-				</div>
-			</div>	
-
-		</div>		
-			<div class="form-actions">
-				<c:if test="${isclose eq 'Y'}"><a href="${ctx}/activity">活动已停止登记,点击进入最近活动列表</a></c:if>
-				<c:if test="${isclose != 'Y'}"><input id="submit_btn" class="btn btn-primary" type="submit" value="活动登记" />&nbsp;</c:if>
-				
-			</div>
+		  
+</div> 
 		</fieldset>
 	</form>
 	<script>

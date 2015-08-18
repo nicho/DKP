@@ -15,26 +15,27 @@
 
 <body>
 	<form id="inputForm" action="${ctx}/exchangeIntegral/${action}" method="post" class="form-horizontal">  
+	<input type="hidden" id="id" name="id" value="${exchangeIntegral.id}"  />
 		<fieldset>
 			<legend><small>可兑换积分登记</small></legend>
 			 
 		    <div class="control-group">
 				<label class="control-label">物品名称:</label>
 				<div class="controls">
-					<input type="text" id="goodsName" name="goodsName" value="" class="input-large required"/>
+					<input type="text" id="goodsName" name="goodsName" value="${exchangeIntegral.goodsName}" class="input-large required"/>
 				</div>
 			</div>
 					    <div class="control-group">
 				<label class="control-label">可兑换积分:</label>
 				<div class="controls">
-					<input type="text" id="integral" name="integral" value="" class="input-large required number"/>
+					<input type="text" id="integral" name="integral" value="${exchangeIntegral.integral}" class="input-large required number"/>
 				</div>
 			</div>   
 				  
 			<div class="control-group">
 				<label for="description" class="control-label">描述:</label>
 				<div class="controls">
-					<textarea id="codes" rows="5" name="description" style="  width: 500px;"  class="input-large"></textarea>
+					<textarea id="codes" rows="5" name="description" style="  width: 500px;"  class="input-large">${exchangeIntegral.description}</textarea>
 				</div>
 			</div>	
 			

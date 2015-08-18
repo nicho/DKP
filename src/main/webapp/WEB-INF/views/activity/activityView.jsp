@@ -9,6 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="${ctx}/static/easyui/themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="${ctx}/static/easyui/demo.css">
 	<script type="text/javascript" src="${ctx}/static/easyui/jquery.easyui.min.js"></script>
+	<link href="${ctx}/static/styles/dkp.css" type="text/css" rel="stylesheet" />
 
 	<title>查看活动</title>
 </head>
@@ -21,80 +22,35 @@
 	<form id="inputForm" action="${ctx}/activity/${action}" method="post" class="form-horizontal">  
 		<fieldset>
 			<legend><small>查看活动</small></legend>
-			<div class="hidden-desktop">
-	 
-			<div class="control-group">
-				<label class="control-label">标题:${activity.title}</label>
-
-			</div>
+			
+ <div class="bodycss">
+  <div class="view_box">
+    <ul>
+      <li><span>标题 </span>${activity.title}</li>
+      <li><span>开始时间 </span><fmt:formatDate value="${activity.startDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss" /></li>
+      <li><span>结束时间 </span><fmt:formatDate value="${activity.endDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss" /></li>
+      <li><span>活动积分 </span> ${activity.integral} </li> 
+      <li><span>活动说明 </span>
+        <div class="fl divwidth">${activity.activityExplain} </div>
+      </li>
+       <c:if test="${activity.status eq 'pass'}">
+       <li><span>网站链接 </span>
+        <a href="#" onclick="window.open('${activity.webUrl}')">${activity.webUrl}</a>  
+      </li>
+       <li><span>二维码 </span>
+        <div class="fl divwidth"><img src="${HttpImageUrl}/image/${activity.qrCodeUrl}" width="350px" height="350px"/> </div>
+      </li>
+      </c:if>
+      
+      <div class="cl"></div>
+    </ul> 
+ 
+    <div class="cl"></div>
+  </div> 
 		 
-			<div class="control-group">
-				<label for="task_title" class="control-label">开始时间:<fmt:formatDate value="${activity.startDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss" /></label>
-
-			</div>
-			<div class="control-group">
-				<label for="task_title" class="control-label">结束时间:<fmt:formatDate value="${activity.endDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss" /></label>
-
-			</div>
-			<div class="control-group">
-				<label class="control-label">活动积分: ${activity.integral}</label>
-
-			</div>
-			<div class="control-group">
-				<label for="description" class="control-label">活动说明:${activity.activityExplain}</label>
-
-			</div>
-</div>
-
-<div class="visible-desktop"> 
+		  
+</div> 
 			 
-		    <div class="control-group">
-				<label class="control-label">标题:</label>
-				<div class="controls">
-					${activity.title}
-				</div>
-			</div>
-	 
-			 <div class="control-group">
-				<label for="task_title" class="control-label">开始时间:</label>
-				<div class="controls">
-					${activity.startDate}
-				</div>
-			</div>	
-			 <div class="control-group">
-				<label for="task_title" class="control-label">结束时间:</label>
-				<div class="controls">
-				<fmt:formatDate  value="${activity.endDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss" />
-				</div>
-			</div>	
-									 <div class="control-group">
-				<label class="control-label">活动积分:</label>
-				<div class="controls">
-					${activity.integral}
-				</div>
-			</div>
-			<div class="control-group">
-				<label for="description" class="control-label">活动说明:</label>
-				<div class="controls">
-					 ${activity.activityExplain} 
-				</div>
-			</div>	
-
-		</div>	
-			 <c:if test="${activity.status eq 'pass'}">
-		  <div class="control-group">
-				<label class="control-label">网站链接:</label>
-				<div class="controls">
-					<a href="#" onclick="window.open('${activity.webUrl}')">${activity.webUrl}</a>
-				</div>
-			</div>
-		 <div class="control-group">
-				<label class="control-label">二维码:</label>
-				<div class="controls">
-					 <img src="${HttpImageUrl}/image/${activity.qrCodeUrl}" width="350px" height="350px"/>
-				</div>
-			</div>
-	 </c:if>
 		</fieldset>
 	</form>
 	<script>

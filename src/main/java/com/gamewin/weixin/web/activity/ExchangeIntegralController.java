@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -129,6 +130,27 @@ public class ExchangeIntegralController {
 		redirectAttributes.addFlashAttribute("message", "删除兑换物品'" + exchangeIntegral.getGoodsName() + "'成功");
 		return "redirect:/exchangeIntegral/";
 	}
-	 
+	
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
+	@RequestMapping(value = "update/{id}", method = RequestMethod.GET)
+	public String updateForm(@PathVariable("id") Long id, Model model) {
+		model.addAttribute("exchangeIntegral", exchangeIntegralService.getExchangeIntegral(id)); 
+		model.addAttribute("action", "update"); 
+		return "exchangeIntegral/exchangeIntegralForm"; 
+	}
+
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
+	@RequestMapping(value = "update", method = RequestMethod.POST) 
+	public String update(@Valid @ModelAttribute("newExchangeIntegral") ExchangeIntegral newExchangeIntegral, RedirectAttributes redirectAttributes, ServletRequest request) { 
+		 User user = new User(getCurrentUserId()); 
+		newExchangeIntegral.setCteateUser(user);
+		newExchangeIntegral.setCteateDate(new Date()); 
+		newExchangeIntegral.setIsdelete(0);
+		newExchangeIntegral.setStatus("Y");
+		exchangeIntegralService.saveExchangeIntegral(newExchangeIntegral);
+		redirectAttributes.addFlashAttribute("message", "更新兑换物品成功");
+		return "redirect:/exchangeIntegral/";
+	}
+
 
 }

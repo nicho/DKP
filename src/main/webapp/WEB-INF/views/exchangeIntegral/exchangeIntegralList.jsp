@@ -47,6 +47,7 @@
 					<td>
 					<shiro:hasAnyRoles name="admin,Head">
 					<a href="#" onclick="confirmDelete('${ctx}/exchangeIntegral/delete/${task.id}')">删除</a>&nbsp;
+					<a href="${ctx}/exchangeIntegral/update/${task.id}" >修改</a>&nbsp;
 					</shiro:hasAnyRoles>
 					<a href="${ctx}/exchangeIntegralApply/create/${task.id}"  >申请贡献</a>&nbsp;
 					</td>

@@ -123,7 +123,12 @@
 		<div class="morebtn">
 		<input name="" type="button" class="orangebtn2" value="查看" onClick="location.href='${ctx}/activity/view/${task.id}'">
 		<input name="" type="button" class="orangebtn2" value="已登记的会员" onClick="location.href='${ctx}/activityUser/list/${task.id}'">
-		<input name="" type="button" class="orangebtn2" value="参与活动" onClick="location.href='${ctx}/activity/registerActivity/${task.id}'">
+		<c:if test="${task.status eq 'pass'}">
+	    	<input name="" type="button" class="orangebtn2" value="参与活动" onClick="location.href='${ctx}/activity/registerActivity/${task.id}'">
+		</c:if>
+		 <shiro:hasAnyRoles name="admin,Head"> 
+			<input name="" type="button" class="orangebtn2" value="删除" onClick="deleteTask('${task.id}')"> 
+	     </shiro:hasAnyRoles>
 		 
 		</div>
    		

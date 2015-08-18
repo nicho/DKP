@@ -1,6 +1,62 @@
 @charset "utf-8";
 /* CSS Document*/
  
+.bodycss{ padding:0px;margin:0px; width:100%;overflow-x:hidden;}
+.logindiv{ margin:0px auto;width:80%; }
+.loge{margin:0px auto; width:200px; padding-top:30px; padding-bottom:20px;}
+.loge img{ width:200px;}
+.loginpic{margin:0px auto 30px auto; width:100%; clear:both; padding-top:5px;}
+.loginpic img{ width:100%;}
+.loginbox{margin:0px auto; width:100%;}
+.loginbox img{width:100%;}
+.loginbox p{ margin-bottom:16px; font-size:14px; line-height:20px;}
+.loginbox p .link a{color: #000000;text-decoration: underline;font-size:14px;}
+.loginbox p .link a:hover{color: #FF9900;text-decoration: underline;font-size:14px;}
+
+.orangebtn{width:100% !important; height:40px;background:#86a7f8;border-radius:5px;border:1px solid #86a7f8;cursor:pointer;font-size:15px; text-align:center;color:#fff; font-weight:bold;-moz-border-radius:5px;}
+.orangebtn:hover{width:100%; height:40px;background:#ff6600;border-radius:5px;border:1px solid #ff6600;cursor:pointer;text-align:center;font-size:15px;-moz-border-radius:5px;}
+.medium-input{width:100%;height:36px; line-height:36px;border: 1px solid #CCCCCC;border-top-color: #666666; color:#999999;font-size:14px; padding:0px; }
+.userico{background: #FFFFFF url(../images/user_ico.png) no-repeat 8px center; text-indent:35px;}
+.passwordico{background: #FFFFFF url(../images/password.png) no-repeat 8px center;text-indent:35px;}
+.checkbox{ margin-right:5px; position:relative; top:1px;}
+
+.added_box{width:100%;padding:0px;color:#333;}
+.added_box ul{margin:15px 0px 15px 0px;border-top:1px solid #ccc;border-bottom:1px solid #ccc;background:#fff;}
+.added_box ul li{ border:0px;font-size:15px; margin:5px 0px;line-height:24px;padding:4px 8px;}
+.added_box ul li span{float:left; width:28%; line-height:20px;font-size:15px; color:#666; text-align:right; margin-right:5px; font-weight:bold; padding-top:3px;}
+.added_box select{ padding:0px; height:28px; width:68%;font-size:14px;border:1px solid #ccc;}
+.added_box input{width:67%; font-size:15px; text-indent:5px; border:1px solid #ccc;height:26px;-moz-border-radius:5px;border-radius:5px;}
+.added_box input.chekbox{width: auto;}
+.textarea{ border:0px;border-top:1px solid #ccc;border-bottom:1px solid #ccc;background:#fff;}
+.textarea textarea{border:0px; height:80px; width:99%; text-indent:8px; padding:8px 0px; color:#666666; font-size:14px;}
+
+.twobtn{ margin:15px 15px 15px 15px;}
+.twobtn2{ margin:15px 10px; text-align:center;}
+.graybtn{width:46% !important;; height:40px;background:#eec68d;border-radius:5px;border:1px solid #eec68d;cursor:pointer;font-size:15px; text-align:center;color:#fff; font-weight:bold;-moz-border-radius:5px; float:left}
+.graybtn:hover{width:46%; height:40px;background:#ff6600;order-radius:5px;border:1px solid #ff6600;cursor:pointer;text-align:center;-moz-border-radius:5px;font-size:15px;}
+
+
+.graybtn2{width:46% !important;; height:40px;background:#eec68d;border-radius:5px;border:1px solid #eec68d;cursor:pointer;font-size:15px; text-align:center;color:#fff; font-weight:bold;-moz-border-radius:5px;}
+.graybtn2:hover{width:46%; height:40px;background:#ff6600;order-radius:5px;border:1px solid #ff6600;cursor:pointer;text-align:center;-moz-border-radius:5px;font-size:15px;}
+
+.brownbtn2{width:46% !important;; height:40px;background:#86a7f8;border-radius:5px;border:1px solid #86a7f8;cursor:pointer;font-size:15px; text-align:center;color:#fff; font-weight:bold;-moz-border-radius:5px;}
+.brownbtn2:hover{width:46%; height:40px;background:#ff6600;border-radius:5px;border:1px solid #ff6600;cursor:pointer;text-align:center;-moz-border-radius:5px;font-size:15px;}
+
+.brownbtn{width:46% !important;; height:40px;background:#86a7f8;border-radius:5px;border:1px solid #86a7f8;cursor:pointer;font-size:15px; text-align:center;color:#fff; font-weight:bold;-moz-border-radius:5px; float:right}
+.brownbtn:hover{width:46%; height:40px;background:#ff6600;border-radius:5px;border:1px solid #ff6600;cursor:pointer;text-align:center;-moz-border-radius:5px;font-size:15px;}
+
+.view_box{}
+.view_box{width:100%;padding:0px;color:#333;}
+.view_box ul{margin:15px 0px 15px 0px;border-top:1px solid #ccc;border-bottom:1px solid #ccc;padding:10px 0px;background:#fff;}
+.view_box ul li{ border:0px;font-size:14px; margin:0px;line-height:24px;padding:2px 8px; }
+.view_box ul li span{float:left; width:35%; line-height:20px;display:block; font-size:14px; color:#666; text-align:right; margin-right:5px;font-weight:bold;}
+.divwidth{ width:62%}
+
+.graybar{ width:100%;background:#eee;border-top:1px solid #ccc;border-bottom:1px solid #ccc; height:48px; line-height:48px; text-indent:12px; font-size:15px;cursor:pointer;}
+.arrow{ float:right; margin-right:15px; margin-top:6px;}
+.arrow img{ width:24px; height:24px;}
+.onebtn{margin:0px 15px 15px 15px;}
+ 
 .listleave_box{}
 .listleave_box ul{ width:100%;float:left;background:#fff;}
 .listleave_box ul li{border-bottom:1px solid #ccc;background:#fff; line-height:20px; font-size:14px;float:left; width:100%;}
@@ -120,3 +176,17 @@
 
 .smbtn{width:46%; height:40px;background:#eec68d url(../images/shaoma.png) no-repeat 3px 2px;border-radius:5px;border:1px solid #eec68d;cursor:pointer;font-size:15px; text-align:center;color:#fff; font-weight:bold;-moz-border-radius:5px; float:left}
 .smbtn:hover{width:46%; height:40px;background:#ff6600 url(../images/shaoma.png) no-repeat 3px 2px;order-radius:5px;border:1px solid #ff6600;cursor:pointer;text-align:center;-moz-border-radius:5px;font-size:15px;}
+
+
+
+.alinkBtn{  background: #fff;
+  margin: 10px;
+  border: 1px solid #ccc;
+  color: #333;
+  border-radius: .25em;
+  display: block;
+  height: 36px;
+  width: 90%;
+  line-height: 36px;
+  text-transform: uppercase;
+  font: inherit;}

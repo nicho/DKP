@@ -5,6 +5,7 @@
  *******************************************************************************/
 package com.gamewin.weixin.service.activity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -128,7 +129,9 @@ public class ActivityService {
 		if (userList != null && userList.size() > 0) {
 			activityDao.save(entity);
 			Double integer = entity.getIntegral();
-			Double pInteger = integer / userList.size();
+			Double pInteger = integer / userList.size(); 
+	        BigDecimal bd = new BigDecimal(pInteger);  
+	        pInteger=bd.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();  //保留2位小数 
 			for (int i = 0; i < userList.size(); i++) {
 				User user = userList.get(i);
 				user.setIntegral(user.getIntegral() + pInteger);
@@ -162,6 +165,8 @@ public class ActivityService {
 			if (userList != null && userList.size() > 0) {
 				Double integer = entity.getIntegral();
 				Double pInteger = integer / userList.size();
+		        BigDecimal bd = new BigDecimal(pInteger);  
+		        pInteger=bd.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();  //保留2位小数 
 				for (int i = 0; i < userList.size(); i++) {
 					User user = userList.get(i);
 					user.setIntegral(user.getIntegral() + pInteger);

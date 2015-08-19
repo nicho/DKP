@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -361,12 +364,82 @@ public class MobileHttpClient {
 
 		}
 	 
-	 
+	 /**
+	  * 创建菜单
+	  * @param access_token
+	  * @param manageQRcodeId
+	  * @return
+	  * @throws Exception
+	  */
+	 public static void createMenu(String access_token) throws Exception {
+			 
+			CloseableHttpClient httpclient = HttpClients.createDefault();
+			try {
+				HttpPost httpPost = new HttpPost("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + access_token);
+
+				JSONObject jsonObj = new JSONObject(); 
+				JSONObject jsonObj2 = new JSONObject(); 
+				jsonObj2.put("name", "我的公会"); 
+				jsonObj2.put("key", "mydkp"); 
+				jsonObj2.put("type", "view"); 
+				jsonObj2.put("url", "http://dkp.lihentian.com/DKP/"); 
+				
+				JSONArray  array = new JSONArray(); 
+				array.put(jsonObj2);
+				
+				jsonObj.put("button",array);
+				StringEntity entity = new StringEntity(jsonObj.toString(), "UTF-8");
+
+				httpPost.setEntity(entity);
+
+				CloseableHttpResponse response1 = httpclient.execute(httpPost);
+				JSONObject resultJsonObject = null;
+				try {
+
+					HttpEntity httpEntity = response1.getEntity();
+
+					if (httpEntity != null) {
+						try {
+							BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpEntity.getContent(), "UTF-8"), 8 * 1024);
+							StringBuilder entityStringBuilder = new StringBuilder();
+							String line = null;
+							while ((line = bufferedReader.readLine()) != null) {
+								entityStringBuilder.append(line);
+							}
+							// 利用从HttpEntity中得到的String生成JsonObject
+							resultJsonObject = new JSONObject(entityStringBuilder.toString());
+							 System.out.println(entityStringBuilder.toString());
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+
+				} finally {
+					response1.close();
+				}
+			} finally {
+				httpclient.close();
+			}
+		 
+
+		}
 	 public static void main(String[] args) {
 		 try {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+				String nowDate = sdf.format(new Date());
+
+				String imageUrl = "6-42.jpg";
+				String url = MobileContants.YM + "/activity/registerActivity/42"; //
+
+				
+				
+				String wxurl =  MobileContants.IMAGEURL+nowDate+"\\" + imageUrl; // 
+				
 			String access_token=getAccessToken();
-			//getWinXinUserInfo(access_token, "or7XwwEpjASO9A5_skvnDf729nJ4");
-			sendWinXinMessage(access_token, "or7XwwEpjASO9A5_skvnDf729nJ4", "测试内容", "系统通知", "https://open.weixin.qq.com/connect/oauth2/authorize");
+			//createMenu(access_token);
+			String ticket = MobileHttpClient.getJsapi_ticket_WeixinLs(access_token, new Long(42));
+			MobileHttpClient.getticketImage(URLEncoder.encode(ticket, "UTF-8"), wxurl);
+			//sendWinXinMessage(access_token, "or7XwwEpjASO9A5_skvnDf729nJ4", "测试内容", "系统通知", "https://open.weixin.qq.com/connect/oauth2/authorize");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

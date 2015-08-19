@@ -41,7 +41,6 @@ import com.gamewin.weixin.service.activity.ActivityUserService;
 import com.gamewin.weixin.service.valueSet.ValueSetService;
 import com.gamewin.weixin.util.MobileContants;
 import com.gamewin.weixin.util.MobileHttpClient;
-import com.gamewin.weixin.web.util.QRCodeUtil;
 import com.google.common.collect.Maps;
 
 /**
@@ -281,10 +280,11 @@ public class ActivityController {
 		
 		String wxurl =  MobileContants.IMAGEURL+nowDate+"\\" + imageUrl; // 
 		
-		String AccessToken = activityService.getAccessToken(); 
-		
+		//String AccessToken = activityService.getAccessToken(); 
+  
 		
 		try {
+			String AccessToken = MobileHttpClient.getAccessToken();
 			//QRCodeUtil.createEncode(url, null, filePath + nowDate, imageUrl);
 			String ticket = MobileHttpClient.getJsapi_ticket_WeixinLs(AccessToken, entity.getId());
 			MobileHttpClient.getticketImage(URLEncoder.encode(ticket, "UTF-8"), wxurl);

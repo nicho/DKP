@@ -227,30 +227,9 @@ public class ApiListController {
 					+ "&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
 
 			String xxxx = inputMsg.getContent().toString();
-			String content = "";
-			if (xxxx.indexOf("绑定DKP") != -1) {
-
-				str.append("<xml>                                              ");
-				str.append("<ToUserName><![CDATA[" + custermname + "]]></ToUserName>        ");
-				str.append("<FromUserName><![CDATA[" + servername + "]]></FromUserName>  ");
-				str.append("<CreateTime>" + returnTime + "</CreateTime>                  ");
-				str.append("<MsgType><![CDATA[news]]></MsgType>                ");
-				str.append("<ArticleCount>1</ArticleCount>                     ");
-				str.append("<Articles>                                         ");
-				str.append("<item>                                             ");
-				str.append("<Title><![CDATA[绑定DKP帐号通知]]></Title>                   ");
-				str.append("<Description><![CDATA[绑定DKP号,请点击阅读全文,进行绑定]]></Description> ");
-				str.append("<PicUrl><![CDATA[]]></PicUrl>                ");
-				str.append("<Url><![CDATA[" + url + "]]></Url>                         ");
-				str.append("</item>                                            ");
-				str.append("</Articles>                                        ");
-				str.append("</xml>                                             ");
-
-				System.out.println(str.toString());
-				response.getWriter().write(str.toString());
-			} else { 
-				 
-				 content = " 小K暂时不明白您的意思哟。\n 敬请期待。如果想绑定DKP账号,请向我发送'绑定DKP'哦~~";
+			String content = ""; 
+			
+				 content = " 小K暂时不明白您的意思哟。\n 敬请期待。";
 				 
 				 
 				str.append("<xml>                                              ");
@@ -262,7 +241,7 @@ public class ApiListController {
 				str.append("</xml>                                             ");
 				System.out.println(str.toString());
 				response.getWriter().write(str.toString());
-			}
+			 
 
 		}
 

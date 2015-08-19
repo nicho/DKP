@@ -24,18 +24,12 @@
 <script src="${ctx}/static/jquery-validation/1.11.1/jquery.validate.min.js" type="text/javascript"></script>
 <script src="${ctx}/static/jquery-validation/1.11.1/messages_bs_zh.js" type="text/javascript"></script> 
 <script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
+<link href="${ctx}/static/styles/dkp.css" type="text/css" rel="stylesheet" />
 </head>
 
 <body> 
-	<div class="container" style="width:50%">
-	<div id="header" style="border-bottom: 0 solid #658a16;">
-	<div id="title">
-	    <h1><a href="${ctx}">《DKP》公会系统</a><small>--离恨天</small> </h1>  
-	</div>
-</div>
-		<div id="content" >
-			<form id="loginForm" action="${ctx}/login" method="post" class="form-horizontal">
-	    <c:if test="${not empty message}">
+ <form id="loginForm" action="${ctx}/login" method="post" class="form-horizontal">
+   <c:if test="${not empty message}">
 	     <div class="alert alert-success controls input-large">
 			<button data-dismiss="alert" class="close">×</button>${message}</div>
 		</c:if>
@@ -61,28 +55,23 @@
 			}
 		%>
 		<br>
-		<div class="control-group">
-			<label for="username" class="control-label">登录名:</label>
-			<div class="controls">
-				<input type="text" id="username" name="username"  value="${username}" class="input-medium required"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label for="password" class="control-label">密码:</label>
-			<div class="controls">
-				<input type="password" id="password" name="password" class="input-medium required"/>
-			</div>
-		</div>
-				
-		<div class="control-group">
-			<div class="controls">
-				<label class="checkbox" for="rememberMe"><input type="checkbox" id="rememberMe" name="rememberMe" checked/> 记住我</label>
-				<input id="submit_btn" class="btn btn-primary" type="submit" value="登录"/> &nbsp;&nbsp;&nbsp;&nbsp;<a class="btn" href="${ctx}/register">注册</a>
-			 	 <div id="login_container"></div>
-			</div>
-		</div>
-		
-	</form>
+ <div class="bodycss">
+  <div class="logindiv">
+    <div class="loge logoToo"> </div>
+    <div class="loginbox">
+      <p><input id="username" name="username"  type="text" class="medium-input userico required" value="${username}" /><div class="cl"></div></p>
+      <p><input id="password" name="password" type="password" class="medium-input passwordico required"  autocomplete="off"/><div class="cl"></div></p>
+	  <p><input name="rememberMe" type="checkbox" value="true" class="checkbox" checked><span class="grayfont">记住我</span><span class="fr link"><a href="${ctx}/register">注册</a></span></p>
+	  <p><input name="submit_btn" type="submit" value="登&ensp;&ensp;录" class="orangebtn"></p>
+    </div>
+    <div class="loginpic loginpicToo"></div>
+    <div id="login_container"></div>
+  </div>
+    
+</div>
+</form>
+ 
+	
 
 	<script>
 		$(document).ready(function() {
@@ -100,11 +89,8 @@
                  });
 		});
 	</script>
-		</div>
-		<div id="footer" style="border-top: 0 solid #658a16;">
-	Copyright &copy; 2005-2020 <a href="http://bbs.lihentian.com/">bbs.lihentian.com</a>
-</div>
-	</div>
+		
+ 
 	<script src="${ctx}/static/bootstrap/2.3.2/js/bootstrap.min.js" type="text/javascript"></script>
 </body>
 </html>

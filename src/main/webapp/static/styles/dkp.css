@@ -1,6 +1,15 @@
 @charset "utf-8";
 /* CSS Document*/
- 
+
+.logoToo{  background: rgba(0, 0, 0, 0) url("../images/loge4.png") no-repeat scroll 0 0 / 100% auto;
+    height: 25px;
+    width: 200px;} 
+.loginpicToo{
+	background: rgba(0, 0, 0, 0) url("../images/lht.jpg") no-repeat scroll 0 0 / 100% auto;
+   	height: 264px;
+    width:100%;;
+}
+.fr {float:right}
 .bodycss{ padding:0px;margin:0px; width:100%;overflow-x:hidden;}
 .logindiv{ margin:0px auto;width:80%; }
 .loge{margin:0px auto; width:200px; padding-top:30px; padding-bottom:20px;}

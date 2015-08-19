@@ -10,8 +10,8 @@
 		<shiro:guest>
 			<a href="${ctx}/login">登录</a>
 		</shiro:guest>
-		<shiro:user>你好, <shiro:principal property="name" />。<font color='blue'>积分：<a href="${ctx}/integralHistory/myIntegeral/<shiro:principal property="id" />"><shiro:principal property="integral" /></a>
-			</font>，权限：<shiro:principal property="rolesName" />
+		<shiro:user>你好, <shiro:principal property="name" />。 
+			 权限：<shiro:principal property="rolesName" />
 			<a href="${ctx}/logout">退出登录</a>
 		</shiro:user>
 	</div>

@@ -6,6 +6,7 @@
 package com.gamewin.weixin.web.activity;
 
 import java.io.File;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +40,7 @@ import com.gamewin.weixin.service.activity.ActivityService;
 import com.gamewin.weixin.service.activity.ActivityUserService;
 import com.gamewin.weixin.service.valueSet.ValueSetService;
 import com.gamewin.weixin.util.MobileContants;
+import com.gamewin.weixin.util.MobileHttpClient;
 import com.gamewin.weixin.web.util.QRCodeUtil;
 import com.google.common.collect.Maps;
 
@@ -276,10 +278,16 @@ public class ActivityController {
 		if (!file.exists() && !file.isDirectory()) {
 			file.mkdirs();
 		}
-
+		
+		String wxurl =  MobileContants.IMAGEURL+nowDate+"\\" + imageUrl; // 
+		
+		String AccessToken = activityService.getAccessToken(); 
+		
+		
 		try {
-			QRCodeUtil.createEncode(url, null, filePath + nowDate, imageUrl);
-
+			//QRCodeUtil.createEncode(url, null, filePath + nowDate, imageUrl);
+			String ticket = MobileHttpClient.getJsapi_ticket_WeixinLs(AccessToken, entity.getId());
+			MobileHttpClient.getticketImage(URLEncoder.encode(ticket, "UTF-8"), wxurl);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

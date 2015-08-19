@@ -27,8 +27,8 @@ public class MobileHttpClient {
 		String access_token = "";
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		try {
-			HttpGet httpGet = new HttpGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + MobileContants.appID
-					+ "&secret=" + MobileContants.appsecret);
+			HttpGet httpGet = new HttpGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + MobileContants.wxappID
+					+ "&secret=" + MobileContants.wxappsecret);
 
 			CloseableHttpResponse response1 = httpclient.execute(httpGet);
 			JSONObject resultJsonObject = null;

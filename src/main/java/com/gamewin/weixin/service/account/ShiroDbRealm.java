@@ -125,7 +125,10 @@ public class ShiroDbRealm extends AuthorizingRealm {
 			}else if("ThreeLevel".equals(roles))
 			{
 				name="三级";
-			} 
+			}else
+			{
+				name="会员";
+			}
 			return name;
 		}
 		public String getName() {

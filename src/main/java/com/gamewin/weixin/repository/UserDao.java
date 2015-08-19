@@ -13,5 +13,6 @@ import com.gamewin.weixin.entity.User;
 public interface UserDao extends PagingAndSortingRepository<User, Long>, JpaSpecificationExecutor<User> {
 	User findByLoginName(String loginName);
 	User findByWeixinOpenid(String weixinOpenid);
+	User findByWxWeixinOpenid(String wxweixinOpenid);
 
 }

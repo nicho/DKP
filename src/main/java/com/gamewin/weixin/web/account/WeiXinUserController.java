@@ -49,7 +49,7 @@ public class WeiXinUserController {
 				subject.login(new UsernamePasswordToken(user.getLoginName(), user.getWeixinOpenPwd(), true));
 				if (subject.isAuthenticated()) { 
 					redirectAttributes.addFlashAttribute("message", "登录成功");
-					return "redirect:/activity";
+					return "redirect:/index/my";
 				}else
 				{
 					
@@ -85,7 +85,81 @@ public class WeiXinUserController {
 							usr.setWeixinOpenPwd(password);
 							accountService.updateUser(usr);
 							model.addAttribute("message", "绑定成功!");
-							return "redirect:/activity";
+							return "redirect:/index/my";
+						} else {
+							model.addAttribute("message", "获取微信用户失效,请重新绑定");
+						}
+
+				 
+				}else
+				{
+					model.addAttribute("message", "用户已绑定过.无需重复绑定!");
+				}
+			} else {
+				model.addAttribute("message", "用户名/密码错误");
+			}
+		} catch (Exception e) {
+			model.addAttribute("message", "绑定异常,请重新绑定");
+		}
+		return "redirect:/login";
+	}
+	
+	
+	
+	@RequestMapping(value = "wxbindUserOpenId", method = { RequestMethod.GET, RequestMethod.POST })
+	public String wxbindUserOpenId(HttpServletRequest request, HttpServletResponse response, Model model,RedirectAttributes redirectAttributes) throws Exception {
+		String code = request.getParameter("code");
+		String grant_type = request.getParameter("grant_type");
+		
+		model.addAttribute("grant_type", grant_type);
+		
+		String openId = MobileHttpClient.getUserOpenIdByCode(code);
+		model.addAttribute("openId", openId);
+		System.out.println(" openId:"+openId);
+		User user=accountService.findByWxWeixinOpenid(openId);
+		if(user!=null)
+		{
+			Subject subject = SecurityUtils.getSubject(); 
+			try {
+				subject.login(new UsernamePasswordToken(user.getLoginName(), user.getWeixinOpenPwd(), true));
+				if (subject.isAuthenticated()) { 
+					redirectAttributes.addFlashAttribute("message", "登录成功");
+					return "redirect:/index/my";
+				}else
+				{
+					
+					model.addAttribute("username",user.getLoginName());
+					model.addAttribute("message", "密码错误!请重新输入密码绑定!");
+				}
+			} catch (Exception e) {
+				model.addAttribute("username",user.getLoginName());
+				model.addAttribute("message", "密码错误!请重新输入密码绑定!");
+			} 
+			
+		} 
+		return "weiXinUser/wxbindUserOpenIdFrom";
+		
+	}
+
+	@RequestMapping(value = "wxupdateBindUserOpenId", method = { RequestMethod.GET, RequestMethod.POST })
+	public String wxupdateBindUserOpenId(HttpServletRequest request, HttpServletResponse response, Model model) {
+		String openId = request.getParameter("openId");
+		// String grant_type = request.getParameter("grant_type");
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		try {
+			Subject subject = SecurityUtils.getSubject();
+			subject.login(new UsernamePasswordToken(username, password, false));
+			if (subject.isAuthenticated()) {
+				ShiroUser user = (ShiroUser) subject.getPrincipal();
+				User usr = accountService.getUser(user.id);
+				if (StringUtils.isEmpty(usr.getWxWeixinOpenid())) {
+					 
+						if (!StringUtils.isEmpty(openId)) { 
+							usr.setWxWeixinOpenid(openId); ;
+							accountService.updateUser(usr);
+							model.addAttribute("message", "绑定DKP成功!");
+							return "redirect:/index/my";
 						} else {
 							model.addAttribute("message", "获取微信用户失效,请重新绑定");
 						}

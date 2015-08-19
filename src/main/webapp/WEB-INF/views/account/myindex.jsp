@@ -43,6 +43,10 @@
 </head>
 
 <body>
+   <c:if test="${not empty message}">
+	     <div class="alert alert-success controls input-large">
+			<button data-dismiss="alert" class="close">×</button>${message}</div>
+		</c:if>
 <table cellspacing="0" cellpadding="0" class="table table-striped table-bordered table-condensed" >
   <col width="98" />
   <col width="72" span="3" />

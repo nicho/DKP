@@ -222,7 +222,7 @@ public class ApiListController {
 
 		} else if ("text".equals(msgType)) {
 
-			String redurl = URLEncoder.encode(MobileContants.YM + "/weixinUser/bindUserOpenId", "utf-8");
+			String redurl = URLEncoder.encode(MobileContants.YM + "/weixinUser/wxbindUserOpenId", "utf-8");
 			String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + MobileContants.wxappID + "&redirect_uri=" + redurl
 					+ "&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
 
@@ -250,7 +250,7 @@ public class ApiListController {
 				response.getWriter().write(str.toString());
 			} else { 
 				 
-				 content = " 小K暂时不明白您的意思哟。\n 敬请期待。";
+				 content = " 小K暂时不明白您的意思哟。\n 敬请期待。如果想绑定DKP账号,请向我发送'绑定DKP'哦~~";
 				 
 				 
 				str.append("<xml>                                              ");

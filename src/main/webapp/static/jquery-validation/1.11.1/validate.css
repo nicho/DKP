@@ -1,8 +1,16 @@
-span.error {
-  background:url("images/unchecked.gif") no-repeat 0px 0px;
-  padding-left: 16px;
-  margin-left: 1em;
-  padding-bottom: 2px;
-  font-weight: bold;
-  color: #EA5200;
+span.error { 
+   padding-left: 14px !important;
+  padding-right:5px;
+  padding-top:4px;
+  margin-left: 2px !important;
+  padding-bottom: 2px !important;
+  font-weight: bold !important;
+  color: #EA5200 !important;
+  font-size: 12px !important;
+  vertical-align: 0px !important;
+  float: right !important;  
+  width: 100% !important; 
 }
+
+input.error { border: 1px solid #ff921e !important; }
+textarea.error { border: 1px solid #ff921e !important; }

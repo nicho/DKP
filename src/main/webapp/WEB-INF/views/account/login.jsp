@@ -25,6 +25,7 @@
 <script src="${ctx}/static/jquery-validation/1.11.1/messages_bs_zh.js" type="text/javascript"></script> 
 <script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
 <link href="${ctx}/static/styles/dkp.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/static/bootstrap/2.3.2/css/bootstrap-responsive.min.css" rel="stylesheet">
 </head>
 
 <body> 
@@ -65,7 +66,7 @@
 	  <p><input name="submit_btn" type="submit" value="登&ensp;&ensp;录" class="orangebtn"></p>
     </div>
     <div class="loginpic loginpicToo"></div>
-    <div id="login_container"></div>
+  <div class="visible-desktop">   <div id="login_container"></div></div>
   </div>
     
 </div>

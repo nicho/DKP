@@ -23,6 +23,7 @@
 <script src="${ctx}/static/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
 <script src="${ctx}/static/jquery-validation/1.11.1/jquery.validate.min.js" type="text/javascript"></script>
 <script src="${ctx}/static/jquery-validation/1.11.1/messages_bs_zh.js" type="text/javascript"></script>
+<link href="${ctx}/static/styles/dkp.css" type="text/css" rel="stylesheet" />
  
 	<title>用户注册</title>
 	
@@ -53,71 +54,50 @@
 	<c:if test="${not empty message}">
 		<div id="message" class="alert alert-success"><button data-dismiss="alert" class="close">×</button>${message}</div>
 	</c:if>
-<div class="container">
-	<div id="header">
-	<div id="title">
-	    <h1><a href="${ctx}">《DKP》公会系统</a><small>--离恨天</small>
-	    </h1>
-	    	</div>
-</div>
+
+ 
 	<form id="inputForm" action="${ctx}/register" method="post" class="form-horizontal">
 	<input type="hidden" name="openId" value="${openId}">
-		<fieldset>
-			<legend><small>用户注册</small></legend>
-			<div class="control-group">
-				<label for="loginName" class="control-label">登录名:</label>
-				<div class="controls">
-					<input type="text" id="loginName" name="loginName" class="input-large required" minlength="3"/>
-				</div>
-			</div>
-			<div class="control-group">
-				<label for="name" class="control-label">昵称:</label>
-				<div class="controls">
-					<input type="text" id="name" name="name" class="input-large required"/>
-				</div>
-			</div>
-		   <div class="control-group">
-				<label for="name" class="control-label">游戏名:</label>
-				<div class="controls">
-					<input type="text" id="gameName" name="gameName" class="input-large required"/>
-				</div>
-			</div>
-						<div class="control-group">
-				<label for="name" class="control-label">邮箱:</label>
-				<div class="controls">
-					<input type="text" id="email" name="email" class="input-large required"/>
-				</div>
-			</div>
-						<div class="control-group">
-				<label for="name" class="control-label">电话:</label>
-				<div class="controls">
-					<input type="text" id="phone" name="phone" class="input-large required"/>
-				</div>
-			</div>
-			<div class="control-group">
-				<label for="plainPassword" class="control-label">密码:</label>
-				<div class="controls">
-					<input type="password" id="plainPassword" name="plainPassword" class="input-large required"/>
-				</div>
-			</div>
-			<div class="control-group">
-				<label for="confirmPassword" class="control-label">确认密码:</label>
-				<div class="controls">
-					<input type="password" id="confirmPassword" name="confirmPassword" class="input-large required" equalTo="#plainPassword"/>
-				</div>
-			</div>
-			 
-			<div class="form-actions">
-				<input id="submit_btn" class="btn btn-primary" type="submit" value="提交"/>&nbsp;	
-				<input id="cancel_btn" class="btn" type="button" value="返回" onclick="history.back()"/>
-			</div>
-		</fieldset>
+ 
+ <div class="bodycss">
+ 	<div>
+ 	<h3><a href="${ctx}">《DKP》公会系统</a><small>--离恨天</small> <small>用户注册</small></h3>
+ 	</div>
+  <div class="view_box mb15">
+    <ul>
+      <li><span>登录名</span>
+      	<input type="text" id="loginName" name="loginName" class="input-large required" minlength="3"/><div class="cl"></div></li>
+      <li><span>昵称</span>
+      <input type="text" id="name" name="name" class="input-large required"/><div class="cl"></div></li> 
+      <li><span>游戏名</span>
+         <input type="text" id="gameName" name="gameName" class="input-large required"/><div class="cl"></div>
+      </li>
+            <li><span>邮箱</span>
+        <input type="text" id="email" name="email" class="input-large required"/><div class="cl"></div>
+      </li>
+            <li><span>电话</span>
+         <input type="text" id="phone" name="phone" class="input-large required"/><div class="cl"></div>
+      </li>
+            <li><span>密码</span>
+         <input type="password" id="plainPassword" name="plainPassword" class="input-large required"/><div class="cl"></div>
+      </li>
+            <li><span>确认密码</span>
+         <input type="password" id="confirmPassword" name="confirmPassword" class="input-large required" equalTo="#plainPassword"/><div class="cl"></div>
+      </li>
+      
+       
+      <div class="cl"></div>
+    </ul>
+  
+     <div class="twobtn"><input id="saveBtn" name="" type="button" class="graybtn" value="返&ensp;回" onclick="history.back()"><input id="submitButton" name="submitButton" type="submit" class="brownbtn" value="提&ensp;交"  ></div>
+    
+    <div class="cl"></div>
+  </div>
+  
+</div> 
 	</form>
  
-		<div id="footer">
-	Copyright &copy; 2005-2020 <a href="http://gamewin.taobao.com">gamewin.taobao.com</a>
-</div>
-	 </div>
+		 
 	<script src="${ctx}/static/bootstrap/2.3.2/js/bootstrap.min.js" type="text/javascript"></script>
 </body>
 </html>

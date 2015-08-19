@@ -58,7 +58,7 @@
 .view_box{width:100%;padding:0px;color:#333;}
 .view_box ul{margin:15px 0px 15px 0px;border-top:1px solid #ccc;border-bottom:1px solid #ccc;padding:10px 0px;background:#fff;}
 .view_box ul li{ border:0px;font-size:14px; margin:0px;line-height:24px;padding:2px 8px; }
-.view_box ul li span{float:left; width:35%; line-height:20px;display:block; font-size:14px; color:#666; text-align:right; margin-right:5px;font-weight:bold;}
+.view_box ul li span{float:left; width:20%; line-height:20px;display:block; font-size:14px; color:#666; text-align:right; margin-right:5px;font-weight:bold;}
 .divwidth{ width:62%}
 
 .graybar{ width:100%;background:#eee;border-top:1px solid #ccc;border-bottom:1px solid #ccc; height:48px; line-height:48px; text-indent:12px; font-size:15px;cursor:pointer;}

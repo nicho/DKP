@@ -2,9 +2,9 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <div id="header" class="row">
 	<div>
-		<h1>
+		<h3>
 			<a href="${ctx}">《DKP》公会系统</a><small>--离恨天</small>
-		</h1>
+		</h3>
 	</div>
 	<div class="pull-right">
 		<shiro:guest>

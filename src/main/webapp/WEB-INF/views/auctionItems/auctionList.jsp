@@ -51,7 +51,7 @@
 					<td>${task.createUser.name}</td>
 
 					<td>
-					<a href="${ctx}/auctionApply/create/${task.id}" >申请拍卖物品</a>&nbsp;
+					<a href="${ctx}/auctionApply/create/${task.id}" >购买</a>&nbsp;
 					<shiro:hasAnyRoles name="admin,Head">
 						<a href="#" onclick="confirmDelete('${ctx}/auction/delete/${task.id}')">删除</a>&nbsp; 
 					</shiro:hasAnyRoles>

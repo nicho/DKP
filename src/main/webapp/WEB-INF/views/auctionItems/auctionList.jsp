@@ -10,6 +10,15 @@
 <title>拍卖物品列表</title>
 
 <link href="${ctx}/static/styles/dkp.css" type="text/css" rel="stylesheet" />
+
+	<script>
+		$(document).ready(function() {
+			 if('${message}'!=null && '${message}'!='')
+			 {
+				 alert('${message}');
+			 }
+		});
+	</script>
 </head>
 
 <body>
@@ -81,7 +90,7 @@
 		  <div class="cl"></div>
         </div>
 		<div class="morebtn">
-		<input name="" type="button" class="orangebtn2" value="申请拍卖物品" onClick="location.href='${ctx}/auctionApply/create/${task.id}'">
+		<input name="" type="button" class="orangebtn2" value="购买" onClick="location.href='${ctx}/auctionApply/create/${task.id}'">
 	 
 		</div>
    		

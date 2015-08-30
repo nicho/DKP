@@ -30,11 +30,11 @@
 				<ul class="nav">
 					<li class=""><a id="myTask" href="${ctx}/activity">最近所有活动列表</a></li>
 					<li class=""><a id="myTask" href="${ctx}/admin/user/integralList">积分排行</a></li>
-					<li class=""><a id="myTask" href="${ctx}/exchangeGoods/alllist">近期拍卖成功物品</a></li>
+					<li class=""><a id="myTask" href="${ctx}/auction">近期拍卖物品</a></li>
 					<li class=""><a id="myTask" href="${ctx}/activity/create">发起活动</a></li>
 					<li class="active"><a id="myTask" href="${ctx}/activityUser/myActivity">我参与的活动</a></li>
 					<li class=""><a id="myTask" href="${ctx}/activity/myfqActivity">我发起的活动</a></li>
-					<li class=""><a id="myTask" href="${ctx}/exchangeGoods/mylist">我兑换的物品</a></li>
+					<li class=""><a id="myTask" href="${ctx}/auctionApply">我申请的拍卖</a></li>
 					<li><a id="myTask" href="${ctx}/exchangeIntegralApply">我贡献的物品</a></li>
 					<li><a id="account-tab" href="${ctx}/exchangeIntegral">贡献物品</a></li>
 					<shiro:hasAnyRoles name="admin,Head">

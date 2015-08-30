@@ -59,17 +59,17 @@
 	</div></td>
   </tr>
   <tr>
-    <td>
+    <td colspan="2" style="width: 40%">
     昵称:<shiro:principal property="name" /><br>
     <font color='blue'>积分：<a href="${ctx}/integralHistory/myIntegeral/<shiro:principal property="id" />"><shiro:principal property="integral" /></a>
 			</font><br>
     权限：<shiro:principal property="rolesName" /><br>
     </td>
-    <td colspan="3"> <a id="myTask" href="${ctx}/activity">最近所有活动列表</a></td>
+    <td colspan="2"> <a id="myTask" href="${ctx}/activity">最近所有活动列表</a></td>
   </tr>
   <tr>
     <td colspan="2"><a id="myTask" href="${ctx}/activityUser/myActivity">我参与的活动</a>  </td>
-    <td colspan="2"><a id="myTask" href="${ctx}/exchangeGoods/mylist">我兑换的物品</a></td>
+    <td colspan="2"><a id="myTask" href="${ctx}/auction">近期拍卖物品</a></td>
   </tr>
   <tr>
     <td colspan="2"><a id="myTask" href="${ctx}/activity/create">发起活动</a></td>

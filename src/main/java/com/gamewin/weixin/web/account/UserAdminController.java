@@ -91,10 +91,10 @@ public class UserAdminController {
 	@RequestMapping(value = "integralList",method = RequestMethod.GET)
 	public String integrallist(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
-			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request) {
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request,QueryUserDto dto) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 
-		List<User> users = accountService.getUserAllUserIntegrallist(searchParams, pageNumber, pageSize, sortType);
+		List<User> users = accountService.getUserAllUserIntegrallist(searchParams, pageNumber, pageSize, sortType,dto);
 
 		PageInfo<User> page = new PageInfo<User>(users);
 		model.addAttribute("page", page);

@@ -38,7 +38,18 @@ public class User extends IdEntity {
 	private String weixinOpenid;
 	private String weixinOpenPwd;
 	private String wxWeixinOpenid;
+	private String rank;
 	private Double integral;
+	// 不持久化到数据库，也不显示在Restful接口的属性.
+	@Transient
+	@JsonIgnore
+	public String getRank() {
+		return rank;
+	}
+
+	public void setRank(String rank) {
+		this.rank = rank;
+	}
 
 	public String getWxWeixinOpenid() {
 		return wxWeixinOpenid;

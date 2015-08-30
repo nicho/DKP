@@ -15,6 +15,7 @@
 		<result property="phone" column="phone" />  
 		<result property="email" column="email" />  
 		<result property="weixinOpenid" column="weixinOpenid" />   
+		<result property="rank" column="rank" />   
 	</resultMap>
 	 
 	<select id="getUserAllUserlist" parameterType="com.gamewin.weixin.model.QueryUserDto" resultMap="userMap">
@@ -23,8 +24,13 @@
 			and (u.game_Name like CONCAT('%',#{userName},'%')   or  u.login_name like CONCAT('%',#{userName},'%')  or u.name like CONCAT('%',#{userName},'%') )
 		</if>
 	</select>
-   <select id="getUserAllUserIntegrallist" parameterType="long" resultMap="userMap">
-		SELECT u.*  FROM wx_user u  WHERE u.isdelete=0  order by u.integral desc
+   <select id="getUserAllUserIntegrallist" parameterType="com.gamewin.weixin.model.QueryUserDto" resultMap="userMap">
+		SELECT u.* ,(SELECT COUNT(1) + 1  FROM wx_user B  WHERE  u.integral &lt; B.integral) AS rank  
+			FROM wx_user u  WHERE u.isdelete=0 
+		 <if test="userName !=null and '' !=userName">
+			and (u.game_Name like CONCAT('%',#{userName},'%')   or  u.login_name like CONCAT('%',#{userName},'%')  or u.name like CONCAT('%',#{userName},'%') )
+		</if>
+		 ORDER BY u.integral DESC
 	</select>
  
 	

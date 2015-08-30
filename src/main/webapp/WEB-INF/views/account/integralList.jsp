@@ -18,7 +18,9 @@
 
 	<div class="row">
 		<div class="span4 offset7">
-			<form class="form-search" action="#"></form>
+			 <form class="form-search" action="#">
+			<div>姓名&nbsp;<input type="text" name="userName" value="${param.userName}"> &nbsp; &nbsp;<input type="submit" value="查询" class="btn"></div>	
+			</form>
 		</div>
 
 	</div>
@@ -30,6 +32,7 @@
 		class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr> 
+				<th style="text-align: center;">名次</th>
 				<th>昵称</th>
 				<th>游戏角色名</th> 
 				<th>级别</th> 
@@ -39,6 +42,7 @@
 		<tbody>
 			<c:forEach items="${usersx}" var="user">
 				<tr> 
+					<td style="text-align: center;">${user.rank}</td>
 					<td>${user.name}</td>
 					<td>${user.gameName}</td> 
 					<td><c:choose>

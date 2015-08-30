@@ -20,5 +20,5 @@ import com.gamewin.weixin.model.QueryUserDto;
 public interface UserMybatisDao {
 
 	List<User> getUserAllUserlist(QueryUserDto dto);
-	List<User> getUserAllUserIntegrallist();
+	List<User> getUserAllUserIntegrallist(QueryUserDto dto);
 }

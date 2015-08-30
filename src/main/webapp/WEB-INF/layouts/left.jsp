@@ -7,7 +7,8 @@
 	<div class="submenu"> 
 		<a id="myTask" href="${ctx}/activity">最近所有活动列表</a>
 		<a id="myTask" href="${ctx}/admin/user/integralList">积分排行</a>
-		<a id="myTask" href="${ctx}/exchangeGoods/alllist">近期拍卖成功物品</a> 
+		<a id="myTask" href="${ctx}/auction">近期拍卖物品</a> 
+	<!-- 	<a id="myTask" href="${ctx}/exchangeGoods/alllist">近期拍卖成功物品</a>  -->
 
 		 
 	</div>
@@ -16,7 +17,7 @@
 		<a id="myTask" href="${ctx}/activity/create">发起活动</a> 
 		<a id="myTask" href="${ctx}/activityUser/myActivity">我参与的活动</a>  
 		<a id="myTask" href="${ctx}/activity/myfqActivity">我发起的活动</a>  
-		<a id="myTask" href="${ctx}/exchangeGoods/mylist">我兑换的物品</a>
+		<a id="myTask" href="${ctx}/auctionApply">我申请的拍卖</a>
 		<a id="myTask" href="${ctx}/exchangeIntegralApply">我贡献的物品</a>  
 	</div>
 	 <h1>系统管理</h1> 
@@ -29,6 +30,7 @@
  
 		<shiro:hasAnyRoles name="admin,Head">
 			<a id="account-tab" href="${ctx}/exchangeGoods">物品拍卖登记</a> 
+			<a id="account-tab" href="${ctx}/auctionApply/approvalList">物品拍卖审核</a> 
 			<a id="myTask" href="${ctx}/exchangeIntegralApply/approvalList">贡献物品审核</a>
 			<a id="myTask" href="${ctx}/exchangeIntegralApply/approvalAllList">历史贡献物品</a> 
 			<a id="account-tab" href="${ctx}/admin/user">帐号管理</a>   

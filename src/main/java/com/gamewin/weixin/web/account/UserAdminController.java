@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springside.modules.web.Servlets;
 
 import com.gamewin.weixin.entity.User;
+import com.gamewin.weixin.model.QueryUserDto;
 import com.gamewin.weixin.service.account.AccountService;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
@@ -62,10 +63,9 @@ public class UserAdminController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
-			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request) {
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request,QueryUserDto dto) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
-
-		List<User> users = accountService.getUserAllUserlist(searchParams, pageNumber, pageSize, sortType);
+		List<User> users = accountService.getUserAllUserlist(searchParams, pageNumber, pageSize, sortType,dto);
 
 		PageInfo<User> page = new PageInfo<User>(users);
 		model.addAttribute("page", page);

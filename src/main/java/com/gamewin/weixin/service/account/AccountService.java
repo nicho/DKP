@@ -29,6 +29,7 @@ import org.springside.modules.utils.Clock;
 import org.springside.modules.utils.Encodes;
 
 import com.gamewin.weixin.entity.User;
+import com.gamewin.weixin.model.QueryUserDto;
 import com.gamewin.weixin.model.UserDto;
 import com.gamewin.weixin.mybatis.UserMybatisDao;
 import com.gamewin.weixin.repository.UserDao;
@@ -210,9 +211,9 @@ public class AccountService {
 		return new PageRequest(pageNumber - 1, pagzSize, sort);
 	}
 
-	public List<User> getUserAllUserlist(Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
+	public List<User> getUserAllUserlist(Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType,QueryUserDto userName) {
 		PageHelper.startPage(pageNumber, pageSize);
-		List<User> userList = userMybatisDao.getUserAllUserlist();
+		List<User> userList = userMybatisDao.getUserAllUserlist(userName);
 		return userList;
 	}
 	public List<User> getUserAllUserIntegrallist(Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {

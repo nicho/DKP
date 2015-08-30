@@ -17,8 +17,11 @@
 		<result property="weixinOpenid" column="weixinOpenid" />   
 	</resultMap>
 	 
-	<select id="getUserAllUserlist" parameterType="long" resultMap="userMap">
+	<select id="getUserAllUserlist" parameterType="com.gamewin.weixin.model.QueryUserDto" resultMap="userMap">
 		SELECT u.*  FROM wx_user u  WHERE u.isdelete=0 
+		<if test="userName !=null and '' !=userName">
+			and (u.game_Name like CONCAT('%',#{userName},'%')   or  u.login_name like CONCAT('%',#{userName},'%')  or u.name like CONCAT('%',#{userName},'%') )
+		</if>
 	</select>
    <select id="getUserAllUserIntegrallist" parameterType="long" resultMap="userMap">
 		SELECT u.*  FROM wx_user u  WHERE u.isdelete=0  order by u.integral desc

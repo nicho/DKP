@@ -9,11 +9,7 @@
 <head>
 <title>用户管理</title>
 <script type="text/javascript">
-	function confirmtisheng(url) {
-		if (confirm("确认提升为二级经销商？")) {
-			window.location.href = url;
-		}
-	}
+ 
 </script>
 </head>
 
@@ -25,9 +21,11 @@
 
 	<div class="row">
 		<div class="span4 offset7">
-			<form class="form-search" action="#"></form>
+			<form class="form-search" action="#">
+			<div>姓名&nbsp;<input type="text" name="userName" value="${param.userName}"> &nbsp; &nbsp;<input type="submit" value="查询" class="btn"></div>	
+			</form>
 		</div>
-
+			
 	</div>
 	<div>
 	 
@@ -72,7 +70,7 @@
 					<td>
 					<shiro:hasAnyRoles name="admin,Head">
 							<a href="${ctx}/admin/user/update/${user.id}">修改</a>&nbsp; 
-							<a href="#" 	onclick="confirmDelete('${ctx}/admin/user/delete/${user.id}')">删除</a>&nbsp; 
+							<a href="#" onclick="confirmDelete('${ctx}/admin/user/delete/${user.id}')">删除</a>&nbsp; 
 					 		<a href="#"	onclick="confirmDisabled('${ctx}/admin/user/disabled/${user.id}')">失效</a>&nbsp;
 					</shiro:hasAnyRoles>
 

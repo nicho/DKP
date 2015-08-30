@@ -8,6 +8,7 @@ package com.gamewin.weixin.mybatis;
 import java.util.List;
 
 import com.gamewin.weixin.entity.User;
+import com.gamewin.weixin.model.QueryUserDto;
 
 /**
  * 通过@MapperScannerConfigurer扫描目录中的所有接口, 动态在Spring Context中生成实现.
@@ -18,6 +19,6 @@ import com.gamewin.weixin.entity.User;
 @MyBatisRepository
 public interface UserMybatisDao {
 
-	List<User> getUserAllUserlist();
+	List<User> getUserAllUserlist(QueryUserDto dto);
 	List<User> getUserAllUserIntegrallist();
 }

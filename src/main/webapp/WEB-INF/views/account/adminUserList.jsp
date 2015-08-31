@@ -22,7 +22,8 @@
 	<div class="row">
 		<div class="span4 offset7">
 			<form class="form-search" action="#">
-			<div>姓名&nbsp;<input type="text" name="userName" value="${param.userName}"> &nbsp; &nbsp;<input type="submit" value="查询" class="btn"></div>	
+			  <label>姓名</label> <input type="text" name="search_LIKE_userName" class="input-medium" value="${param.search_LIKE_userName}"> 
+			  <button type="submit" class="btn" id="search_btn">查询</button>
 			</form>
 		</div>
 			

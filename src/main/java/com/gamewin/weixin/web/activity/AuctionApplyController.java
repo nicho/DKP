@@ -32,18 +32,15 @@ import com.gamewin.weixin.service.account.AccountService;
 import com.gamewin.weixin.service.account.ShiroDbRealm.ShiroUser;
 import com.gamewin.weixin.service.activity.AuctionApplyService;
 import com.gamewin.weixin.service.activity.AuctionService;
-import com.gamewin.weixin.service.valueSet.ValueSetService;
 import com.google.common.collect.Maps;
 
 /**
  * AuctionApply管理的Controller, 使用Restful风格的Urls:
  * 
- * List page : GET /auctionApply/ Create page : GET
- * /auctionApply/create Create action : POST
- * /auctionApply/create Update page : GET
- * /auctionApply/update/{id} Update action : POST
- * /auctionApply/update Delete action : GET
- * /auctionApply/delete/{id}
+ * List page : GET /auctionApply/ Create page : GET /auctionApply/create Create
+ * action : POST /auctionApply/create Update page : GET
+ * /auctionApply/update/{id} Update action : POST /auctionApply/update Delete
+ * action : GET /auctionApply/delete/{id}
  * 
  * @author ly
  */
@@ -54,6 +51,7 @@ public class AuctionApplyController {
 	private static final String PAGE_SIZE = "10";
 
 	private static Map<String, String> sortTypes = Maps.newLinkedHashMap();
+
 	static {
 		sortTypes.put("auto", "自动");
 		sortTypes.put("title", "标题");
@@ -66,9 +64,6 @@ public class AuctionApplyController {
 	@Autowired
 	private AccountService accountService;
 
-	@Autowired
-	private ValueSetService valueSetService;
-
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
@@ -76,8 +71,7 @@ public class AuctionApplyController {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		Long userId = getCurrentUserId();
 		// 我的申请
-		Page<AuctionApply> auctionApplys = auctionApplyService.getAllAuctionApply(userId, searchParams,
-				pageNumber, pageSize, sortType);
+		Page<AuctionApply> auctionApplys = auctionApplyService.getAllAuctionApply(userId, searchParams, pageNumber, pageSize, sortType);
 
 		model.addAttribute("auctionApplys", auctionApplys);
 		model.addAttribute("sortType", sortType);
@@ -87,16 +81,16 @@ public class AuctionApplyController {
 
 		return "auctionApplyItems/myAuctionApplyList";
 	}
-	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
-	@RequestMapping(value = "approvalList",method = RequestMethod.GET)
+
+	@RequiresRoles(value = { "admin", "Head" }, logical = Logical.OR)
+	@RequestMapping(value = "approvalList", method = RequestMethod.GET)
 	public String approvalList(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
 			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		Long userId = getCurrentUserId();
 		// 我的申请
-		Page<AuctionApply> auctionApplys = auctionApplyService.getAllAuctionApprovalList(userId, searchParams,
-				pageNumber, pageSize, sortType);
+		Page<AuctionApply> auctionApplys = auctionApplyService.getAllAuctionApprovalList(userId, searchParams, pageNumber, pageSize, sortType);
 
 		model.addAttribute("auctionApplys", auctionApplys);
 		model.addAttribute("sortType", sortType);
@@ -106,16 +100,16 @@ public class AuctionApplyController {
 
 		return "auctionApplyItems/auctionApplyList";
 	}
-	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
-	@RequestMapping(value = "approvalAllList",method = RequestMethod.GET)
+
+	@RequiresRoles(value = { "admin", "Head" }, logical = Logical.OR)
+	@RequestMapping(value = "approvalAllList", method = RequestMethod.GET)
 	public String approvalAllList(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
 			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		Long userId = getCurrentUserId();
-	 
-		Page<AuctionApply> auctionApplys = auctionApplyService.getAllAuctionAllList(userId, searchParams,
-				pageNumber, pageSize, sortType);
+
+		Page<AuctionApply> auctionApplys = auctionApplyService.getAllAuctionAllList(userId, searchParams, pageNumber, pageSize, sortType);
 
 		model.addAttribute("auctionApplys", auctionApplys);
 		model.addAttribute("sortType", sortType);
@@ -125,26 +119,24 @@ public class AuctionApplyController {
 
 		return "auctionApply/auctionList";
 	}
+
 	@RequestMapping(value = "create/{id}", method = RequestMethod.GET)
-	public String createForm(@PathVariable("id") Long id,Model model, RedirectAttributes redirectAttributes) {
-		Auction auction=auctionService.getAuction(id);
+	public String createForm(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
+		Auction auction = auctionService.getAuction(id);
 		User user = accountService.getUser(getCurrentUserId());
-		
+
 		// 我的申请
 		Integer count = auctionApplyService.getAuctionApplyCountByUser(id, user.getId());
-		if(count>0)
-		{
+		if (count > 0) {
 			redirectAttributes.addFlashAttribute("message", "您的申请正在审核中,无需重复申请!");
 			return "redirect:/auction/";
 		}
-		if(user.getIntegral()>=auction.getIntegral())
-		{
+		if (user.getIntegral() >= auction.getIntegral()) {
 			model.addAttribute("auctionApply", new AuctionApply());
 			model.addAttribute("action", "create");
-			model.addAttribute("auction", auction); 
+			model.addAttribute("auction", auction);
 			return "auctionApplyItems/auctionApplyForm";
-		}else
-		{
+		} else {
 			redirectAttributes.addFlashAttribute("message", "您的积分不够!");
 		}
 		return "redirect:/auction/";
@@ -156,25 +148,23 @@ public class AuctionApplyController {
 
 		try {
 			User user = accountService.getUser(getCurrentUserId());
-			Long auctionId =Long.parseLong(request.getParameter("auctionId"));
-			Auction auction=auctionService.getAuction(auctionId);
-			if(user.getIntegral()>=(auction.getIntegral()*newAuctionApply.getNumber()))
-			{
-				newAuctionApply.setIntegral(auction.getIntegral()*newAuctionApply.getNumber());
+			Long auctionId = Long.parseLong(request.getParameter("auctionId"));
+			Auction auction = auctionService.getAuction(auctionId);
+			if (user.getIntegral() >= (auction.getIntegral() * newAuctionApply.getNumber())) {
+				newAuctionApply.setIntegral(auction.getIntegral() * newAuctionApply.getNumber());
 				newAuctionApply.setAuction(auction);
 				newAuctionApply.setCteateUser(createuser);
-				newAuctionApply.setCteateDate(new Date()); 
+				newAuctionApply.setCteateDate(new Date());
 				newAuctionApply.setIsdelete(0);
 				newAuctionApply.setStatus("Approval");
 				auctionApplyService.saveAuctionApply(newAuctionApply);
 
 				redirectAttributes.addFlashAttribute("message", "提交申请成功");
-			}else
-			{
+			} else {
 				redirectAttributes.addFlashAttribute("message", "您的积分不够!");
 				return "redirect:/auction/";
 			}
-			
+
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute("message", "提交申请失败");
 		}
@@ -190,36 +180,38 @@ public class AuctionApplyController {
 		return user.id;
 	}
 
-	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
+	@RequiresRoles(value = { "admin", "Head" }, logical = Logical.OR)
 	@RequestMapping(value = "approval/{id}")
 	public String approval(@PathVariable("id") Long id, RedirectAttributes redirectAttributes, ServletRequest request) {
 		AuctionApply auctionApply = auctionApplyService.getAuctionApply(id);
-		String status=request.getParameter("status");
+		String status = request.getParameter("status");
 		User user = new User(getCurrentUserId());
-		if(("pass".equals(status) || "reject".equals(status)) && "Approval".equals(auctionApply.getStatus()))
-		{
+		if (("pass".equals(status) || "reject".equals(status)) && "Approval".equals(auctionApply.getStatus())) {
 			User createuser = accountService.getUser(auctionApply.getCteateUser().getId());
- 
-			if(createuser.getIntegral()>=(auctionApply.getIntegral()))
-			{
-				auctionApply.setApprovalUser(user);
-				auctionApply.setStatus(status);
-				auctionApplyService.saveAuctionApplyApproval(auctionApply); 
-				redirectAttributes.addFlashAttribute("message", "审批成功");
-			}
-			else
-			{
+
+			if (createuser.getIntegral() >= (auctionApply.getIntegral())) {
+				// 扣库存
+				Auction auction = auctionService.getAuction(auctionApply.getAuction().getId());
+				if (auction.getNumber() >= auctionApply.getNumber()) {
+					auctionApply.setApprovalUser(user);
+					auctionApply.setStatus(status);
+					auctionApplyService.saveAuctionApplyApproval(auctionApply, auction);
+					redirectAttributes.addFlashAttribute("message", "审批成功");
+				} else {
+					redirectAttributes.addFlashAttribute("message", "物品库存不足,无法兑换物品!");
+					return "redirect:/auctionApply/approvalList";
+				}
+
+			} else {
 				redirectAttributes.addFlashAttribute("message", "会员积分不够,无法兑换物品!");
 				return "redirect:/auctionApply/approvalList";
 			}
 
-		}
-		else
-		{
+		} else {
 			redirectAttributes.addFlashAttribute("message", "非法操作");
 		}
 
 		return "redirect:/auctionApply/approvalList";
 	}
-	
+
 }

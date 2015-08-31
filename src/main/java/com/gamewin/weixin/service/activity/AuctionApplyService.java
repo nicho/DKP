@@ -21,10 +21,12 @@ import org.springside.modules.persistence.DynamicSpecifications;
 import org.springside.modules.persistence.SearchFilter;
 import org.springside.modules.persistence.SearchFilter.Operator;
 
+import com.gamewin.weixin.entity.Auction;
 import com.gamewin.weixin.entity.AuctionApply;
 import com.gamewin.weixin.entity.IntegralHistory;
 import com.gamewin.weixin.entity.User;
 import com.gamewin.weixin.repository.AuctionApplyDao;
+import com.gamewin.weixin.repository.AuctionDao;
 import com.gamewin.weixin.repository.IntegralHistoryDao;
 import com.gamewin.weixin.repository.UserDao;
 
@@ -39,11 +41,13 @@ public class AuctionApplyService {
 	private UserDao userDao;
 	@Autowired
 	private IntegralHistoryDao integralHistoryDao;
-	
-	public Integer getAuctionApplyCountByUser(Long id,Long userid) {
-		return auctionApplyDao.getAuctionApplyCountByUser(id,userid);
+	@Autowired
+	private AuctionDao auctionDao;
+
+	public Integer getAuctionApplyCountByUser(Long id, Long userid) {
+		return auctionApplyDao.getAuctionApplyCountByUser(id, userid);
 	}
-	
+
 	public AuctionApply getAuctionApply(Long id) {
 		return auctionApplyDao.findOne(id);
 	}
@@ -51,21 +55,24 @@ public class AuctionApplyService {
 	public void saveAuctionApply(AuctionApply entity) {
 		auctionApplyDao.save(entity);
 	}
-	public void saveAuctionApplyApproval(AuctionApply entity) { 
+
+	public void saveAuctionApplyApproval(AuctionApply entity, Auction auction) {
 		auctionApplyDao.save(entity);
-		
-		if("pass".equals(entity.getStatus()))
-		{
-			//审批通过后，扣积分
-			User user=entity.getCteateUser();
-			user.setIntegral(user.getIntegral()-entity.getIntegral());
+
+		if ("pass".equals(entity.getStatus())) {
+			// 审批通过后，扣积分
+			User user = entity.getCteateUser();
+			user.setIntegral(user.getIntegral() - entity.getIntegral());
 			userDao.save(user);
-			 
-			// 记录日志	
-			IntegralHistory ih=new IntegralHistory();
-			//ih.setAuctionApply(entity);
+			// 扣库存
+			auction.setNumber(auction.getNumber() - entity.getNumber());
+			auctionDao.save(auction);
+
+			// 记录日志
+			IntegralHistory ih = new IntegralHistory();
+			// ih.setAuctionApply(entity);
 			ih.setCreateDate(new Date());
-			ih.setDescription("兑换物品:'"+entity.getAuction().getGoodsName()+"',数量:"+entity.getNumber()+",扣除积分:"+entity.getIntegral());
+			ih.setDescription("兑换物品:'" + entity.getAuction().getGoodsName() + "',数量:" + entity.getNumber() + ",扣除积分:" + entity.getIntegral());
 			ih.setIntegral(entity.getIntegral());
 			ih.setIsdelete(0);
 			ih.setMark("-");
@@ -74,9 +81,9 @@ public class AuctionApplyService {
 			ih.setTitle("拍卖扣除积分");
 			integralHistoryDao.save(ih);
 		}
-		
+
 	}
-	
+
 	public void deleteAuctionApply(Long id) {
 		auctionApplyDao.delete(id);
 	}
@@ -90,13 +97,13 @@ public class AuctionApplyService {
 		this.auctionApplyDao = auctionApplyDao;
 	}
 
-	public Page<AuctionApply> getAllAuctionApply(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize,
-			String sortType) {
+	public Page<AuctionApply> getAllAuctionApply(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
 		Specification<AuctionApply> spec = buildSpecification(userId, searchParams);
 
 		return auctionApplyDao.findAll(spec, pageRequest);
 	}
+
 	public Page<AuctionApply> getAllAuctionApprovalList(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize,
 			String sortType) {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
@@ -106,15 +113,16 @@ public class AuctionApplyService {
 		Specification<AuctionApply> spec = DynamicSpecifications.bySearchFilter(filters.values(), AuctionApply.class);
 		return auctionApplyDao.findAll(spec, pageRequest);
 	}
-	public Page<AuctionApply> getAllAuctionAllList(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize,
-			String sortType) {
+
+	public Page<AuctionApply> getAllAuctionAllList(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
-		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0")); 
+		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));
 		filters.put("status", new SearchFilter("status", Operator.EQ, "pass"));
 		Specification<AuctionApply> spec = DynamicSpecifications.bySearchFilter(filters.values(), AuctionApply.class);
 		return auctionApplyDao.findAll(spec, pageRequest);
 	}
+
 	/**
 	 * 创建分页请求.
 	 */

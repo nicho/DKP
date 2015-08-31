@@ -1,14 +1,15 @@
 package com.gamewin.weixin.model;
 
 public class QueryUserDto { 
-	private String userName;
+	private String search_LIKE_userName;
 
-	public String getUserName() {
-		return userName;
+	public String getSearch_LIKE_userName() {
+		return search_LIKE_userName;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	} 
+	public void setSearch_LIKE_userName(String search_LIKE_userName) {
+		this.search_LIKE_userName = search_LIKE_userName;
+	}
+ 
 
 }

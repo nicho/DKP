@@ -29,10 +29,10 @@
 				<label class="control-label">级别:</label>
 				<div class="controls">   
 					<select name="roles">
-					<shiro:hasAnyRoles name="admin">
+					<shiro:hasRole name="admin">
 						<option value="admin" <c:if test="${user.roles eq 'admin'}">selected</c:if>>管理员</option>
 						<option value="Head" <c:if test="${user.roles eq 'Head'}">selected</c:if>>团长</option>
-					</shiro:hasAnyRoles>
+					</shiro:hasRole>
 						<option value="OneLevel" <c:if test="${user.roles eq 'OneLevel'}">selected</c:if>>一级</option>
 						<option value="TwoLevel" <c:if test="${user.roles eq 'TwoLevel'}">selected</c:if>>二级</option>
 						<option value="ThreeLevel" <c:if test="${user.roles eq 'ThreeLevel'}">selected</c:if>>三级</option>

@@ -29,7 +29,7 @@
 			<tr>
 				<th>物品名称</th> 
 				<th>可兑换积分</th>
-				<th>描述</th> 
+				<th style="width: 47%;">描述</th> 
 				<th>每日限制数量</th> 
 				<th>时间</th>
 				<th>创建人</th>

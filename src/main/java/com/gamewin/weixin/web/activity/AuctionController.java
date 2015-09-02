@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,7 +31,6 @@ import com.gamewin.weixin.entity.User;
 import com.gamewin.weixin.service.account.AccountService;
 import com.gamewin.weixin.service.account.ShiroDbRealm.ShiroUser;
 import com.gamewin.weixin.service.activity.AuctionService;
-import com.gamewin.weixin.service.valueSet.ValueSetService;
 import com.google.common.collect.Maps;
 
 /**
@@ -58,10 +58,7 @@ public class AuctionController {
 	private AuctionService auctionService;
 
 	@Autowired
-	private AccountService accountService;
-
-	@Autowired
-	private ValueSetService valueSetService;
+	private AccountService accountService; 
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
@@ -177,6 +174,27 @@ public class AuctionController {
 		auction.setIsdelete(1);
 		auctionService.saveAuction(auction);
 		redirectAttributes.addFlashAttribute("message", "删除拍卖物品'" + auction.getGoodsName() + "'成功");
+		return "redirect:/auction/";
+	}
+	
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
+	@RequestMapping(value = "update/{id}", method = RequestMethod.GET)
+	public String updateForm(@PathVariable("id") Long id, Model model) {
+		model.addAttribute("auction", auctionService.getAuction(id)); 
+		model.addAttribute("action", "update"); 
+		return "auction/auctionForm"; 
+	}
+
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
+	@RequestMapping(value = "update", method = RequestMethod.POST) 
+	public String update(@Valid @ModelAttribute("newAuction") Auction newAuction, RedirectAttributes redirectAttributes, ServletRequest request) { 
+		 User user = new User(getCurrentUserId()); 
+		newAuction.setCreateUser(user);
+		newAuction.setCreateDate(new Date()); 
+		newAuction.setIsdelete(0);
+		newAuction.setStatus("Y");
+		auctionService.saveAuction(newAuction);
+		redirectAttributes.addFlashAttribute("message", "更新排名物品成功");
 		return "redirect:/auction/";
 	}
 

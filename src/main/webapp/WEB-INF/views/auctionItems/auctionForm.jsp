@@ -15,6 +15,7 @@
 
 <body>
 	<form id="inputForm" action="${ctx}/auction/${action}" method="post" class="form-horizontal">
+	<input type="hidden" id="id" name="id" value="${auction.id}"  />
 		<fieldset>
 			<legend>
 				<small>拍卖登记</small>
@@ -23,19 +24,19 @@
 			<div class="control-group">
 				<label class="control-label">拍卖物品:</label>
 				<div class="controls">
-					<input type="text" id="goodsName" name="goodsName" value="" class="input-large required" />
+					<input type="text" id="goodsName" name="goodsName" value="${auction.goodsName}" class="input-large required" />
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">积分:</label>
 				<div class="controls">
-					<input type="text" id="integral" name="integral" value="" class="input-large required number" />
+					<input type="text" id="integral" name="integral" value="${auction.integral}" class="input-large required number" />
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">数量:</label>
 				<div class="controls">
-					<input type="text" id="number" name="number" value="" class="input-large required number" />
+					<input type="text" id="number" name="number" value="${auction.number}" class="input-large required number" />
 				</div>
 			</div>
  
@@ -43,7 +44,7 @@
 			<div class="control-group">
 				<label for="description" class="control-label">描述:</label>
 				<div class="controls">
-					<textarea id="codes" rows="5" name="description" style="width: 500px;" class="input-large"></textarea>
+					<textarea id="codes" rows="5" name="description" style="width: 500px;" class="input-large">${auction.description}</textarea>
 				</div>
 			</div>
 

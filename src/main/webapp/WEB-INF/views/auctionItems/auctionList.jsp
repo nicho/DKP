@@ -62,6 +62,7 @@
 					<td>
 					<a href="${ctx}/auctionApply/create/${task.id}" >购买</a>&nbsp;
 					<shiro:hasAnyRoles name="admin,Head">
+						<a href="${ctx}/auction/update/${task.id}"  >修改</a>&nbsp; 
 						<a href="#" onclick="confirmDelete('${ctx}/auction/delete/${task.id}')">删除</a>&nbsp; 
 					</shiro:hasAnyRoles>
 					</td>

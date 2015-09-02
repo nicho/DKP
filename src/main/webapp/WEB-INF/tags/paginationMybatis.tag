@@ -46,16 +46,16 @@ function onChangePageSize(obj)
 <!--分页开始--->
     <div class="fenye">
     	<ul>
-        	<li id="first" ><a href="?page=1&sortType=${sortType}&${searchParams}">首页</a></li>
+        	<li id="first" ><a href="?page=1&sortType=${sortType}&page.size=${page.pageSize}&${searchParams}">首页</a></li>
             <li id="top" onClick="topclick()">
             <c:choose>
-            	<c:when test="${page.prePage>0}"><a href="?page=${page.prePage}&sortType=${sortType}&${searchParams}">上一页</a></c:when>
+            	<c:when test="${page.prePage>0}"><a href="?page=${page.prePage}&page.size=${page.pageSize}&sortType=${sortType}&${searchParams}">上一页</a></c:when>
             	<c:otherwise><a href="#">上一页</a></c:otherwise>
             </c:choose>
             
             </li>
-            <li class="xifenye" id="xifenye">
-            	<a id="xiye"><input type="text" id="pageNumTag"  class="input" name="pageNum" value="${page.pageNum}"   style="width: 10px;height: 10px; padding: 4px 6px; margin-bottom: 0px; font-size: 12px; text-align: center;" /></a>/<a id="mo">${page.pages}</a>
+            <li class="xifenye" id="xifenye" style="width: 50px; ">
+            	<a id="xiye"><input type="text" id="pageNumTag"  class="input" name="pageNum" value="${page.pageNum}"   style="width: 15px;height: 10px; padding: 4px 6px; margin-bottom: 0px; font-size: 12px; text-align: center;" /></a>/<a id="mo">${page.pages}</a>
                 <div class="xab" id="xab" style="display:none">
                 	<ul id="uljia">	
                     </ul>
@@ -63,12 +63,12 @@ function onChangePageSize(obj)
             </li>
             <li id="down"  > 
              <c:choose>
-            	<c:when test="${page.nextPage>0}"><a href="?page=${page.nextPage}&sortType=${sortType}&${searchParams}">下一页</a></c:when>
+            	<c:when test="${page.nextPage>0}"><a href="?page=${page.nextPage}&page.size=${page.pageSize}&sortType=${sortType}&${searchParams}">下一页</a></c:when>
             	<c:otherwise><a href="#">下一页</a></c:otherwise>
             </c:choose>
             </li>
-            <li id="last"><a href="?page=${page.pages}&sortType=${sortType}&${searchParams}">末页</a></li>
-          <li class="pages_1"> <select style="width: 57px;    padding: 0px 0px;    height: 19px;    margin-bottom: 0px;" name="pageSize" id="pageSizeTag" onchange="onChangePageSize(this)"><option id="10" value="10">10</option><option id="20" value="20">20</option><option id="30" value="30">30</option></select> </li>
+            <li id="last"><a href="?page=${page.pages}&sortType=${sortType}&page.size=${page.pageSize}&${searchParams}">末页</a></li>
+          <li class="pages_1"> <select style="width: 57px;    padding: 0px 0px;    height: 19px;    margin-bottom: 0px;" name="pageSize" id="pageSizeTag" onchange="onChangePageSize(this)"><option id="10" value="10">10</option><option id="20" value="20">20</option><option id="30" value="30">30</option><option id="100" value="100">100</option></select> </li>
         </ul>    
     </div>
 <!--分页结束--->	

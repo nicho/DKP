@@ -380,7 +380,7 @@ public class ActivityController {
 		if(activity==null)
 		{
 			redirectAttributes.addFlashAttribute("message", "非法操作!活动不存在!");
-			return "redirect:/myfqActivity/";
+			return "redirect:/activity/myfqActivity/";
 		}
 		model.addAttribute("activity", activity);
 		List<ValueSet> ActivityTypeList = valueSetService.getActivityTypeAll("ActivityType");
@@ -391,7 +391,7 @@ public class ActivityController {
 		if(!"pass".equals(activity.getStatus()) && !"close".equals(activity.getStatus()))
 		{
 			redirectAttributes.addFlashAttribute("message", "操作失败,或活动已提交发放申请,或非法操作!");
-			return "redirect:/myfqActivity/";
+			return "redirect:/activity/myfqActivity/";
 		}
 		
 		return "activity/activityConfirm";
@@ -406,7 +406,7 @@ public class ActivityController {
 				if(!"pass".equals(activity.getStatus()) && !"close".equals(activity.getStatus()))
 				{
 					redirectAttributes.addFlashAttribute("message", "操作失败,该活动已提交发放申请,或非法操作!");
-					return "redirect:/myfqActivity/";
+					return "redirect:/activity/myfqActivity/";
 				}
 				if (chk_list != null && chk_list.length > 0) {
 					if ("AssociationActivity".equals(activity.getfType())) {

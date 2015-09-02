@@ -8,6 +8,14 @@
 <html>
 <head>
 <title>贡献物品列表</title>
+	<script>
+		$(document).ready(function() {
+			 if('${message}'!=null && '${message}'!='')
+			 {
+				 alert('${message}');
+			 }
+		});
+	</script>
 </head>
 
 <body>

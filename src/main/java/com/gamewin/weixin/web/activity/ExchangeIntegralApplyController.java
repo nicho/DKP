@@ -121,11 +121,22 @@ public class ExchangeIntegralApplyController {
 		return "exchangeIntegralApply/exchangeIntegralList";
 	}
 	@RequestMapping(value = "create/{id}", method = RequestMethod.GET)
-	public String createForm(@PathVariable("id") Long id,Model model) {
+	public String createForm(@PathVariable("id") Long id,Model model, RedirectAttributes redirectAttributes) {
+		User createuser = new User(getCurrentUserId());
+		ExchangeIntegral exchangeIntegral=exchangeIntegralService.getExchangeIntegral(id);
 		model.addAttribute("exchangeIntegralApply", new ExchangeIntegralApply());
 		model.addAttribute("action", "create");
-		model.addAttribute("exchangeIntegral", exchangeIntegralService.getExchangeIntegral(id));
-		
+		model.addAttribute("exchangeIntegral", exchangeIntegral);
+		if(exchangeIntegral.getLimitedNumber()!=null && exchangeIntegral.getLimitedNumber()>0)
+		{
+			//判断是否超限
+			Integer sumCount=exchangeIntegralApplyService.getExchangeIntegralApplyBySysdate(id,createuser.getId(), StringUtil.dateToString(new Date(), null));
+			if(sumCount!=null && sumCount>=exchangeIntegral.getLimitedNumber())
+			{
+				redirectAttributes.addFlashAttribute("message", "提交物品"+exchangeIntegral.getGoodsName()+"超限,每日限制数量:"+exchangeIntegral.getLimitedNumber()+",您今日已提交数量:"+sumCount);
+				return "redirect:/exchangeIntegral/";
+			}
+		}
 		return "exchangeIntegralApply/exchangeIntegralApplyForm";
 	}
 
@@ -141,10 +152,20 @@ public class ExchangeIntegralApplyController {
 			{
 				//判断是否超限
 				Integer sumCount=exchangeIntegralApplyService.getExchangeIntegralApplyBySysdate(exchangeIntegralId,createuser.getId(), StringUtil.dateToString(new Date(), null));
-				if(sumCount!=null && sumCount>=exchangeIntegral.getLimitedNumber())
+				if(sumCount!=null)
 				{
-					redirectAttributes.addFlashAttribute("message", "提交物品"+exchangeIntegral.getGoodsName()+"超限,每日限制数量:"+exchangeIntegral.getLimitedNumber()+",您今日已提交数量:"+sumCount);
-					return "redirect:/exchangeIntegralApply/";
+					if((sumCount+newExchangeIntegralApply.getNumber())>=exchangeIntegral.getLimitedNumber())
+					{
+						redirectAttributes.addFlashAttribute("message", "提交物品"+exchangeIntegral.getGoodsName()+"超限,每日限制数量:"+exchangeIntegral.getLimitedNumber()+",您今日已提交数量:"+sumCount);
+						return "redirect:/exchangeIntegral/";
+					}
+				}else
+				{
+					if(newExchangeIntegralApply.getNumber()>exchangeIntegral.getLimitedNumber())
+					{
+						redirectAttributes.addFlashAttribute("message", "提交物品"+exchangeIntegral.getGoodsName()+"超限,每日限制数量:"+exchangeIntegral.getLimitedNumber()+",当次提交数量不能超过:"+exchangeIntegral.getLimitedNumber());
+						return "redirect:/exchangeIntegral/";
+					}
 				}
 			}
 		 

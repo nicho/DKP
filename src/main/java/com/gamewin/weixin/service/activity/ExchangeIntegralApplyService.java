@@ -39,6 +39,11 @@ public class ExchangeIntegralApplyService {
 	private UserDao userDao;
 	@Autowired
 	private IntegralHistoryDao integralHistoryDao;
+	
+	 
+	public Integer getExchangeIntegralApplyBySysdate(Long exchange_integral_id,Long cteate_user_id,String sysdate){
+		return exchangeIntegralApplyDao.getExchangeIntegralApplyBySysdate(exchange_integral_id, cteate_user_id, sysdate);
+	}
 	public ExchangeIntegralApply getExchangeIntegralApply(Long id) {
 		return exchangeIntegralApplyDao.findOne(id);
 	}

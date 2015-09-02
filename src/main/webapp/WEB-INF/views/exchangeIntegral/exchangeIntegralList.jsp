@@ -30,6 +30,7 @@
 				<th>物品名称</th> 
 				<th>可兑换积分</th>
 				<th>描述</th> 
+				<th>每日限制数量</th> 
 				<th>时间</th>
 				<th>创建人</th>
 				<th>管理</th>
@@ -41,6 +42,7 @@
 					<td>${task.goodsName}</td>
 					<td><fmt:formatNumber value="${task.integral}" pattern="##.##"/></td>
 					<td>${task.description}</td>
+					<td>${task.limitedNumber}</td>
 					<td><fmt:formatDate value="${task.cteateDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td> 
 					<td>${task.cteateUser.name}</td>
 

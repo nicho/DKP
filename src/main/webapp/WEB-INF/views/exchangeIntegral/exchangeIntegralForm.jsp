@@ -31,7 +31,12 @@
 					<input type="text" id="integral" name="integral" value="${exchangeIntegral.integral}" class="input-large required number"/>
 				</div>
 			</div>   
-				  
+							    <div class="control-group">
+				<label class="control-label">每日限制数量:</label>
+				<div class="controls">
+					<input type="text" id="limitedNumber" name="limitedNumber" value="${exchangeIntegral.limitedNumber}" class="input-large required digits"/>
+				</div>
+			</div>   
 			<div class="control-group">
 				<label for="description" class="control-label">描述:</label>
 				<div class="controls">

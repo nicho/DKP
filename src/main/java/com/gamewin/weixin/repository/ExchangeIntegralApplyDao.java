@@ -6,11 +6,13 @@
 package com.gamewin.weixin.repository;
 
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.gamewin.weixin.entity.ExchangeIntegralApply;
 
 public interface ExchangeIntegralApplyDao extends PagingAndSortingRepository<ExchangeIntegralApply, Long>,
 		JpaSpecificationExecutor<ExchangeIntegralApply> {
-
+	@Query("SELECT SUM(t.number) FROM ExchangeIntegralApply t WHERE t.exchangeIntegral.id=?1 AND t.cteateUser.id=?2 AND DATE_FORMAT(t.cteateDate,'%Y-%m-%d') =?3")
+	Integer getExchangeIntegralApplyBySysdate(Long exchange_integral_id,Long cteate_user_id,String sysdate);
 }

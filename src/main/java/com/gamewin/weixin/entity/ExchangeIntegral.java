@@ -12,11 +12,21 @@ import javax.persistence.Table;
 public class ExchangeIntegral extends IdEntity {
 	private String goodsName;
 	private String description;
+	private Integer limitedNumber;
 	private Double integral;
 	private User cteateUser;
 	private Date cteateDate;
 	private String status;
 	private Integer isdelete;
+	
+	public Integer getLimitedNumber() {
+		return limitedNumber;
+	}
+
+	public void setLimitedNumber(Integer limitedNumber) {
+		this.limitedNumber = limitedNumber;
+	}
+
 	public ExchangeIntegral() {
 	}
 

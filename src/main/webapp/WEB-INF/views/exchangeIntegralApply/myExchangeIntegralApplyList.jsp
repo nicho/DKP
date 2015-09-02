@@ -7,6 +7,14 @@
 <html>
 <head>
 <title>我的兑换积分申请列表</title>
+	<script>
+		$(document).ready(function() {
+			 if('${message}'!=null && '${message}'!='')
+			 {
+				 alert('${message}');
+			 }
+		});
+	</script>
 </head>
 
 <body>

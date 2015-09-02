@@ -31,6 +31,7 @@ import com.gamewin.weixin.entity.User;
 import com.gamewin.weixin.service.account.ShiroDbRealm.ShiroUser;
 import com.gamewin.weixin.service.activity.ExchangeIntegralApplyService;
 import com.gamewin.weixin.service.activity.ExchangeIntegralService;
+import com.gamewin.weixin.util.StringUtil;
 import com.google.common.collect.Maps;
 
 /**
@@ -133,8 +134,20 @@ public class ExchangeIntegralApplyController {
 		User createuser = new User(getCurrentUserId());
 
 		try {
-			Long exchangeIntegralId =Long.parseLong(request.getParameter("exchangeIntegralId"));
+			Long exchangeIntegralId =Long.parseLong(request.getParameter("exchangeIntegralId")); 
 			ExchangeIntegral exchangeIntegral=exchangeIntegralService.getExchangeIntegral(exchangeIntegralId);
+			
+			if(exchangeIntegral.getLimitedNumber()!=null && exchangeIntegral.getLimitedNumber()>0)
+			{
+				//判断是否超限
+				Integer sumCount=exchangeIntegralApplyService.getExchangeIntegralApplyBySysdate(exchangeIntegralId,createuser.getId(), StringUtil.dateToString(new Date(), null));
+				if(sumCount>=exchangeIntegral.getLimitedNumber())
+				{
+					redirectAttributes.addFlashAttribute("message", "提交物品"+exchangeIntegral.getGoodsName()+"超限,每日限制数量:"+exchangeIntegral.getLimitedNumber()+",您今日已提交数量:"+sumCount);
+					return "redirect:/exchangeIntegralApply/";
+				}
+			}
+		 
 			newExchangeIntegralApply.setIntegral(newExchangeIntegralApply.getIntegral()*newExchangeIntegralApply.getNumber());
 			newExchangeIntegralApply.setExchangeIntegral(exchangeIntegral);
 			newExchangeIntegralApply.setCteateUser(createuser);
@@ -144,6 +157,8 @@ public class ExchangeIntegralApplyController {
 			exchangeIntegralApplyService.saveExchangeIntegralApply(newExchangeIntegralApply);
 
 			redirectAttributes.addFlashAttribute("message", "提交申请成功");
+
+			 
 
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute("message", "提交申请失败");

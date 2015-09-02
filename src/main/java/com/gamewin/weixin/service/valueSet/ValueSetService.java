@@ -96,8 +96,7 @@ public class ValueSetService {
 	 */
 	private Specification<ValueSet> buildSpecification(String code, Map<String, Object> searchParams) {
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
-		filters.put("typeCode", new SearchFilter("typeCode", Operator.EQ, code));
-		filters.put("status", new SearchFilter("status", Operator.EQ, "Y"));
+		filters.put("typeCode", new SearchFilter("typeCode", Operator.EQ, code)); 
 		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));
 		Specification<ValueSet> spec = DynamicSpecifications.bySearchFilter(filters.values(), ValueSet.class);
 		return spec;

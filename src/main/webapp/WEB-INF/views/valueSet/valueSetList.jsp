@@ -38,8 +38,10 @@
 				<c:if test="${task.status eq 'disabled'}">失效</c:if>
 				</td> 
 				<td> 
-				 <c:if test="${task.status eq 'Y'}"><a href="#" onclick ="confirmDisabled('${ctx}/gameCode/disabled/${task.id}')">失效</a> 
-				 </c:if>  
+				 <c:if test="${task.status eq 'Y'}"><a href="#" onclick ="confirmDisabled('${ctx}/valueSet/disabled/${task.id}')">失效</a>  &nbsp;&nbsp;
+				 
+				</c:if>  
+				  <a href="#" onclick ="confirmDelete('${ctx}/valueSet/delete/${task.id}')">删除</a> 
 				</td>
 			</tr>
 		</c:forEach>

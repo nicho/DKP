@@ -28,11 +28,9 @@ import org.springside.modules.web.Servlets;
 import com.gamewin.weixin.entity.ExchangeIntegral;
 import com.gamewin.weixin.entity.ExchangeIntegralApply;
 import com.gamewin.weixin.entity.User;
-import com.gamewin.weixin.service.account.AccountService;
 import com.gamewin.weixin.service.account.ShiroDbRealm.ShiroUser;
 import com.gamewin.weixin.service.activity.ExchangeIntegralApplyService;
 import com.gamewin.weixin.service.activity.ExchangeIntegralService;
-import com.gamewin.weixin.service.valueSet.ValueSetService;
 import com.google.common.collect.Maps;
 
 /**
@@ -63,11 +61,7 @@ public class ExchangeIntegralApplyController {
 	private ExchangeIntegralApplyService exchangeIntegralApplyService;
 	@Autowired
 	private ExchangeIntegralService exchangeIntegralService;
-	@Autowired
-	private AccountService accountService;
-
-	@Autowired
-	private ValueSetService valueSetService;
+ 
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
@@ -141,7 +135,7 @@ public class ExchangeIntegralApplyController {
 		try {
 			Long exchangeIntegralId =Long.parseLong(request.getParameter("exchangeIntegralId"));
 			ExchangeIntegral exchangeIntegral=exchangeIntegralService.getExchangeIntegral(exchangeIntegralId);
-			newExchangeIntegralApply.setIntegral(exchangeIntegral.getIntegral()*newExchangeIntegralApply.getNumber());
+			newExchangeIntegralApply.setIntegral(newExchangeIntegralApply.getIntegral()*newExchangeIntegralApply.getNumber());
 			newExchangeIntegralApply.setExchangeIntegral(exchangeIntegral);
 			newExchangeIntegralApply.setCteateUser(createuser);
 			newExchangeIntegralApply.setCteateDate(new Date()); 

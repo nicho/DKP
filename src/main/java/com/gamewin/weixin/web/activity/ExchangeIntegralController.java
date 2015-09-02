@@ -30,7 +30,6 @@ import com.gamewin.weixin.entity.ExchangeIntegral;
 import com.gamewin.weixin.entity.User;
 import com.gamewin.weixin.service.account.ShiroDbRealm.ShiroUser;
 import com.gamewin.weixin.service.activity.ExchangeIntegralService;
-import com.gamewin.weixin.service.valueSet.ValueSetService;
 import com.google.common.collect.Maps;
 
 /**
@@ -58,9 +57,7 @@ public class ExchangeIntegralController {
 	private ExchangeIntegralService exchangeIntegralService;
 
 	
-
-	@Autowired
-	private ValueSetService valueSetService;
+ 
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,

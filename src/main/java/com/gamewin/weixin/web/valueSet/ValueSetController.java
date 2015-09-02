@@ -97,5 +97,14 @@ public class ValueSetController {
 		redirectAttributes.addFlashAttribute("message", "失效'" + valueSet.getTypeName() + "'成功");
 		return "redirect:/valueSet/";
 	}
-
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
+	@RequestMapping(value = "delete/{id}")
+	public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+		ValueSet valueSet = valueSetService.getValueSet(id);
+		valueSet.setStatus("disabled");
+		valueSet.setIsdelete(1);
+		valueSetService.saveValueSet(valueSet);
+		redirectAttributes.addFlashAttribute("message", "删除'" + valueSet.getTypeName() + "'成功");
+		return "redirect:/valueSet/";
+	}
 }

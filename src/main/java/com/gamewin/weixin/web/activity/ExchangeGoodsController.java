@@ -31,7 +31,6 @@ import com.gamewin.weixin.entity.User;
 import com.gamewin.weixin.service.account.AccountService;
 import com.gamewin.weixin.service.account.ShiroDbRealm.ShiroUser;
 import com.gamewin.weixin.service.activity.ExchangeGoodsService;
-import com.gamewin.weixin.service.valueSet.ValueSetService;
 import com.google.common.collect.Maps;
 
 /**
@@ -61,9 +60,7 @@ public class ExchangeGoodsController {
 
 	@Autowired
 	private AccountService accountService;
-
-	@Autowired
-	private ValueSetService valueSetService;
+ 
 	
 	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(method = RequestMethod.GET)

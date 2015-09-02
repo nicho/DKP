@@ -28,7 +28,8 @@
 					    <div class="control-group">
 				<label class="control-label">积分:</label>
 				<div class="controls">
-					<input type="text" id="integral"  value="${exchangeIntegral.integral}" class="input-large  " readonly="readonly"/>
+					<input type="text" id="integral" name="integral" value="<c:if test="${exchangeIntegral.integral>0}">${exchangeIntegral.integral}</c:if>" class="input-large  " <c:if test="${exchangeIntegral.integral>0}"> readonly="readonly"</c:if>/>
+					<c:if test="${exchangeIntegral.integral<=0}"><font color="blue">自定义物品,请自行填写兑换积分,提供给团长审核</font></c:if>
 				</div>
 			</div>
 				 			    <div class="control-group">

@@ -6,7 +6,7 @@
 
 <html>
 <head>
-<title>贡献物品审核</title>
+<title>拍卖物品审核</title>
 </head>
 
 <body>
@@ -27,7 +27,7 @@
 				<th>申请物品</th>
 				<th>单价</th>
 				<th>数量</th> 
-				<th>申请描述</th>
+				<th style="width: 40%;">申请描述</th>
 				<th>总积分</th>
 				<th>申请人</th>
 				<th>申请时间</th>

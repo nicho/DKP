@@ -154,7 +154,7 @@ public class ExchangeIntegralApplyController {
 				Integer sumCount=exchangeIntegralApplyService.getExchangeIntegralApplyBySysdate(exchangeIntegralId,createuser.getId(), StringUtil.dateToString(new Date(), null));
 				if(sumCount!=null)
 				{
-					if((sumCount+newExchangeIntegralApply.getNumber())>=exchangeIntegral.getLimitedNumber())
+					if((sumCount+newExchangeIntegralApply.getNumber())>exchangeIntegral.getLimitedNumber())
 					{
 						redirectAttributes.addFlashAttribute("message", "提交物品"+exchangeIntegral.getGoodsName()+"超限,每日限制数量:"+exchangeIntegral.getLimitedNumber()+",您今日已提交数量:"+sumCount);
 						return "redirect:/exchangeIntegral/";

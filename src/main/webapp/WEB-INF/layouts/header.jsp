@@ -37,17 +37,24 @@
 					<li class=""><a id="myTask" href="${ctx}/auctionApply">我申请的拍卖</a></li>
 					<li><a id="myTask" href="${ctx}/exchangeIntegralApply">我贡献的物品</a></li>
 					<li><a id="account-tab" href="${ctx}/exchangeIntegral">贡献物品</a></li>
-					<shiro:hasAnyRoles name="admin,Head">
-						<li><a id="account-tab" href="${ctx}/exchangeGoods">物品拍卖登记</a></li>
-						<li><a id="myTask" href="${ctx}/exchangeIntegralApply/approvalList">贡献物品审核</a></li> 
+					<shiro:hasAnyRoles name="admin,Head"> 
 						<li><a id="myTask" href="${ctx}/exchangeIntegralApply/approvalAllList">历史贡献物品</a> </li> 
+						<li><a id="myTask" href="${ctx}/auctionApply/approvalAllList">历史拍卖物品</a> </li> 
 						<li><a id="account-tab" href="${ctx}/admin/user">帐号管理</a></li>
 						<li><a id="account-tab" href="${ctx}/valueSet">活动类型设置</a></li>
 					</shiro:hasAnyRoles>
+					
+					<shiro:hasAnyRoles name="admin,Head"> 
+						<li><a id="myTask" href="${ctx}/auctionApply/approvalList">物品拍卖审核</a></li>  
+						<li><a id="myTask" href="${ctx}/exchangeIntegralApply/approvalList">贡献物品审核</a></li>  
+					</shiro:hasAnyRoles>
+					
 					<shiro:hasAnyRoles name="admin,Head,OneLevel,TwoLevel,ThreeLevel">
 						<li><a id="myTask" href="${ctx}/activity/approvalConfirmList">积分发放审核</a></li>
 						<li><a id="myTask" href="${ctx}/activity/approvalList">活动申请审核</a></li>
 					</shiro:hasAnyRoles>
+					
+					
 					<li><a id="account-tab" href="${ctx}/profile">资料修改</a></li>
 				</ul>
 			</div>

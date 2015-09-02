@@ -15,7 +15,32 @@
 </style>
 
 
-
+<script lang="javascript" type="text/javascript">
+$(document).ready(function() {
+	var pagesize = '${page.pageSize}';  
+	 $("#pageSizeTag").find("option[value='"+pagesize+"']").attr("selected",true);
+	 
+	 
+      $('#pageNumTag').bind('keypress',function(event){
+         if(event.keyCode == "13")    
+         { 
+             if($('#pageNumTag').val()<0 || $('#pageNumTag').val()>'${page.pages}')
+            {
+            	 alert('你输入的页码不正确');
+            }  
+             else
+           {
+            	 location.href = '?page='+$('#pageNumTag').val()+'&page.size='+$('#pageSizeTag').val()+'${searchParams}';
+           }
+         }
+     }); 
+}); 
+function onChangePageSize(obj)
+{ 
+	location.href = '?page=1&page.size='+obj.value+'${searchParams}';
+}
+ 
+</script>
  <div  >
  <div  >
 <!--分页开始--->
@@ -30,7 +55,7 @@
             
             </li>
             <li class="xifenye" id="xifenye">
-            	<a id="xiye">${page.pageNum}</a>/<a id="mo">${page.pages}</a>
+            	<a id="xiye"><input type="text" id="pageNumTag"  class="input" name="pageNum" value="${page.pageNum}"   style="width: 10px;height: 10px; padding: 4px 6px; margin-bottom: 0px; font-size: 12px; text-align: center;" /></a>/<a id="mo">${page.pages}</a>
                 <div class="xab" id="xab" style="display:none">
                 	<ul id="uljia">	
                     </ul>
@@ -43,6 +68,7 @@
             </c:choose>
             </li>
             <li id="last"><a href="?page=${page.pages}&sortType=${sortType}&${searchParams}">末页</a></li>
+          <li class="pages_1"> <select style="width: 57px;    padding: 0px 0px;    height: 19px;    margin-bottom: 0px;" name="pageSize" id="pageSizeTag" onchange="onChangePageSize(this)"><option id="10" value="10">10</option><option id="20" value="20">20</option><option id="30" value="30">30</option></select> </li>
         </ul>    
     </div>
 <!--分页结束--->	

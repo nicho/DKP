@@ -323,6 +323,12 @@ public class ActivityController {
 
 		List<ActivityUser> activityUsers = activityUserService.getAllActivityUser(id);
 		model.addAttribute("activityUsers", activityUsers);
+		
+		if(!"ConfirmProcess".equals(activity.getStatus()))
+		{
+			redirectAttributes.addFlashAttribute("message", "操作失败,该活动已被确认审批,或非法操作!");
+			return "redirect:/activity/approvalConfirmList/";
+		}
 		return "activity/approvalConfirm";
 	}
 
@@ -368,15 +374,26 @@ public class ActivityController {
 	}
 
 	@RequestMapping(value = "confirmActivity/{id}", method = RequestMethod.GET)
-	public String confirmActivity(@PathVariable("id") Long id, Model model, ServletRequest request) {
+	public String confirmActivity(@PathVariable("id") Long id, Model model, ServletRequest request,RedirectAttributes redirectAttributes) {
 
 		Activity activity = activityService.getActivity(id);
+		if(activity==null)
+		{
+			redirectAttributes.addFlashAttribute("message", "非法操作!活动不存在!");
+			return "redirect:/myfqActivity/";
+		}
 		model.addAttribute("activity", activity);
 		List<ValueSet> ActivityTypeList = valueSetService.getActivityTypeAll("ActivityType");
 		model.addAttribute("ActivityTypeList", ActivityTypeList);
 
 		List<ActivityUser> activityUsers = activityUserService.getAllActivityUser(id);
 		model.addAttribute("activityUsers", activityUsers);
+		if(!"pass".equals(activity.getStatus()) && !"close".equals(activity.getStatus()))
+		{
+			redirectAttributes.addFlashAttribute("message", "操作失败,或活动已提交发放申请,或非法操作!");
+			return "redirect:/myfqActivity/";
+		}
+		
 		return "activity/activityConfirm";
 	}
 
@@ -386,6 +403,11 @@ public class ActivityController {
 			User user = new User(getCurrentUserId());
 			Activity activity = activityService.getActivity(activityId);
 			if (activity != null) {
+				if(!"pass".equals(activity.getStatus()) && !"close".equals(activity.getStatus()))
+				{
+					redirectAttributes.addFlashAttribute("message", "操作失败,该活动已提交发放申请,或非法操作!");
+					return "redirect:/myfqActivity/";
+				}
 				if (chk_list != null && chk_list.length > 0) {
 					if ("AssociationActivity".equals(activity.getfType())) {
 						// 公会活动
@@ -422,7 +444,12 @@ public class ActivityController {
 			User user = new User(getCurrentUserId());
 			Activity activity = activityService.getActivity(activityId);
 			if (activity != null) {
-
+				
+				if(!"ConfirmProcess".equals(activity.getStatus()))
+				{
+					redirectAttributes.addFlashAttribute("message", "操作失败,该活动已被确认审批,或非法操作!");
+					return "redirect:/activity/approvalConfirmList/";
+				}
 				if ("AssociationActivity".equals(activity.getfType())) {
 					String approvalStatus = request.getParameter("approvalStatus");
 					if (!StringUtils.isEmpty(approvalStatus)) {

@@ -194,7 +194,7 @@ public class AuctionController {
 		newAuction.setIsdelete(0);
 		newAuction.setStatus("Y");
 		auctionService.saveAuction(newAuction);
-		redirectAttributes.addFlashAttribute("message", "更新排名物品成功");
+		redirectAttributes.addFlashAttribute("message", "更新拍卖物品成功");
 		return "redirect:/auction/";
 	}
 

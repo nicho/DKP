@@ -182,7 +182,7 @@ public class AuctionController {
 	public String updateForm(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("auction", auctionService.getAuction(id)); 
 		model.addAttribute("action", "update"); 
-		return "auction/auctionForm"; 
+		return "auctionItems/auctionForm"; 
 	}
 
 	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)

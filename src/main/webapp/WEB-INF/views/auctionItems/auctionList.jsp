@@ -41,7 +41,7 @@
 		<thead>
 			<tr>
 				<th>拍卖物品</th>
-				<th>描述</th>
+				<th style="width: 60%;">描述</th>
 				<th>库存数量</th> 
 				<th>积分</th> 
 				<th>创建时间</th>

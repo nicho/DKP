@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
 <html>
@@ -70,9 +71,12 @@
 						</c:if>
 						<c:if test="${task.status eq 'pass' || task.status eq 'close'}">
 							<a href="${ctx}/activity/confirmActivity/${task.id}">积分发放</a>  &nbsp; 
+							<shiro:hasAnyRoles name="admin,Head"> 
+							<a href="#" onclick="confirmDisabled('${ctx}/activity/disabled/${task.id}')">失效</a> 
+							</shiro:hasAnyRoles>
 						</c:if>
 						
-					   <a href="#" onclick="confirmDisabled('${ctx}/activity/disabled/${task.id}')">失效</a> 
+					  
 						
 					</td>
 						

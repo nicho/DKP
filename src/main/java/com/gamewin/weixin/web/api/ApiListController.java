@@ -175,7 +175,7 @@ public class ApiListController {
 					str.append("<Articles>                                         ");
 					str.append("<item>                                             ");
 					str.append("<Title><![CDATA[DKP活动参与通知]]></Title>                   ");
-					str.append("<Description><![CDATA[请扫描的活动'"+activity.getTitle()+"',请点击阅读全文,参与活动]]></Description> ");
+					str.append("<Description><![CDATA[您扫描的活动'"+activity.getTitle()+"',请点击阅读全文,参与活动]]></Description> ");
 					str.append("<PicUrl><![CDATA[]]></PicUrl>                ");
 					str.append("<Url><![CDATA[" + url + "]]></Url>                         ");
 					str.append("</item>                                            ");

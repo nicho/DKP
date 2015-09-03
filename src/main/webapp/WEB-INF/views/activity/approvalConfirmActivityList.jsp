@@ -78,7 +78,7 @@
 							<a href="${ctx}/activity/approvalConfirm/${task.id}" >审批</a>&nbsp; 
 						</c:if>
 						<shiro:hasAnyRoles name="admin,Head"> 
-							    <a href="#" onclick="confirmDisabled('${ctx}/activity/disabled/${task.id}')">失效</a> 
+							    <a href="#" onclick="confirmDisabled('${ctx}/activity/disabled/${task.id}')">失效</a> &nbsp; 
 								<a href="#" onclick="deleteTask('${task.id}')">删除</a>&nbsp;  
 						</shiro:hasAnyRoles>
 					</td>

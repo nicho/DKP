@@ -75,11 +75,13 @@ public class ActivityController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
-			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request) {
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model,
+			ServletRequest request) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		Long userId = getCurrentUserId();
 
-		Page<Activity> activitys = activityService.getPassActivity(userId, searchParams, pageNumber, pageSize, sortType);
+		Page<Activity> activitys = activityService
+				.getPassActivity(userId, searchParams, pageNumber, pageSize, sortType);
 
 		model.addAttribute("activitys", activitys);
 		model.addAttribute("sortType", sortType);
@@ -96,11 +98,13 @@ public class ActivityController {
 	@RequestMapping(value = "myfqActivity", method = RequestMethod.GET)
 	public String myfqActivity(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
-			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request) {
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model,
+			ServletRequest request) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		Long userId = getCurrentUserId();
 
-		Page<Activity> activitys = activityService.getAllmyfqActivity(userId, searchParams, pageNumber, pageSize, sortType);
+		Page<Activity> activitys = activityService.getAllmyfqActivity(userId, searchParams, pageNumber, pageSize,
+				sortType);
 
 		model.addAttribute("activitys", activitys);
 		model.addAttribute("sortType", sortType);
@@ -117,11 +121,13 @@ public class ActivityController {
 	@RequestMapping(value = "approvalList", method = RequestMethod.GET)
 	public String approvalList(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
-			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request,RedirectAttributes redirectAttributes) {
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model,
+			ServletRequest request, RedirectAttributes redirectAttributes) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		Long userId = getCurrentUserId();
 		try {
-			Page<Activity> activitys = activityService.getAllProcessActivty(userId, searchParams, pageNumber, pageSize, sortType);
+			Page<Activity> activitys = activityService.getAllProcessActivty(userId, searchParams, pageNumber, pageSize,
+					sortType);
 
 			model.addAttribute("activitys", activitys);
 			model.addAttribute("sortType", sortType);
@@ -142,12 +148,13 @@ public class ActivityController {
 	@RequestMapping(value = "approvalConfirmList", method = RequestMethod.GET)
 	public String approvalConfirmList(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
-			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request,
-			RedirectAttributes redirectAttributes) {
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model,
+			ServletRequest request, RedirectAttributes redirectAttributes) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		Long userId = getCurrentUserId();
 		try {
-			Page<Activity> activitys = activityService.getAllConfirmProcessActivty(userId, searchParams, pageNumber, pageSize, sortType);
+			Page<Activity> activitys = activityService.getAllConfirmProcessActivty(userId, searchParams, pageNumber,
+					pageSize, sortType);
 
 			model.addAttribute("activitys", activitys);
 			model.addAttribute("sortType", sortType);
@@ -186,7 +193,7 @@ public class ActivityController {
 			newActivity.setCreateUser(user);
 			newActivity.setIsdelete(0);
 			if ("AssociationActivity".equals(newActivity.getfType())) {
-				newActivity.setStatus("process"); 
+				newActivity.setStatus("process");
 				activityService.saveActivityGHCreate(newActivity);
 				redirectAttributes.addFlashAttribute("message", "活动确认提交审核成功");
 			} else if ("PersonalActivities".equals(newActivity.getfType())) {
@@ -209,7 +216,8 @@ public class ActivityController {
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 		return user.id;
 	}
-	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
+
+	@RequiresRoles(value = { "admin", "Head" }, logical = Logical.OR)
 	@RequestMapping(value = "disabled/{id}")
 	public String disabled(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
 		Activity activity = activityService.getActivity(id);
@@ -218,7 +226,8 @@ public class ActivityController {
 		redirectAttributes.addFlashAttribute("message", "失效任务'" + activity.getTitle() + "'成功");
 		return "redirect:/activity/approvalConfirmList/";
 	}
-	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
+
+	@RequiresRoles(value = { "admin", "Head" }, logical = Logical.OR)
 	@RequestMapping(value = "delete/{id}")
 	public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
 		Activity activity = activityService.getActivity(id);
@@ -228,7 +237,8 @@ public class ActivityController {
 		redirectAttributes.addFlashAttribute("message", "删除任务'" + activity.getTitle() + "'成功");
 		return "redirect:/activity/approvalConfirmList/";
 	}
-	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
+
+	@RequiresRoles(value = { "admin", "Head" }, logical = Logical.OR)
 	@RequestMapping(value = "deleteindex/{id}")
 	public String deleteindex(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
 		Activity activity = activityService.getActivity(id);
@@ -238,6 +248,7 @@ public class ActivityController {
 		redirectAttributes.addFlashAttribute("message", "删除任务'" + activity.getTitle() + "'成功");
 		return "redirect:/activity/";
 	}
+
 	@RequestMapping(value = "view/{id}", method = RequestMethod.GET)
 	public String view(@PathVariable("id") Long id, Model model, ServletRequest request) {
 
@@ -277,15 +288,14 @@ public class ActivityController {
 		if (!file.exists() && !file.isDirectory()) {
 			file.mkdirs();
 		}
-		
-		String wxurl =  MobileContants.IMAGEURL+nowDate+"\\" + imageUrl; // 
-		
-		//String AccessToken = activityService.getAccessToken(); 
-  
-		
+
+		String wxurl = MobileContants.IMAGEURL + nowDate + "\\" + imageUrl; //
+
+		// String AccessToken = activityService.getAccessToken();
+
 		try {
 			String AccessToken = MobileHttpClient.getAccessToken();
-			//QRCodeUtil.createEncode(url, null, filePath + nowDate, imageUrl);
+			// QRCodeUtil.createEncode(url, null, filePath + nowDate, imageUrl);
 			String ticket = MobileHttpClient.getJsapi_ticket_WeixinLs(AccessToken, entity.getId());
 			MobileHttpClient.getticketImage(URLEncoder.encode(ticket, "UTF-8"), wxurl);
 		} catch (Exception e) {
@@ -315,7 +325,8 @@ public class ActivityController {
 	}
 
 	@RequestMapping(value = "approvalConfirm/{id}")
-	public String approvalConfirm(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes, ServletRequest request) {
+	public String approvalConfirm(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes,
+			ServletRequest request) {
 		Activity activity = activityService.getActivity(id);
 		model.addAttribute("activity", activity);
 		List<ValueSet> ActivityTypeList = valueSetService.getActivityTypeAll("ActivityType");
@@ -323,9 +334,8 @@ public class ActivityController {
 
 		List<ActivityUser> activityUsers = activityUserService.getAllActivityUser(id);
 		model.addAttribute("activityUsers", activityUsers);
-		
-		if(!"ConfirmProcess".equals(activity.getStatus()))
-		{
+
+		if (!"ConfirmProcess".equals(activity.getStatus())) {
 			redirectAttributes.addFlashAttribute("message", "操作失败,该活动已被确认审批,或非法操作!");
 			return "redirect:/activity/approvalConfirmList/";
 		}
@@ -339,21 +349,31 @@ public class ActivityController {
 		model.addAttribute("activity", activity);
 		List<ValueSet> ActivityTypeList = valueSetService.getActivityTypeAll("ActivityType");
 		model.addAttribute("ActivityTypeList", ActivityTypeList);
-		if(new Date().getTime()>activity.getEndDate().getTime())
-		{
+		if (new Date().getTime() > activity.getEndDate().getTime()) {
 			model.addAttribute("isclose", "Y");
-			activityService.updateActivityClose(id);
-		} 
+			if ("pass".equals(activity.getStatus())) {
+				activityService.updateActivityClose(id);
+			}
 
+		} 
 		return "activity/activityRegister";
 	}
+
 	@RequestMapping(value = "closeActivity/{id}", method = RequestMethod.GET)
-	public String closeActivity(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes,ServletRequest request) { 
-		activityService.updateActivityClose(id); 
-		redirectAttributes.addFlashAttribute("message", "活动结束登记成功");
-		return "redirect:/activity/myfqActivity";
+	public String closeActivity(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes,
+			ServletRequest request) {
+		Activity ay = activityService.getActivity(id);
+		if ("pass".equals(ay.getStatus())) {
+			activityService.updateActivityClose(id);
+			redirectAttributes.addFlashAttribute("message", "活动结束登记成功");
+			return "redirect:/activity/myfqActivity";
+		} else {
+			redirectAttributes.addFlashAttribute("message", "状态异常!非法操作!");
+			return "redirect:/activity/myfqActivity";
+		}
+
 	}
-	
+
 	@RequestMapping(value = "registerActivity", method = RequestMethod.POST)
 	public String registerActivity(@Valid Long activityId, RedirectAttributes redirectAttributes, ServletRequest request) {
 		User user = new User(getCurrentUserId());
@@ -374,11 +394,11 @@ public class ActivityController {
 	}
 
 	@RequestMapping(value = "confirmActivity/{id}", method = RequestMethod.GET)
-	public String confirmActivity(@PathVariable("id") Long id, Model model, ServletRequest request,RedirectAttributes redirectAttributes) {
+	public String confirmActivity(@PathVariable("id") Long id, Model model, ServletRequest request,
+			RedirectAttributes redirectAttributes) {
 
 		Activity activity = activityService.getActivity(id);
-		if(activity==null)
-		{
+		if (activity == null) {
 			redirectAttributes.addFlashAttribute("message", "非法操作!活动不存在!");
 			return "redirect:/activity/myfqActivity/";
 		}
@@ -388,23 +408,22 @@ public class ActivityController {
 
 		List<ActivityUser> activityUsers = activityUserService.getAllActivityUser(id);
 		model.addAttribute("activityUsers", activityUsers);
-		if(!"pass".equals(activity.getStatus()) && !"close".equals(activity.getStatus()))
-		{
+		if (!"pass".equals(activity.getStatus()) && !"close".equals(activity.getStatus())) {
 			redirectAttributes.addFlashAttribute("message", "操作失败,或活动已提交发放申请,或非法操作!");
 			return "redirect:/activity/myfqActivity/";
 		}
-		
+
 		return "activity/activityConfirm";
 	}
 
 	@RequestMapping(value = "activityConfirm", method = RequestMethod.POST)
-	public String activityConfirm(@Valid Long activityId, @Valid Long[] chk_list, RedirectAttributes redirectAttributes, ServletRequest request) {
+	public String activityConfirm(@Valid Long activityId, @Valid Long[] chk_list,
+			RedirectAttributes redirectAttributes, ServletRequest request) {
 		try {
 			User user = new User(getCurrentUserId());
 			Activity activity = activityService.getActivity(activityId);
 			if (activity != null) {
-				if(!"pass".equals(activity.getStatus()) && !"close".equals(activity.getStatus()))
-				{
+				if (!"pass".equals(activity.getStatus()) && !"close".equals(activity.getStatus())) {
 					redirectAttributes.addFlashAttribute("message", "操作失败,该活动已提交发放申请,或非法操作!");
 					return "redirect:/activity/myfqActivity/";
 				}
@@ -444,9 +463,8 @@ public class ActivityController {
 			User user = new User(getCurrentUserId());
 			Activity activity = activityService.getActivity(activityId);
 			if (activity != null) {
-				
-				if(!"ConfirmProcess".equals(activity.getStatus()))
-				{
+
+				if (!"ConfirmProcess".equals(activity.getStatus())) {
 					redirectAttributes.addFlashAttribute("message", "操作失败,该活动已被确认审批,或非法操作!");
 					return "redirect:/activity/approvalConfirmList/";
 				}

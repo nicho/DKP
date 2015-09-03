@@ -70,8 +70,11 @@ public class ActivityService {
 		
 	public void updateActivityClose(Long id) {
 		Activity ac=activityDao.findOne(id);
-		ac.setStatus("close");
-		activityDao.save(ac);
+		if ("pass".equals(ac.getStatus())) {
+			ac.setStatus("close");
+			activityDao.save(ac);
+		}
+	
 	}
 	public Activity getActivity(Long id) {
 		return activityDao.findOne(id);

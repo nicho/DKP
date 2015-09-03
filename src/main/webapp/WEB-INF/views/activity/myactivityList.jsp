@@ -72,9 +72,7 @@
 							<a href="${ctx}/activity/confirmActivity/${task.id}">积分发放</a>  &nbsp; 
 						</c:if>
 						
-						 <c:if test="${task.status eq 'Y'}">
-							<a href="#" onclick="confirmDisabled('${ctx}/activity/disabled/${task.id}')">失效</a>
-						</c:if>
+					   <a href="#" onclick="confirmDisabled('${ctx}/activity/disabled/${task.id}')">失效</a> 
 						
 					</td>
 						

@@ -67,11 +67,13 @@ public class AuctionApplyController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
-			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request) {
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model,
+			ServletRequest request) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		Long userId = getCurrentUserId();
 		// 我的申请
-		Page<AuctionApply> auctionApplys = auctionApplyService.getAllAuctionApply(userId, searchParams, pageNumber, pageSize, sortType);
+		Page<AuctionApply> auctionApplys = auctionApplyService.getAllAuctionApply(userId, searchParams, pageNumber,
+				pageSize, sortType);
 
 		model.addAttribute("auctionApplys", auctionApplys);
 		model.addAttribute("sortType", sortType);
@@ -86,11 +88,13 @@ public class AuctionApplyController {
 	@RequestMapping(value = "approvalList", method = RequestMethod.GET)
 	public String approvalList(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
-			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request) {
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model,
+			ServletRequest request) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		Long userId = getCurrentUserId();
 		// 我的申请
-		Page<AuctionApply> auctionApplys = auctionApplyService.getAllAuctionApprovalList(userId, searchParams, pageNumber, pageSize, sortType);
+		Page<AuctionApply> auctionApplys = auctionApplyService.getAllAuctionApprovalList(userId, searchParams,
+				pageNumber, pageSize, sortType);
 
 		model.addAttribute("auctionApplys", auctionApplys);
 		model.addAttribute("sortType", sortType);
@@ -105,11 +109,13 @@ public class AuctionApplyController {
 	@RequestMapping(value = "approvalAllList", method = RequestMethod.GET)
 	public String approvalAllList(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
-			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model, ServletRequest request) {
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model,
+			ServletRequest request) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		Long userId = getCurrentUserId();
 
-		Page<AuctionApply> auctionApplys = auctionApplyService.getAllAuctionAllList(userId, searchParams, pageNumber, pageSize, sortType);
+		Page<AuctionApply> auctionApplys = auctionApplyService.getAllAuctionAllList(userId, searchParams, pageNumber,
+				pageSize, sortType);
 
 		model.addAttribute("auctionApplys", auctionApplys);
 		model.addAttribute("sortType", sortType);
@@ -123,6 +129,11 @@ public class AuctionApplyController {
 	@RequestMapping(value = "create/{id}", method = RequestMethod.GET)
 	public String createForm(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
 		Auction auction = auctionService.getAuction(id);
+
+		if (auction.getNumber() <= 0) {
+			redirectAttributes.addFlashAttribute("message", "拍卖物品库存不足!");
+			return "redirect:/auction/";
+		}
 		User user = accountService.getUser(getCurrentUserId());
 
 		// 我的申请
@@ -131,25 +142,67 @@ public class AuctionApplyController {
 			redirectAttributes.addFlashAttribute("message", "您的申请正在审核中,无需重复申请!");
 			return "redirect:/auction/";
 		}
-		if (user.getIntegral() >= auction.getIntegral()) {
-			model.addAttribute("auctionApply", new AuctionApply());
-			model.addAttribute("action", "create");
-			model.addAttribute("auction", auction);
-			return "auctionApplyItems/auctionApplyForm";
-		} else {
+
+		if (user.getIntegral() < auction.getIntegral()) {
 			redirectAttributes.addFlashAttribute("message", "您的积分不够!");
+			return "redirect:/auction/";
 		}
-		return "redirect:/auction/";
+
+		if (auction.getLimitedNumber() != null && auction.getLimitedNumber() > 0) {
+			// 判断是否超限
+			Integer sumCount = auctionApplyService.getAuctionApplyCountByAppId(id, user.getId());
+			if (sumCount != null && sumCount >= auction.getLimitedNumber()) {
+				redirectAttributes.addFlashAttribute("message", "拍卖物品" + auction.getGoodsName() + "超限,每人限制数量:"
+						+ auction.getLimitedNumber() + ",您已申请购买数量:" + sumCount);
+				return "redirect:/auction/";
+			}
+		}
+
+		model.addAttribute("auctionApply", new AuctionApply());
+		model.addAttribute("action", "create");
+		model.addAttribute("auction", auction);
+		return "auctionApplyItems/auctionApplyForm";
+
 	}
 
 	@RequestMapping(value = "create", method = RequestMethod.POST)
-	public String create(@Valid AuctionApply newAuctionApply, RedirectAttributes redirectAttributes, ServletRequest request) {
+	public String create(@Valid AuctionApply newAuctionApply, RedirectAttributes redirectAttributes,
+			ServletRequest request) {
 		User createuser = new User(getCurrentUserId());
 
 		try {
 			User user = accountService.getUser(getCurrentUserId());
 			Long auctionId = Long.parseLong(request.getParameter("auctionId"));
 			Auction auction = auctionService.getAuction(auctionId);
+			
+			
+			if (auction.getNumber() < newAuctionApply.getNumber()) {
+				redirectAttributes.addFlashAttribute("message", "拍卖物品库存不足!");
+				return "redirect:/auction/";
+			}
+			
+			if(auction.getLimitedNumber()!=null && auction.getLimitedNumber()>0)
+			{
+				//判断是否超限
+				Integer sumCount = auctionApplyService.getAuctionApplyCountByAppId(auctionId, user.getId());
+				if(sumCount!=null)
+				{
+					if((sumCount+newAuctionApply.getNumber())>auction.getLimitedNumber())
+					{
+						redirectAttributes.addFlashAttribute("message", "提交物品"+auction.getGoodsName()+"超限,每人限制数量:"+auction.getLimitedNumber()+",您已申请购买数量:"+sumCount);
+						return "redirect:/auction/";
+					}
+				}else
+				{
+					if(newAuctionApply.getNumber()>auction.getLimitedNumber())
+					{
+						redirectAttributes.addFlashAttribute("message", "提交物品"+auction.getGoodsName()+"超限,每人限制数量:"+auction.getLimitedNumber()+",当次提交数量不能超过:"+auction.getLimitedNumber());
+						return "redirect:/auction/";
+					}
+				}
+			}
+			
+			
 			if (user.getIntegral() >= (auction.getIntegral() * newAuctionApply.getNumber())) {
 				newAuctionApply.setIntegral(auction.getIntegral() * newAuctionApply.getNumber());
 				newAuctionApply.setAuction(auction);
@@ -189,23 +242,31 @@ public class AuctionApplyController {
 		if (("pass".equals(status) || "reject".equals(status)) && "Approval".equals(auctionApply.getStatus())) {
 			User createuser = accountService.getUser(auctionApply.getCteateUser().getId());
 
-			if (createuser.getIntegral() >= (auctionApply.getIntegral())) {
-				// 扣库存
-				Auction auction = auctionService.getAuction(auctionApply.getAuction().getId());
-				if (auction.getNumber() >= auctionApply.getNumber()) {
-					auctionApply.setApprovalUser(user);
-					auctionApply.setStatus(status);
-					auctionApplyService.saveAuctionApplyApproval(auctionApply, auction);
-					redirectAttributes.addFlashAttribute("message", "审批成功");
+			if ("pass".equals(status)) {
+				if (createuser.getIntegral() >= (auctionApply.getIntegral())) {
+					// 扣库存
+					Auction auction = auctionService.getAuction(auctionApply.getAuction().getId());
+					if (auction.getNumber() >= auctionApply.getNumber()) {
+						auctionApply.setApprovalUser(user);
+						auctionApply.setStatus(status);
+						auctionApplyService.saveAuctionApplyApproval(auctionApply, auction);
+						redirectAttributes.addFlashAttribute("message", "审批通过,物品拍卖成功!");
+					} else {
+						redirectAttributes.addFlashAttribute("message", "物品库存不足,无法兑换物品!");
+						return "redirect:/auctionApply/approvalList";
+					}
+
 				} else {
-					redirectAttributes.addFlashAttribute("message", "物品库存不足,无法兑换物品!");
+					redirectAttributes.addFlashAttribute("message", "会员积分不够,无法兑换物品!");
 					return "redirect:/auctionApply/approvalList";
 				}
-
-			} else {
-				redirectAttributes.addFlashAttribute("message", "会员积分不够,无法兑换物品!");
-				return "redirect:/auctionApply/approvalList";
+			}else
+			{
+				auctionApply.setStatus(status);
+				auctionApplyService.saveAuctionApply(auctionApply);
+				redirectAttributes.addFlashAttribute("message", "审批拒绝!");
 			}
+		
 
 		} else {
 			redirectAttributes.addFlashAttribute("message", "非法操作");

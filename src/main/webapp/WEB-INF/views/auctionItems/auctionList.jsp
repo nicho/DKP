@@ -44,6 +44,7 @@
 				<th style="width: 60%;">描述</th>
 				<th>库存数量</th> 
 				<th>积分</th> 
+				<th>限购数量</th> 
 				<th>创建时间</th>
 				<th>创建人</th>
 				<th>操作</th>
@@ -54,13 +55,16 @@
 				<tr>
 					<td>${task.goodsName}</td>
 					<td>${task.description}</td>
-					<td>${task.number}</td>
+					<td>${task.number}</td> 
 					<td><fmt:formatNumber value="${task.integral}" pattern="##.##"/></td>
+					<td>${task.limitedNumber}</td>
 					<td><fmt:formatDate value="${task.createDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 					<td>${task.createUser.name}</td>
 
 					<td>
+					<c:if test="${task.number != 0}">
 					<a href="${ctx}/auctionApply/create/${task.id}" >购买</a>&nbsp;
+					</c:if>
 					<shiro:hasAnyRoles name="admin,Head">
 						<a href="${ctx}/auction/update/${task.id}"  >修改</a>&nbsp; 
 						<a href="#" onclick="confirmDelete('${ctx}/auction/delete/${task.id}')">删除</a>&nbsp; 
@@ -91,8 +95,9 @@
 		  <div class="cl"></div>
         </div>
 		<div class="morebtn">
+		<c:if test="${task.number != 0}">
 		<input name="" type="button" class="orangebtn2" value="购买" onClick="location.href='${ctx}/auctionApply/create/${task.id}'">
-	 
+	    </c:if>
 		</div>
    		
       </li>

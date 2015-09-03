@@ -34,12 +34,17 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label">数量:</label>
+				<label class="control-label">库存数量:</label>
 				<div class="controls">
 					<input type="text" id="number" name="number" value="${auction.number}" class="input-large required number" />
 				</div>
 			</div>
- 
+ 			 <div class="control-group">
+				<label class="control-label">每人限够数量:</label>
+				<div class="controls">
+					<input type="text" id="limitedNumber" name="limitedNumber" value="${auction.limitedNumber}" class="input-large required digits"/>
+				</div>
+			</div>   
 
 			<div class="control-group">
 				<label for="description" class="control-label">描述:</label>

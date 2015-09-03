@@ -43,7 +43,9 @@ public class AuctionApplyService {
 	private IntegralHistoryDao integralHistoryDao;
 	@Autowired
 	private AuctionDao auctionDao;
-
+	public Integer getAuctionApplyCountByAppId(Long auction_id, Long cteate_user_id) {
+		return auctionApplyDao.getAuctionApplyCountByAppId(auction_id, cteate_user_id);
+	}
 	public Integer getAuctionApplyCountByUser(Long id, Long userid) {
 		return auctionApplyDao.getAuctionApplyCountByUser(id, userid);
 	}

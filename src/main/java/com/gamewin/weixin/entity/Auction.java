@@ -18,6 +18,15 @@ public class Auction extends IdEntity {
 	private String status;
 	private Integer isdelete;
 	private Integer number;
+	private Integer limitedNumber;
+	
+	public Integer getLimitedNumber() {
+		return limitedNumber;
+	}
+
+	public void setLimitedNumber(Integer limitedNumber) {
+		this.limitedNumber = limitedNumber;
+	}
 
 	public Integer getNumber() {
 		return number;

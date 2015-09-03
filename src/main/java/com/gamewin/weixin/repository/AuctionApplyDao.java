@@ -15,4 +15,7 @@ public interface AuctionApplyDao extends PagingAndSortingRepository<AuctionApply
 		JpaSpecificationExecutor<AuctionApply> {
 	@Query("SELECT count(*) FROM AuctionApply t WHERE  t.auction.id = ?1 AND t.cteateUser.id=?2 AND t.status='Approval'  ")
 	Integer getAuctionApplyCountByUser(Long id,Long userid);
+	
+	@Query("SELECT SUM(t.number) FROM AuctionApply t WHERE t.auction.id=?1 AND t.cteateUser.id=?2 AND (t.status='Approval' or  t.status='pass') ")
+	Integer getAuctionApplyCountByAppId(Long auction_id,Long cteate_user_id);
 }

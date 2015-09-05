@@ -3,6 +3,7 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <div id="leftbar" style="float: left; margin-left: 20px; width: 140px;" class="visible-desktop">
+	
 	<h1>公会展示</h1>
 	<div class="submenu"> 
 		<a id="myTask" href="${ctx}/activity">最近所有活动列表</a>
@@ -32,6 +33,7 @@
 			<a id="myTask" href="${ctx}/auctionApply/approvalAllList">历史拍卖物品</a> 
 			<a id="account-tab" href="${ctx}/admin/user">帐号管理</a>   
 			<a id="account-tab" href="${ctx}/valueSet">活动类型设置</a>  
+			<a id="account-tab" href="${ctx}/guild/guildInformation">公会信息</a>   
 		</shiro:hasAnyRoles>
 		
 		 

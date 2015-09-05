@@ -58,6 +58,9 @@
 		</h3>
 	</div></td>
   </tr>
+   <tr>
+    <td colspan="4"><font color="red">${orgNotice}</font></td>
+  </tr>
   <tr>
     <td colspan="2" style="width: 40%">
     昵称:<shiro:principal property="name" /><br>

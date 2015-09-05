@@ -8,11 +8,13 @@ package com.gamewin.weixin.web.account;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.gamewin.weixin.entity.User;
 import com.gamewin.weixin.service.account.AccountService;
+import com.gamewin.weixin.service.account.OrgService;
 import com.gamewin.weixin.service.account.ShiroDbRealm.ShiroUser;
  
 @Controller
@@ -20,11 +22,16 @@ import com.gamewin.weixin.service.account.ShiroDbRealm.ShiroUser;
 public class IndexController {
 	@Autowired
 	private AccountService accountService;
+	@Autowired
+	private OrgService orgService;
 	@RequestMapping(value = "/my",method = RequestMethod.GET)
-	public String myindex() {
+	public String myindex(Model model) {
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 		User u=accountService.getUser(user.getId()); 
 		user.setIntegral(u.getIntegral());
+		
+		String orgNotice=orgService.getMyOrgNotice();
+		model.addAttribute("orgNotice", orgNotice);
 		return "account/myindex";
 	} 
 

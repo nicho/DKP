@@ -28,7 +28,7 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label">积分:</label>
+				<label class="control-label">积分/起拍价:</label>
 				<div class="controls">
 					<input type="text" id="integral" name="integral" value="${auction.integral}" class="input-large required number" />
 				</div>

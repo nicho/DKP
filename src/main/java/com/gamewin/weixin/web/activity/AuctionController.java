@@ -83,6 +83,8 @@ public class AuctionController {
 
 		return "auctionItems/auctionList";
 	}
+	
+	@RequiresRoles(value = { "admin", "Head" }, logical = Logical.OR)
 	@RequestMapping(value = "approvalAuctionList",method = RequestMethod.GET)
 	public String approvalAuctionList(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,

@@ -45,6 +45,7 @@
 					</shiro:hasAnyRoles>
 					
 					<shiro:hasAnyRoles name="admin,Head"> 
+						<li><a id="myTask" href="${ctx}/auction/approvalAuctionList">物品竞拍审核</a></li>  
 						<li><a id="myTask" href="${ctx}/auctionApply/approvalList">物品拍卖审核</a></li>  
 						<li><a id="myTask" href="${ctx}/exchangeIntegralApply/approvalList">贡献物品审核</a></li>  
 					</shiro:hasAnyRoles>

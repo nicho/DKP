@@ -66,12 +66,14 @@
 					<td>
 					<c:if test="${task.number != 0}">
 						<c:if test="${task.isAuction eq 'Y'}">
-							<c:if test="${task.status eq 'Y'}"><a href="${ctx}/auctionUser/create/${task.id}" >参与竞拍</a>&nbsp;</c:if>
-							<c:if test="${task.status eq 'pass'}"><a href="${ctx}/auction/viewAuctionUser/${task.id}" >查看竞拍结果</a> &nbsp;</c:if>
+							<c:if test="${task.status eq 'Y'}"><a href="${ctx}/auctionUser/create/${task.id}" >参与竞拍</a>&nbsp;</c:if> 
 						</c:if>
 						<c:if test="${task.isAuction != 'Y'}"><a href="${ctx}/auctionApply/create/${task.id}" >购买</a>&nbsp;</c:if>
 						
 					</c:if>
+					 <c:if test="${task.isAuction eq 'Y'}"> 
+							<c:if test="${task.status eq 'pass'}"><a href="${ctx}/auction/viewAuctionUser/${task.id}" >查看竞拍结果</a> &nbsp;</c:if>
+					 </c:if>
 					<shiro:hasAnyRoles name="admin,Head">
 							<c:if test="${task.status eq 'Y'}">
 								<a href="${ctx}/auction/update/${task.id}"  >修改</a>&nbsp; 
@@ -104,9 +106,15 @@
 		  <div class="cl"></div>
         </div>
 		<div class="morebtn">
-		<c:if test="${task.number != 0}">
-		<input name="" type="button" class="orangebtn2" value="购买" onClick="location.href='${ctx}/auctionApply/create/${task.id}'">
+		<c:if test="${task.number != 0}"> 
+						 <c:if test="${task.isAuction eq 'Y'}">
+							<c:if test="${task.status eq 'Y'}"><input name="" type="button" class="orangebtn2" value="参与竞拍" onClick="location.href='${ctx}/auctionUser/create/${task.id}'"></c:if> 
+						</c:if>
+						<c:if test="${task.isAuction != 'Y'}"><input name="" type="button" class="orangebtn2" value="购买" onClick="location.href='${ctx}/auctionApply/create/${task.id}'"></c:if>
 	    </c:if>
+	    			  <c:if test="${task.isAuction eq 'Y'}"> 
+							<c:if test="${task.status eq 'pass'}"> <input name="" type="button" class="orangebtn2" value="查看竞拍结果" onClick="location.href='${ctx}/auction/viewAuctionUser/${task.id}'"></c:if>
+					 </c:if>
 		</div>
    		
       </li>

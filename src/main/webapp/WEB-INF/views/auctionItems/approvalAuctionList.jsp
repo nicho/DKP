@@ -26,7 +26,7 @@
 		<div id="message" class="alert alert-success">
 			<button data-dismiss="alert" class="close">×</button>${message}</div>
 	</c:if>
-	<div class="visible-desktop"> 
+ 
 	<div class="row">
 		<div class="span4 offset7">
 			<form class="form-search" action="#"></form>
@@ -80,37 +80,11 @@
 			</c:forEach>
 		</tbody>
 	</table>
-</div>
+ 
 
 
 
-<div class="hidden-desktop">
-  <div class="listleave_box">
-    <div class="listleave_bar">拍卖物品列表</div>
-    <ul>
- 	<c:forEach items="${auctions.content}" var="task">
-      <li>
-        <div class="listleave_text">
-          <p><span>拍卖物品 </span>${task.goodsName}</p>
-          <p><span>描述 </span>${task.description}</p>
-          <p><span>库存数量 </span>${task.number}</p>
-          <p><span>积分 </span><fmt:formatNumber value="${task.integral}" pattern="##.##"/></p>
-          <p><span>创建时间 </span><fmt:formatDate value="${task.createDate}" pattern="yyyy-MM-dd HH:mm:ss" /></p> 
-       
-		  <div class="cl"></div>
-        </div>
-		<div class="morebtn">
-		<c:if test="${task.number != 0}">
-		<input name="" type="button" class="orangebtn2" value="购买" onClick="location.href='${ctx}/auctionApply/create/${task.id}'">
-	    </c:if>
-		</div>
-   		
-      </li>
-     </c:forEach> 
-    </ul>
-    <div class="cl"></div>
-  </div>
- </div>
+ 
 	<tags:pagination page="${auctions}" paginationSize="10" />
 
 

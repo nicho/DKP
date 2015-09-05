@@ -40,12 +40,17 @@
 				</div>
 			</div>
  			 <div class="control-group">
-				<label class="control-label">每人限够数量:</label>
+				<label class="control-label">每人限购数量:</label>
 				<div class="controls">
 					<input type="text" id="limitedNumber" name="limitedNumber" value="${auction.limitedNumber}" class="input-large required digits"/>
 				</div>
 			</div>   
-
+ 			 <div class="control-group">
+				<label class="control-label">是否竞拍:</label>
+				<div class="controls">
+					<input type="checkbox" name="isAuction" value="Y" <c:if test="${auction.isAuction eq 'Y'}">checked</c:if>>是
+				</div>
+			</div>   
 			<div class="control-group">
 				<label for="description" class="control-label">描述:</label>
 				<div class="controls">

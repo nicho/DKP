@@ -16,10 +16,37 @@ public class Auction extends IdEntity {
 	private User createUser;
 	private Date createDate;
 	private String status;
+	private String isAuction;
 	private Integer isdelete;
 	private Integer number;
 	private Integer limitedNumber;
-	
+	private User approvalUser;
+	private Date approvalDate;
+	@ManyToOne
+	@JoinColumn(name = "approval_user_id")
+	public User getApprovalUser() {
+		return approvalUser;
+	}
+
+	public void setApprovalUser(User approvalUser) {
+		this.approvalUser = approvalUser;
+	}
+
+	public Date getApprovalDate() {
+		return approvalDate;
+	}
+
+	public void setApprovalDate(Date approvalDate) {
+		this.approvalDate = approvalDate;
+	}
+	public String getIsAuction() {
+		return isAuction;
+	}
+
+	public void setIsAuction(String isAuction) {
+		this.isAuction = isAuction;
+	}
+
 	public Integer getLimitedNumber() {
 		return limitedNumber;
 	}

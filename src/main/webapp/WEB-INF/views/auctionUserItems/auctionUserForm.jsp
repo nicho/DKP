@@ -14,7 +14,7 @@
 </head>
 
 <body>
-	<form id="inputForm" action="${ctx}/auctionApply/${action}" method="post" class="form-horizontal">  
+	<form id="inputForm" action="${ctx}/auctionUser/${action}" method="post" class="form-horizontal">  
 	<input type="hidden" name="auctionId" value="${auction.id}">
 		<fieldset>
 			<legend><small>拍卖申请</small></legend>
@@ -32,7 +32,7 @@
 				</div>
 			</div>
 					    <div class="control-group">
-				<label class="control-label"><c:if test="${auction.isAuction eq 'Y'}">起拍价</c:if><c:if test="${auction.isAuction != 'Y'}">单价(积分)</c:if>:</label>
+				<label class="control-label">起拍价:</label>
 				<div class="controls">
 					<input type="text" id="integral"  value="${auction.integral}" class="input-large  " readonly="readonly"/>
 				</div>
@@ -43,14 +43,14 @@
 					<input type="text" id="number" name="number"  value="1"  class="input-large required digits"/>
 				</div>
 			</div> 
-			<c:if test="${auction.isAuction eq 'Y'}">
-		 		 			    <div class="control-group">
+			
+		 	 <div class="control-group">
 				<label class="control-label">您的竞拍价(单价):</label>
 				<div class="controls">
 					<input type="text" id="bidPrice" name="bidPrice"  value=""  class="input-large required number" min="${auction.integral}"/>
 				</div>
 			</div> 
-			</c:if>
+			
 				  
 			<div class="control-group">
 				<label for="description" class="control-label">申请描述:</label>

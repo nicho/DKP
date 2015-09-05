@@ -42,6 +42,7 @@
 	 <h1>审核</h1> 
 	 <div class="submenu">
 	 		<shiro:hasAnyRoles name="admin,Head">
+		 		<a id="account-tab" href="${ctx}/auction/approvalAuctionList">物品竞拍审核</a> 
 		 		<a id="account-tab" href="${ctx}/auctionApply/approvalList">物品拍卖审核</a> 
 				<a id="myTask" href="${ctx}/exchangeIntegralApply/approvalList">贡献物品审核</a>
 			</shiro:hasAnyRoles>

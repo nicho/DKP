@@ -6,6 +6,7 @@
 package com.gamewin.weixin.web.activity;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
@@ -27,10 +28,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springside.modules.web.Servlets;
 
 import com.gamewin.weixin.entity.Auction;
+import com.gamewin.weixin.entity.AuctionUser;
 import com.gamewin.weixin.entity.User;
 import com.gamewin.weixin.service.account.AccountService;
 import com.gamewin.weixin.service.account.ShiroDbRealm.ShiroUser;
 import com.gamewin.weixin.service.activity.AuctionService;
+import com.gamewin.weixin.service.activity.AuctionUserService;
 import com.google.common.collect.Maps;
 
 /**
@@ -59,7 +62,9 @@ public class AuctionController {
 
 	@Autowired
 	private AccountService accountService; 
-
+	@Autowired
+	private AuctionUserService auctionUserService;
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
@@ -78,7 +83,24 @@ public class AuctionController {
 
 		return "auctionItems/auctionList";
 	}
+	@RequestMapping(value = "approvalAuctionList",method = RequestMethod.GET)
+	public String approvalAuctionList(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
+			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model,
+			ServletRequest request) {
+		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
+		Long userId = getCurrentUserId();
 
+		Page<Auction> auctions = auctionService.getApprovalAuction(userId, searchParams, pageNumber, pageSize, sortType);
+
+		model.addAttribute("auctions", auctions);
+		model.addAttribute("sortType", sortType);
+		model.addAttribute("sortTypes", sortTypes);
+		// 将搜索条件编码成字符串，用于排序，分页的URL
+		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
+
+		return "auctionItems/approvalAuctionList";
+	}
 	@RequestMapping(value = "mylist", method = RequestMethod.GET)
 	public String mylist(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
@@ -198,4 +220,36 @@ public class AuctionController {
 		return "redirect:/auction/";
 	}
 
+	
+	
+	
+	@RequestMapping(value = "viewAuctionUser/{id}")
+	public String viewAuctionUser(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes,
+			ServletRequest request) {
+		Auction auction = auctionService.getAuction(id);
+		model.addAttribute("auction", auction);
+		
+		List<AuctionUser> auctionUsers = auctionUserService.getAllAuctionApprovalList(id);
+		model.addAttribute("auctionUsers", auctionUsers);
+
+ 
+		return "auctionUserItems/viewAuctionUserConfirm";
+	}
+	
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
+	@RequestMapping(value = "approvalConfirm/{id}")
+	public String approvalConfirm(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes,
+			ServletRequest request) {
+		Auction auction = auctionService.getAuction(id);
+		model.addAttribute("auction", auction);
+		
+		List<AuctionUser> auctionUsers = auctionUserService.getAllAuctionApprovalList(id);
+		model.addAttribute("auctionUsers", auctionUsers);
+
+		if (!"Y".equals(auction.getStatus())) {
+			redirectAttributes.addFlashAttribute("message", "操作失败,该活动已被审批,或非法操作!");
+			return "redirect:/auction/approvalAuctionList/";
+		}
+		return "auctionUserItems/auctionUserConfirm";
+	}
 }

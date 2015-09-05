@@ -67,7 +67,17 @@ public class AuctionService {
 
 		return auctionDao.findAll(spec, pageRequest);
 	}
-
+	public Page<Auction> getApprovalAuction(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize,
+			String sortType) {
+		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
+		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
+		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));
+		filters.put("createUser", new SearchFilter("createUser", Operator.EQ, userId));
+		filters.put("isAuction", new SearchFilter("isAuction", Operator.EQ, "Y")); 
+		Specification<Auction> spec = DynamicSpecifications.bySearchFilter(filters.values(), Auction.class);
+		return auctionDao.findAll(spec, pageRequest);
+	}
+	
 	public Page<Auction> getAllAuctionMy(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize,
 			String sortType) {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);

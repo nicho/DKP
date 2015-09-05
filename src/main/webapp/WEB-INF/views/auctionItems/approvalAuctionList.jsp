@@ -33,21 +33,21 @@
 		</div>
 
 	</div>
-		<shiro:hasAnyRoles name="admin,Head">
-			<div><a class="btn" href="${ctx}/auction/create">添加拍卖物品</a></div> 
-		</shiro:hasAnyRoles>
+ 
 	<br>
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
 				<th>拍卖物品</th>
-				<th style="width: 40%;">描述</th>
+				<th style="width: 35%;">描述</th>
 				<th>库存数量</th> 
-				<th>积分</th> 
-				<th>限购数量</th> 
-				<th>是否竞拍物品</th> 
+				<th>起拍价</th> 
+				<th>限购数量</th>  
 				<th>创建时间</th>
 				<th>创建人</th>
+				<th>状态</th> 
+				<th>审批人</th>
+				<th>审批时间</th>
 				<th>操作</th>
 			</tr>
 		</thead>
@@ -58,26 +58,22 @@
 					<td>${task.description}</td>
 					<td>${task.number}</td> 
 					<td><fmt:formatNumber value="${task.integral}" pattern="##.##"/></td>
-					<td>${task.limitedNumber}</td>
-					<td><c:if test="${task.isAuction eq 'Y'}">是</c:if><c:if test="${task.isAuction != 'Y'}">否</c:if></td>
+					<td>${task.limitedNumber}</td> 
 					<td><fmt:formatDate value="${task.createDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-					<td>${task.createUser.name}</td>
+				    <td>${task.createUser.name}</td>
+					<td><c:if test="${task.status eq 'Y'}">审批中</c:if><c:if test="${task.status eq 'pass'}">竞拍成功</c:if><c:if test="${task.status eq 'reject'}">流拍</c:if></td>
+					<td>${task.approvalUser.name}</td>
+					<td><fmt:formatDate value="${task.approvalDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 
 					<td>
-					<c:if test="${task.number != 0}">
-						<c:if test="${task.isAuction eq 'Y'}">
-							<c:if test="${task.status eq 'Y'}"><a href="${ctx}/auctionUser/create/${task.id}" >参与竞拍</a>&nbsp;</c:if>
-							<c:if test="${task.status eq 'pass'}"><a href="${ctx}/auction/viewAuctionUser/${task.id}" >查看竞拍结果</a> &nbsp;</c:if>
+					
+					
+						<c:if test="${task.status eq 'Y'}">
+							<a href="${ctx}/auction/approvalConfirm/${task.id}" >审核竞拍</a> 
 						</c:if>
-						<c:if test="${task.isAuction != 'Y'}"><a href="${ctx}/auctionApply/create/${task.id}" >购买</a>&nbsp;</c:if>
-						
-					</c:if>
-					<shiro:hasAnyRoles name="admin,Head">
-							<c:if test="${task.status eq 'Y'}">
-								<a href="${ctx}/auction/update/${task.id}"  >修改</a>&nbsp; 
-							</c:if>
-						<a href="#" onclick="confirmDelete('${ctx}/auction/delete/${task.id}')">删除</a>&nbsp; 
-					</shiro:hasAnyRoles>
+						 <c:if test="${task.status eq 'pass'}">
+						<a href="${ctx}/auction/viewAuctionUser/${task.id}" >查看竞拍结果</a> 
+						</c:if>
 					</td>
 
 				</tr>

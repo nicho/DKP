@@ -21,10 +21,29 @@ public class IntegralHistory extends IdEntity {
 	private Activity activity;
 	private ExchangeGoods exchangeGoods;
 	private ExchangeIntegralApply exchangeIntegralApply;
+	private Auction auction;
+	private AuctionApply auctionApply;
 	
-	
-	
-	
+	@ManyToOne
+	@JoinColumn(name = "auction_apply_id")
+	public AuctionApply getAuctionApply() {
+		return auctionApply;
+	}
+
+	public void setAuctionApply(AuctionApply auctionApply) {
+		this.auctionApply = auctionApply;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "auction_id")
+	public Auction getAuction() {
+		return auction;
+	}
+
+	public void setAuction(Auction auction) {
+		this.auction = auction;
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "activity_id")
 	public Activity getActivity() {

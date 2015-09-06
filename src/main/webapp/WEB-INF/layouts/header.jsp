@@ -3,7 +3,7 @@
 <div id="header" class="row">
 	<div>
 		<h3>
-			<a href="${ctx}">《DKP》公会系统</a><small>--离恨天</small>
+			<a href="${ctx}">《DKP》公会系统</a><small style="font-size: 23px;">--离恨天</small>
 		</h3>
 	</div>
 	<div class="pull-right">
@@ -28,20 +28,21 @@
 			<a class="brand" href="./index.html">菜单</a>
 			<div class="nav-collapse collapse">
 				<ul class="nav">
-					<li class=""><a id="myTask" href="${ctx}/activity">最近所有活动列表</a></li>
-					<li class=""><a id="myTask" href="${ctx}/admin/user/integralList">积分排行</a></li>
-					<li class=""><a id="myTask" href="${ctx}/auction">近期拍卖物品</a></li>
-					<li class=""><a id="myTask" href="${ctx}/activity/create">发起活动</a></li>
+					<li class=""><a id="myTask" href="${ctx}/activity">最近活动列表</a></li>
+					<li class=""><a id="myTask" href="${ctx}/auction">近期拍卖物品</a></li> 
+					<li class=""><a id="myTask" href="${ctx}/admin/user/integralList">个人积分排行</a></li>
+					<li class=""><a id="myTask" href="${ctx}/activity/create">我要发起活动</a></li>
+									<li><a id="account-tab" href="${ctx}/exchangeIntegral">我要贡献物品</a></li>
 					<li class="active"><a id="myTask" href="${ctx}/activityUser/myActivity">我参与的活动</a></li>
 					<li class=""><a id="myTask" href="${ctx}/activity/myfqActivity">我发起的活动</a></li>
 					<li class=""><a id="myTask" href="${ctx}/auctionApply">我申请的拍卖</a></li>
-					<li><a id="myTask" href="${ctx}/exchangeIntegralApply">我贡献的物品</a></li>
-					<li><a id="account-tab" href="${ctx}/exchangeIntegral">贡献物品</a></li>
+					<li><a id="myTask" href="${ctx}/exchangeIntegralApply">我贡献的物品</a></li> 
 					<shiro:hasAnyRoles name="admin,Head"> 
 						<li><a id="myTask" href="${ctx}/exchangeIntegralApply/approvalAllList">历史贡献物品</a> </li> 
-						<li><a id="myTask" href="${ctx}/auctionApply/approvalAllList">历史拍卖物品</a> </li> 
-						<li><a id="account-tab" href="${ctx}/admin/user">帐号管理</a></li>
+						<li><a id="myTask" href="${ctx}/auctionApply/approvalAllList">历史拍卖物品</a> </li>  
 						<li><a id="account-tab" href="${ctx}/valueSet">活动类型设置</a></li>
+						<li><a id="account-tab" href="${ctx}/admin/user">帐号管理</a></li>
+						<li><a id="account-tab" href="${ctx}/guild/guildInformation">公会信息</a></li> 
 					</shiro:hasAnyRoles>
 					
 					<shiro:hasAnyRoles name="admin,Head"> 

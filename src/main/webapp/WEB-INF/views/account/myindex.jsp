@@ -68,14 +68,14 @@
 			</font><br>
     权限：<shiro:principal property="rolesName" /><br>
     </td>
-    <td colspan="2"> <a id="myTask" href="${ctx}/activity">最近所有活动列表</a></td>
+    <td colspan="2"> <a id="myTask" href="${ctx}/activity">最近活动列表</a></td>
   </tr>
   <tr>
     <td colspan="2"><a id="myTask" href="${ctx}/activityUser/myActivity">我参与的活动</a>  </td>
     <td colspan="2"><a id="myTask" href="${ctx}/auction">近期拍卖物品</a></td>
   </tr>
   <tr>
-    <td colspan="2"><a id="myTask" href="${ctx}/activity/create">发起活动</a></td>
+    <td colspan="2"><a id="myTask" href="${ctx}/activity/create">我要发起活动</a></td>
     <td colspan="2"><a id="myTask" href="${ctx}/exchangeIntegralApply">我贡献的物品</a>  </td>
   </tr>
   <tr>

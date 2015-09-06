@@ -6,6 +6,7 @@
 package com.gamewin.weixin.web.activity;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
@@ -32,6 +33,7 @@ import com.gamewin.weixin.service.account.AccountService;
 import com.gamewin.weixin.service.account.ShiroDbRealm.ShiroUser;
 import com.gamewin.weixin.service.activity.AuctionApplyService;
 import com.gamewin.weixin.service.activity.AuctionService;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 
 /**
@@ -71,9 +73,13 @@ public class AuctionApplyController {
 			ServletRequest request) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		Long userId = getCurrentUserId();
+		
 		// 我的申请
-		Page<AuctionApply> auctionApplys = auctionApplyService.getAllAuctionApply(userId, searchParams, pageNumber,
+		List<AuctionApply> auctionApplys = auctionApplyService.getAllAuctionApply(userId, searchParams, pageNumber,
 				pageSize, sortType);
+	 
+		PageInfo<AuctionApply> page = new PageInfo<AuctionApply>(auctionApplys);
+		model.addAttribute("page", page); 
 
 		model.addAttribute("auctionApplys", auctionApplys);
 		model.addAttribute("sortType", sortType);

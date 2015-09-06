@@ -25,10 +25,13 @@ import com.gamewin.weixin.entity.Auction;
 import com.gamewin.weixin.entity.AuctionApply;
 import com.gamewin.weixin.entity.IntegralHistory;
 import com.gamewin.weixin.entity.User;
+import com.gamewin.weixin.model.QueryAuctionApplyDto;
+import com.gamewin.weixin.mybatis.AuctionApplyMybatisDao;
 import com.gamewin.weixin.repository.AuctionApplyDao;
 import com.gamewin.weixin.repository.AuctionDao;
 import com.gamewin.weixin.repository.IntegralHistoryDao;
 import com.gamewin.weixin.repository.UserDao;
+import com.github.pagehelper.PageHelper;
 
 // Spring Bean的标识.
 @Component
@@ -43,9 +46,13 @@ public class AuctionApplyService {
 	private IntegralHistoryDao integralHistoryDao;
 	@Autowired
 	private AuctionDao auctionDao;
+	@Autowired
+	private AuctionApplyMybatisDao auctionApplyMybatisDao;
+
 	public Integer getAuctionApplyCountByAppId(Long auction_id, Long cteate_user_id) {
 		return auctionApplyDao.getAuctionApplyCountByAppId(auction_id, cteate_user_id);
 	}
+
 	public Integer getAuctionApplyCountByUser(Long id, Long userid) {
 		return auctionApplyDao.getAuctionApplyCountByUser(id, userid);
 	}
@@ -99,11 +106,12 @@ public class AuctionApplyService {
 		this.auctionApplyDao = auctionApplyDao;
 	}
 
-	public Page<AuctionApply> getAllAuctionApply(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
-		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
-		Specification<AuctionApply> spec = buildSpecification(userId, searchParams);
-
-		return auctionApplyDao.findAll(spec, pageRequest);
+	public List<AuctionApply> getAllAuctionApply(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
+		PageHelper.startPage(pageNumber, pageSize);
+		QueryAuctionApplyDto dto = new QueryAuctionApplyDto();
+		dto.setUserId(userId);
+		List<AuctionApply> auctionApplyList = auctionApplyMybatisDao.getAuctionApplyAlllist(dto);
+		return auctionApplyList;
 	}
 
 	public Page<AuctionApply> getAllAuctionApprovalList(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize,
@@ -139,14 +147,4 @@ public class AuctionApplyService {
 		return new PageRequest(pageNumber - 1, pagzSize, sort);
 	}
 
-	/**
-	 * 创建动态查询条件组合.
-	 */
-	private Specification<AuctionApply> buildSpecification(Long userId, Map<String, Object> searchParams) {
-		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
-		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));
-		filters.put("cteateUser", new SearchFilter("cteateUser", Operator.EQ, userId));
-		Specification<AuctionApply> spec = DynamicSpecifications.bySearchFilter(filters.values(), AuctionApply.class);
-		return spec;
-	}
 }

@@ -35,7 +35,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${auctionApplys.content}" var="task">
+			<c:forEach items="${auctionApplys}" var="task">
 				<tr>
 					<td>${task.auction.goodsName}</td>
 					<td><fmt:formatNumber value="${task.auction.integral}" pattern="##.#"/></td>
@@ -58,7 +58,7 @@
 		</tbody>
 	</table>
 
-	<tags:pagination page="${auctionApplys}" paginationSize="10" />
+	<tags:paginationMybatis />
 
 
 </body>

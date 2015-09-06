@@ -41,8 +41,8 @@
 						<li><a id="myTask" href="${ctx}/exchangeIntegralApply/approvalAllList">历史贡献物品</a> </li> 
 						<li><a id="myTask" href="${ctx}/auctionApply/approvalAllList">历史拍卖物品</a> </li>  
 						<li><a id="account-tab" href="${ctx}/valueSet">活动类型设置</a></li>
-						<li><a id="account-tab" href="${ctx}/admin/user">帐号管理</a></li>
-						<li><a id="account-tab" href="${ctx}/guild/guildInformation">公会信息</a></li> 
+						<li><a id="account-tab" href="${ctx}/admin/user">会员帐号管理</a></li>
+						<li><a id="account-tab" href="${ctx}/guild/guildInformation">公会公告信息</a></li> 
 					</shiro:hasAnyRoles>
 					
 					<shiro:hasAnyRoles name="admin,Head"> 
@@ -57,7 +57,7 @@
 					</shiro:hasAnyRoles>
 					
 					
-					<li><a id="account-tab" href="${ctx}/profile">资料修改</a></li>
+					<li><a id="account-tab" href="${ctx}/profile">个人资料修改</a></li>
 				</ul>
 			</div>
 		</div>

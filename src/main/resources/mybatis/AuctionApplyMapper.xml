@@ -46,7 +46,7 @@ t.`status`,
 
  
 SELECT t.`approval_user_id`, t.`create_date` `cteate_Date`,
-t2.`user_id` `cteate_user_id`,t.`description`,t.`id`,t2.`auction_Integral` `integral`,t.`isdelete`,t.`number`,
+t2.`user_id` `cteate_user_id`,t.`description`,t.`id`,t2.`auction_Integral` `integral`,t.`isdelete`,t2.`number`,
 CASE WHEN t2.status='pass' THEN 'au_pass' WHEN t2.status!='pass' AND t.`status`='pass'  THEN 'au_reject' ELSE 'au_Approval' END STATUS,      
         t.id auction_id,
        t.goods_Name auction_goodsName,

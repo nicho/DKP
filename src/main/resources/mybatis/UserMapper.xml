@@ -19,11 +19,15 @@
 	</resultMap>
 	 
 	<select id="getUserAllUserlist" parameterType="com.gamewin.weixin.model.QueryUserDto" resultMap="userMap">
-		SELECT u.*  FROM wx_user u  WHERE u.isdelete=0 
+		SELECT u.*,CASE 
+		WHEN u.roles='admin' THEN 1 WHEN u.roles='Head' THEN 2  
+		WHEN u.roles='OneLevel' THEN 3  WHEN u.roles='TwoLevel' THEN 4
+		WHEN u.roles='ThreeLevel' THEN 5  ELSE 6 END paixu 
+		FROM wx_user u  WHERE u.isdelete=0 
 		<if test="search_LIKE_userName !=null and '' !=search_LIKE_userName">
 			and (u.game_Name like CONCAT('%',#{search_LIKE_userName},'%')   or  u.login_name like CONCAT('%',#{search_LIKE_userName},'%')  or u.name like CONCAT('%',#{search_LIKE_userName},'%') )
 		</if>
-		 ORDER BY u.roles,u.name,u.game_name 
+		 ORDER BY u.paixu,u.name,u.game_name 
 	</select>
    <select id="getUserAllUserIntegrallist" parameterType="com.gamewin.weixin.model.QueryUserDto" resultMap="userMap">
 		SELECT u.* ,(SELECT COUNT(1) + 1  FROM wx_user B  WHERE B.isdelete=0 AND u.integral &lt; B.integral) AS rank  

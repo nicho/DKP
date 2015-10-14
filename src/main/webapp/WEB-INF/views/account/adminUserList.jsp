@@ -29,7 +29,7 @@
 			
 	</div>
 	<div>
-	 <font color="red"><b>公会总积分:${IntegralSum}</b></font>
+	 <font color="red"><b>公会总积分:<fmt:formatNumber value="${IntegralSum}" pattern="##.##"/></b></font>
 	</div>
 	<br>
 	<table id="contentTable"

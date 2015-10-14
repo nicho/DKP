@@ -21,4 +21,6 @@ public interface UserMybatisDao {
 
 	List<User> getUserAllUserlist(QueryUserDto dto);
 	List<User> getUserAllUserIntegrallist(QueryUserDto dto);
+	
+	Double getAllIntegralSum();
 }

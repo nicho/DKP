@@ -112,9 +112,17 @@ public class ActivityService {
 
 	public void saveActivityGHCreate(Activity entity) throws Exception {
 		User user = userDao.findOne(entity.getCreateUser().getId());
-		String integral1 = "≤500";
-		String integral2 = "≤100";
-		String integral3 = "≤30";
+		String integral3_1 = "≤300"; 
+		String integral3_2 = "≤400"; 
+		String integral3_3 = "≤500"; 
+		
+		String integral1_1 = "≤10";
+		String integral1_2 = "≤20";
+		String integral1_3 = "≤30";
+		
+		String integral2_1 = "≤50";
+		String integral2_2 = "≤100";
+		String integral2_3 = "≤200";
 
 		if ("admin".equals(user.getRoles()) || "Head".equals(user.getRoles())) {
 			entity.setLevel(1);
@@ -126,20 +134,46 @@ public class ActivityService {
 			entity.setLevel(3);
 		}
 
-		if (integral1.equals(entity.getPersonCount())
+		if (integral3_1.equals(entity.getPersonCount())
+				&& ("admin".equals(user.getRoles()) || "Head".equals(user.getRoles()) || "OneLevel".equals(user
+						.getRoles()))) {
+			entity.setIntegral(300.0);
+		}else if (integral3_2.equals(entity.getPersonCount())
+				&& ("admin".equals(user.getRoles()) || "Head".equals(user.getRoles()) || "OneLevel".equals(user
+						.getRoles()))) {
+			entity.setIntegral(400.0);
+		}else if (integral3_3.equals(entity.getPersonCount())
 				&& ("admin".equals(user.getRoles()) || "Head".equals(user.getRoles()) || "OneLevel".equals(user
 						.getRoles()))) {
 			entity.setIntegral(500.0);
-		} else if (integral2.equals(entity.getPersonCount())
+		}else if (integral2_1.equals(entity.getPersonCount())
+				&& ("admin".equals(user.getRoles()) || "Head".equals(user.getRoles())
+						|| "OneLevel".equals(user.getRoles()) || "TwoLevel".equals(user.getRoles()))) {
+			entity.setIntegral(50.0);
+		} else if (integral2_2.equals(entity.getPersonCount())
 				&& ("admin".equals(user.getRoles()) || "Head".equals(user.getRoles())
 						|| "OneLevel".equals(user.getRoles()) || "TwoLevel".equals(user.getRoles()))) {
 			entity.setIntegral(100.0);
-		} else if (integral3.equals(entity.getPersonCount())
+		} else if (integral2_3.equals(entity.getPersonCount())
+				&& ("admin".equals(user.getRoles()) || "Head".equals(user.getRoles())
+						|| "OneLevel".equals(user.getRoles()) || "TwoLevel".equals(user.getRoles()))) {
+			entity.setIntegral(200.0);
+		} else if (integral1_1.equals(entity.getPersonCount())
+				&& ("admin".equals(user.getRoles()) || "Head".equals(user.getRoles())
+						|| "OneLevel".equals(user.getRoles()) || "TwoLevel".equals(user.getRoles()) || "ThreeLevel"
+							.equals(user.getRoles()))) {
+			entity.setIntegral(10.0);
+		} else if (integral1_2.equals(entity.getPersonCount())
+				&& ("admin".equals(user.getRoles()) || "Head".equals(user.getRoles())
+						|| "OneLevel".equals(user.getRoles()) || "TwoLevel".equals(user.getRoles()) || "ThreeLevel"
+							.equals(user.getRoles()))) {
+			entity.setIntegral(20.0);
+		}  else if (integral1_3.equals(entity.getPersonCount())
 				&& ("admin".equals(user.getRoles()) || "Head".equals(user.getRoles())
 						|| "OneLevel".equals(user.getRoles()) || "TwoLevel".equals(user.getRoles()) || "ThreeLevel"
 							.equals(user.getRoles()))) {
 			entity.setIntegral(30.0);
-		} else {
+		}  else {
 			throw new Exception("用户权限不足,无法发布" + entity.getPersonCount() + "人公会活动");
 		}
 

@@ -38,7 +38,9 @@
 		 ORDER BY u.integral DESC
 	</select>
  
-	
+    <select id="getAllIntegralSum" resultType="java.lang.Double" >
+		SELECT SUM(u.`integral`) FROM wx_user u 
+	</select>
 	 
  
 </mapper> 

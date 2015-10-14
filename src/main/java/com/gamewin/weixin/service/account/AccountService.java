@@ -221,4 +221,7 @@ public class AccountService {
 		List<User> userList = userMybatisDao.getUserAllUserIntegrallist(dto);
 		return userList;
 	}
+	public Double getAllIntegralSum( ) {
+		return userMybatisDao.getAllIntegralSum();
+	}
 }

@@ -31,6 +31,7 @@
 					<li class=""><a id="myTask" href="${ctx}/activity">最近活动列表</a></li>
 					<li class=""><a id="myTask" href="${ctx}/auction">近期拍卖物品</a></li> 
 					<li class=""><a id="myTask" href="${ctx}/admin/user/integralList">个人积分排行</a></li>
+					<li class=""><a id="myTask" href="${ctx}/activityUser/activityUserRankingList">参与活动排行</a></li>
 					<li class=""><a id="myTask" href="${ctx}/activity/create">我要发起活动</a></li>
 									<li><a id="account-tab" href="${ctx}/exchangeIntegral">我要贡献物品</a></li>
 					<li class="active"><a id="myTask" href="${ctx}/activityUser/myActivity">我参与的活动</a></li>

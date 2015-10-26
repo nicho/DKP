@@ -24,12 +24,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springside.modules.web.Servlets;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gamewin.weixin.entity.Punish;
 import com.gamewin.weixin.entity.User;
 import com.gamewin.weixin.entity.ValueSet;
+import com.gamewin.weixin.model.UserDto;
 import com.gamewin.weixin.service.account.AccountService;
 import com.gamewin.weixin.service.account.ShiroDbRealm.ShiroUser;
 import com.gamewin.weixin.service.punish.PunishService;
@@ -122,7 +126,7 @@ public class PunishController {
 		model.addAttribute("punish", new Punish());
 		model.addAttribute("action", "create");
 
-		model.addAttribute("userList", accountService.getAllUserDto());
+	
 		
 		List<ValueSet> ActivityTypeList = valueSetService.getActivityType("PenaltyItem");
 		model.addAttribute("ActivityTypeList", ActivityTypeList);
@@ -192,5 +196,28 @@ public class PunishController {
 		redirectAttributes.addFlashAttribute("message", "删除惩罚'" + punish.getPunishName() + "'成功");
 		return "redirect:/punish/";
 	}
-
+	@RequestMapping(value = "findPunishUser")
+	@ResponseBody
+	public String findCity(@RequestParam("query") String query) { 
+		List<UserDto> list=accountService.getAllUserDtoByName(query);
+		ObjectMapper  objectMapper = new ObjectMapper();
+		String jsonString="";
+		try {
+			jsonString = objectMapper.writeValueAsString(list);
+		} catch (JsonProcessingException e) { 
+			e.printStackTrace();
+		}
+		 return jsonString;
+	}
+	
+	@RequestMapping(value = "checkPunishUserName")
+	@ResponseBody
+	public String checkPunishUserName(@RequestParam("userName") String userName) {
+		User user=accountService.findByGameName(userName);
+		if (user != null) {
+			return "true";
+		} else {
+			return "false";
+		}
+	}
 }

@@ -23,7 +23,17 @@ public class IntegralHistory extends IdEntity {
 	private ExchangeIntegralApply exchangeIntegralApply;
 	private Auction auction;
 	private AuctionApply auctionApply;
-	
+	private Punish punish;
+	@ManyToOne
+	@JoinColumn(name = "punish_id")
+	public Punish getPunish() {
+		return punish;
+	}
+
+	public void setPunish(Punish punish) {
+		this.punish = punish;
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "auction_apply_id")
 	public AuctionApply getAuctionApply() {

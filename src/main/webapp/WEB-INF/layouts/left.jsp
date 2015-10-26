@@ -30,7 +30,8 @@
 		  
 		<shiro:hasAnyRoles name="admin,Head"> 
 			<a id="myTask" href="${ctx}/exchangeIntegralApply/approvalAllList">历史贡献物品</a> 
-			<a id="myTask" href="${ctx}/auctionApply/approvalAllList">历史拍卖物品</a> 
+			<a id="myTask" href="${ctx}/auctionApply/approvalAllList">历史拍卖物品</a>  
+			<a id="myTask" href="${ctx}/punish">惩罚管理</a> 
 			
 			<a id="account-tab" href="${ctx}/valueSet">活动类型设置</a>  
 			<a id="account-tab" href="${ctx}/penaltyValueSet">惩罚项目设置</a>  

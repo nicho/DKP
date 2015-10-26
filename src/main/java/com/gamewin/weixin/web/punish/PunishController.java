@@ -6,6 +6,7 @@
 package com.gamewin.weixin.web.punish;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
@@ -28,15 +29,19 @@ import org.springside.modules.web.Servlets;
 
 import com.gamewin.weixin.entity.Punish;
 import com.gamewin.weixin.entity.User;
+import com.gamewin.weixin.entity.ValueSet;
 import com.gamewin.weixin.service.account.AccountService;
 import com.gamewin.weixin.service.account.ShiroDbRealm.ShiroUser;
 import com.gamewin.weixin.service.punish.PunishService;
+import com.gamewin.weixin.service.valueSet.ValueSetService;
 import com.google.common.collect.Maps;
 
 @Controller
 @RequestMapping(value = "/punish")
 public class PunishController {
-
+	@Autowired
+	ValueSetService valueSetService;
+	
 	private static final String PAGE_SIZE = "10";
 
 	private static Map<String, String> sortTypes = Maps.newLinkedHashMap();
@@ -114,6 +119,9 @@ public class PunishController {
 		model.addAttribute("action", "create");
 
 		model.addAttribute("userList", accountService.getAllUserDto());
+		
+		List<ValueSet> ActivityTypeList = valueSetService.getActivityType("ActivityType");
+		model.addAttribute("ActivityTypeList", ActivityTypeList);
 		return "punish/punishForm";
 	}
 
@@ -134,6 +142,9 @@ public class PunishController {
 					newPunish.setUser(user);
 					newPunish.setIsdelete(0);
 					newPunish.setStatus("Y");
+					ValueSet punishItem=new ValueSet();
+					punishItem.setId(Long.parseLong(request.getParameter("punishItemId")));
+					newPunish.setPunishItem(punishItem);
 					punishService.savePunishToo(newPunish, user);
 
 					redirectAttributes.addFlashAttribute("message", "惩罚处理成功");

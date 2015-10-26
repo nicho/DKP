@@ -49,7 +49,7 @@ public class PunishService {
 		IntegralHistory ih = new IntegralHistory();
 		ih.setPunish(entity);
 		ih.setCreateDate(new Date());
-		ih.setDescription("惩罚项目:'" + entity.getPunishName() + "',扣除积分:" + entity.getIntegral());
+		ih.setDescription("惩罚项目:'" + entity.getDescription() + "',扣除积分:" + entity.getIntegral());
 		ih.setIntegral(entity.getIntegral());
 		ih.setIsdelete(0);
 		ih.setMark("-");

@@ -24,6 +24,17 @@
 					<input type="text" id="punishName" name="punishName" value="" class="input-large required"/>
 				</div>
 			</div>
+									 <div class="control-group">
+				<label class="control-label">惩罚项目:</label>
+				<div class="controls">
+					<select name="punishItemId" id="punishItem" class="required" onchange="changPunishItem(this)">
+						<option value="">请选择</option>
+						<c:forEach var="list" items="${ActivityTypeList}">
+							<option value="${list.id }"  integral='${list.integral}' typeExplain='${list.typeExplain}'  >${list.typeName}:${list.typeExplain}</option>
+						</c:forEach>
+					</select>
+				</div>
+			</div>
 					    <div class="control-group">
 				<label class="control-label">扣除积分:</label>
 				<div class="controls">
@@ -46,7 +57,7 @@
 			<div class="control-group">
 				<label for="description" class="control-label">描述:</label>
 				<div class="controls">
-					<textarea id="codes" rows="5" name="description" style="  width: 500px;"  class="input-large"></textarea>
+					<textarea id="description" rows="5" name="description" style="  width: 500px;"  class="input-large"></textarea>
 				</div>
 			</div>	
 			
@@ -70,6 +81,12 @@
 				 } 
 			});
 		});
+		
+		function changPunishItem(obj)
+		{  
+			$('#integral').val($('#punishItem').find("option:selected").attr("integral"));
+			$('#description').val($('#punishItem').find("option:selected").attr("typeExplain"));
+		}
 	</script>
 </body>
 </html>

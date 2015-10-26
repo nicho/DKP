@@ -33,6 +33,7 @@
 			<a id="myTask" href="${ctx}/auctionApply/approvalAllList">历史拍卖物品</a> 
 			
 			<a id="account-tab" href="${ctx}/valueSet">活动类型设置</a>  
+			<a id="account-tab" href="${ctx}/penaltyValueSet">惩罚项目设置</a>  
 			<a id="account-tab" href="${ctx}/admin/user">会员帐号管理</a>   
 			<a id="account-tab" href="${ctx}/guild/guildInformation">公会公告信息</a>   
 		</shiro:hasAnyRoles>

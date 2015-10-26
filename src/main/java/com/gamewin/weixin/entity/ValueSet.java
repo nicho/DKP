@@ -11,7 +11,14 @@ public class ValueSet extends IdEntity {
 	private String typeExplain; 
 	private String status;
 	private Integer isdelete;
+	private Double integral;
 	
+	public Double getIntegral() {
+		return integral;
+	}
+	public void setIntegral(Double integral) {
+		this.integral = integral;
+	}
 	public String getTypeCode() {
 		return typeCode;
 	}

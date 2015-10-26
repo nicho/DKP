@@ -107,7 +107,7 @@
 			    } ,
 			      updater: function (item) { 
 			    	  var parameter = {query: item};
-	                  $.post('getPunishUser.do', parameter, function (data) {
+	                  $.post('${ctx}/punish/getPunishUser', parameter, function (data) {
 					         var products= eval("(" + data + ")");   
 				        	 $('#userId').val(products.id); 
 				        }); 

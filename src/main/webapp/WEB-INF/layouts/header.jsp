@@ -3,7 +3,7 @@
 <div id="header" class="row">
 	<div>
 		<h3>
-			<a href="${ctx}">《DKP》公会系统</a><small style="font-size: 23px;">--离恨天</small>
+			<a href="${ctx}">《DKP》公会系统</a><small style="font-size: 23px;"></small>
 		</h3>
 	</div>
 	<div class="pull-right">

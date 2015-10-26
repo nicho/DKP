@@ -54,7 +54,7 @@
     <td colspan="4" width="314">
     <div>
 		<h3>
-			<a href="${ctx}">《DKP》公会系统</a><small style="font-size: 23px;">--离恨天</small>
+			<a href="${ctx}">《DKP》公会系统</a><small style="font-size: 23px;">--公会首页</small>
 		</h3>
 	</div></td>
   </tr>

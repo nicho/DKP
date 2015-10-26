@@ -109,6 +109,10 @@ public class PunishController {
 		// 将搜索条件编码成字符串，用于排序，分页的URL
 		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
 
+		
+		List<ValueSet> PenaltyItemList = valueSetService.getActivityType("PenaltyItem");
+		model.addAttribute("PenaltyItemList", PenaltyItemList);
+		
 		return "punish/myPunishList";
 	}
 
@@ -120,7 +124,7 @@ public class PunishController {
 
 		model.addAttribute("userList", accountService.getAllUserDto());
 		
-		List<ValueSet> ActivityTypeList = valueSetService.getActivityType("ActivityType");
+		List<ValueSet> ActivityTypeList = valueSetService.getActivityType("PenaltyItem");
 		model.addAttribute("ActivityTypeList", ActivityTypeList);
 		return "punish/punishForm";
 	}

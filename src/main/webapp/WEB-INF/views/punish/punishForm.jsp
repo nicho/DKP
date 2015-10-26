@@ -48,7 +48,7 @@
 					<select name="userId" class="required">
 						<option value="" >请选择</option>
 						<c:forEach var="list" items="${userList }">
-							<option value="${list.id }" >${list.name }积分:<fmt:formatNumber value="${list.integral}" pattern="##.##"/></option>
+							<option value="${list.id }" >${list.gameName },积分:<fmt:formatNumber value="${list.integral}" pattern="##.##"/></option>
 						</c:forEach>
 					</select>
 				</div>

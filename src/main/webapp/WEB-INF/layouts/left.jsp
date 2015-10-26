@@ -10,6 +10,7 @@
 		<a id="myTask" href="${ctx}/auction">近期拍卖物品</a> 
 		<a id="myTask" href="${ctx}/admin/user/integralList">个人积分排行</a>
 		<a id="myTask" href="${ctx}/activityUser/activityUserRankingList">参与活动排行</a>
+		<a id="myTask" href="${ctx}/punish/alllist">惩罚公告</a>
 	<!-- 	<a id="myTask" href="${ctx}/exchangeGoods/alllist">近期拍卖成功物品</a>  -->
 
 		 

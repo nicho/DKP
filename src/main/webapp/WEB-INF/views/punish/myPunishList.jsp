@@ -20,31 +20,42 @@
 		</div>
 
 	</div>
-	 
+	
+	<table id="contentTable" class="table table-striped table-bordered table-condensed">
+		<thead><tr>  <th>惩罚项目</th><th>惩罚项目描述</th> <th>扣除积分</th>   </tr></thead>
+		<tbody>
+		<c:forEach items="${PenaltyItemList}" var="task">
+			<tr> 
+				<td>${task.typeName}</td>
+				<td style="color: red; font-weight: bolder;">${task.typeExplain}</td>  
+				<td style="color: red; font-weight: bolder;">${task.integral}</td>   
+			</tr>
+		</c:forEach>
+		</tbody>
+	</table>
+	
+	
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>惩罚物品</th>
-				<th>描述</th>
-				<th>积分</th>
-				<th>买受人</th>
-				<th>时间</th>
-				<th>登记人</th>
+				<th>被处罚人</th> 
+				<th>被处罚人(游戏名)</th> 
+				<th>惩罚描述</th>
+				<th>扣除积分</th> 
+				<th>处罚时间</th>
+				<th>处罚人</th>
 				 
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach items="${punishs.content}" var="task">
-				<tr>
-					<td>${task.punishName}</td>
+				<tr> 
+					<td>${task.user.name}</td> 
+					<td>${task.user.gameName}</td> 
 					<td>${task.description}</td>
 					<td><fmt:formatNumber value="${task.integral}" pattern="##.##"/></td>
-					<td>${task.user.name}</td>
 					<td><fmt:formatDate value="${task.createDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-					<td>${task.createUser.name}</td>
-
-					 
-
+					<td>${task.createUser.name}</td> 
 				</tr>
 			</c:forEach>
 		</tbody>

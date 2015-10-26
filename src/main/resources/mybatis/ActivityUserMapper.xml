@@ -12,6 +12,12 @@
 		 </foreach>  
 	</update>
  
-	 
+	<select id="getUserAllActivityUserlist"   parameterType="com.gamewin.weixin.model.QueryUserDto"  resultType="com.gamewin.weixin.model.ActivityUserList">
+		SELECT u.`game_Name` as gameName ,u.`name`,u.roles, COUNT(t.`activity_id`) cn FROM wx_activity_user t,wx_user u WHERE t.`user_id`=u.id 
+		<if test="search_LIKE_userName !=null and '' !=search_LIKE_userName">
+			and (u.game_Name like CONCAT('%',#{search_LIKE_userName},'%')   or  u.login_name like CONCAT('%',#{search_LIKE_userName},'%')  or u.name like CONCAT('%',#{search_LIKE_userName},'%') )
+		</if>
+		GROUP BY t.`user_id` ORDER BY cn DESC
+	</select>
  
 </mapper> 

@@ -52,11 +52,17 @@
 				<div class="controls">
 					<select name="personCount" class="required" onchange="">
 						<option value="">请选择</option> 
+						<option value="≤10">≤10</option> 
+						<option value="≤20">≤20</option> 
 						<option value="≤30">≤30</option> 
 						<shiro:hasAnyRoles name="admin,Head,OneLevel,TwoLevel">
+							<option value="≤50">≤50</option>
 							<option value="≤100">≤100</option>
+							<option value="≤200">≤200</option>
 						</shiro:hasAnyRoles>
 						<shiro:hasAnyRoles name="admin,Head,OneLevel">
+							<option value="≤300">≤300</option> 
+							<option value="≤400">≤400</option> 
 							<option value="≤500">≤500</option> 
 						</shiro:hasAnyRoles>
 					</select>

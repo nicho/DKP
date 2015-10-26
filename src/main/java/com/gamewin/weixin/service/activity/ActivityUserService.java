@@ -22,7 +22,11 @@ import org.springside.modules.persistence.SearchFilter;
 import org.springside.modules.persistence.SearchFilter.Operator;
 
 import com.gamewin.weixin.entity.ActivityUser;
+import com.gamewin.weixin.model.ActivityUserList;
+import com.gamewin.weixin.model.QueryUserDto;
+import com.gamewin.weixin.mybatis.ActivityUserMybatisDao;
 import com.gamewin.weixin.repository.ActivityUserDao;
+import com.github.pagehelper.PageHelper;
 
 // Spring Bean的标识.
 @Component
@@ -31,7 +35,8 @@ import com.gamewin.weixin.repository.ActivityUserDao;
 public class ActivityUserService {
 
 	private ActivityUserDao activityUserDao;
-
+	@Autowired
+	private ActivityUserMybatisDao activityUserMybatisDao;
 	public Boolean findByActivityUser(Long userid, Long actid) {
 		List<ActivityUser> list = activityUserDao.getByActuser(userid, actid);
 		if (list != null && list.size() > 0) {
@@ -103,5 +108,10 @@ public class ActivityUserService {
 		filters.put("activity", new SearchFilter("activity", Operator.EQ, activityId));
 		Specification<ActivityUser> spec = DynamicSpecifications.bySearchFilter(filters.values(), ActivityUser.class);
 		return spec;
+	}
+	public List<ActivityUserList> getUserAllActivityUserlist(Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType,QueryUserDto dto) {
+		PageHelper.startPage(pageNumber, pageSize);
+		List<ActivityUserList> userList = activityUserMybatisDao.getUserAllActivityUserlist(dto);
+		return userList;
 	}
 }

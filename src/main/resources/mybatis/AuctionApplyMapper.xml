@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.gamewin.weixin.mybatis.AuctionApplyMybatisDao">
+
+	<resultMap id="AuctionApplyMap" type="AuctionApply">
+		<id property="id" column="id" />
+		<result property="description" column="description" /> 
+		<result property="number" column="number" /> 
+		<result property="integral" column="integral" />  
+		<result property="cteateDate" column="cteate_date" />   
+		<result property="status" column="status" />   
+		 <association property="auction" column="auction_id" javaType="Auction">
+			<id property="id" column="auction_id" />
+			<result property="goodsName" column="auction_goodsName" />
+			<result property="integral" column="auction_integral" /> 
+		</association>
+		 <association property="cteateUser" column="cteate_user_id" javaType="User">
+			<id property="id" column="cteateUser_id" />
+			<result property="name" column="cteateUser_name" /> 
+		</association>
+		 <association property="approvalUser" column="approval_user_id" javaType="User">
+			<id property="id" column="approvalUser_id" />
+			<result property="name" column="approvalUser_name" /> 
+		</association>
+	</resultMap>
+	
+	<select id="getAuctionApplyAlllist" parameterType="com.gamewin.weixin.model.QueryAuctionApplyDto" resultMap="AuctionApplyMap">
+ SELECT * FROM (
+   SELECT t.`approval_user_id`,t.`cteate_Date`,
+t.`cteate_user_id`,t.`description`,t.`id`,t.`integral`,t.`isdelete`,t.`number`,
+t.`status`,
+       v.id        auction_id,
+       v.goods_Name auction_goodsName,
+       v.integral  auction_integral,
+       u.id        cteateUser_id,
+       u.name      cteateUser_name,
+       u2.id        approvalUser_id,
+       u2.name      approvalUser_name
+  FROM wx_auction_apply t, wx_auction v, wx_user u,wx_user u2
+ WHERE t.auction_id = v.id
+   AND u.id = t.cteate_user_id and t.isdelete=0
+   AND u2.id=t.`approval_user_id`  and t.cteate_user_id=#{userId}
+   UNION ALL
+
+ 
+SELECT t.`approval_user_id`, t.`create_date` `cteate_Date`,
+t2.`user_id` `cteate_user_id`,t.`description`,t.`id`,t2.`auction_Integral` `integral`,t.`isdelete`,t2.`number`,
+CASE WHEN t2.status='pass' THEN 'au_pass' WHEN t2.status!='pass' AND t.`status`='pass'  THEN 'au_reject' ELSE 'au_Approval' END STATUS,      
+        t.id auction_id,
+       t.goods_Name auction_goodsName,
+       t2.bid_Price  auction_integral,
+       u.id        cteateUser_id,
+       u.name      cteateUser_name,
+       u2.id        approvalUser_id,
+       u2.name      approvalUser_name 
+       FROM wx_auction t,wx_auction_user t2, wx_user u,wx_user u2 WHERE 
+t.`is_Auction`='Y' AND t2.`auction_id`=t.`id` AND t2.`user_id`=1 
+    AND u.id = t2.`user_id`
+   AND u2.id=t.`approval_user_id`  and t2.user_id=#{userId}
+   
+    ) aa ORDER BY aa.`cteate_Date` DESC
+	</select>
+   
+ 
+	
+	 
+ 
+</mapper> 

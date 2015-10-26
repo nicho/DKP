@@ -231,6 +231,10 @@ public class AuctionController {
 		Auction auction = auctionService.getAuction(id);
 		model.addAttribute("auction", auction);
 		
+		if ("Y".equals(auction.getStatus())) {
+			redirectAttributes.addFlashAttribute("message", "活动正在拍卖中,无法查看！非法操作!");
+			return "redirect:/auction/";
+		}
 		List<AuctionUser> auctionUsers = auctionUserService.getAllAuctionApprovalList(id);
 		model.addAttribute("auctionUsers", auctionUsers);
 

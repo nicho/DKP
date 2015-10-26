@@ -35,7 +35,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${auctionApplys}" var="task">
+			<c:forEach items="${auctionApplys.content}" var="task">
 				<tr>
 					<td>${task.auction.goodsName}</td>
 					<td><fmt:formatNumber value="${task.auction.integral}" pattern="##.#"/></td>
@@ -49,9 +49,6 @@
 							<c:when test="${task.status eq 'Approval'}">审批中</c:when>
 							<c:when test="${task.status eq 'pass'}">审批通过</c:when>
 							<c:when test="${task.status eq 'reject'}">审批拒绝</c:when> 
-							<c:when test="${task.status eq 'au_pass'}">竞拍成功</c:when> 
-							<c:when test="${task.status eq 'au_reject'}">竞拍失败</c:when> 
-							<c:when test="${task.status eq 'au_Approval'}">竞拍中</c:when> 
 						</c:choose>
 					</td>
 					 
@@ -61,7 +58,7 @@
 		</tbody>
 	</table>
 
-	<tags:paginationMybatis />
+	<tags:pagination page="${auctionApplys}" paginationSize="10" />
 
 
 </body>

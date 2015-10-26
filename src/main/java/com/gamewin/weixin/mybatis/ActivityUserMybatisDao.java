@@ -5,7 +5,12 @@
  *******************************************************************************/
 package com.gamewin.weixin.mybatis;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
+
+import com.gamewin.weixin.model.ActivityUserList;
+import com.gamewin.weixin.model.QueryUserDto;
 
 /**
  * 通过@MapperScannerConfigurer扫描目录中的所有接口, 动态在Spring Context中生成实现.
@@ -17,4 +22,7 @@ import org.apache.ibatis.annotations.Param;
 public interface ActivityUserMybatisDao {
 
 	Integer updateUserStatus(@Param("ids") Long [] ids,@Param("activityId") Long activityId);
+	
+	List<ActivityUserList> getUserAllActivityUserlist(QueryUserDto dto);
+	
 }

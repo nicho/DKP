@@ -7,8 +7,8 @@ package com.gamewin.weixin.mybatis;
 
 import java.util.List;
 
-import com.gamewin.weixin.entity.User;
-import com.gamewin.weixin.model.QueryUserDto;
+import com.gamewin.weixin.entity.AuctionApply;
+import com.gamewin.weixin.model.QueryAuctionApplyDto;
 
 /**
  * 通过@MapperScannerConfigurer扫描目录中的所有接口, 动态在Spring Context中生成实现.
@@ -17,10 +17,7 @@ import com.gamewin.weixin.model.QueryUserDto;
  * @author calvin
  */
 @MyBatisRepository
-public interface UserMybatisDao {
+public interface AuctionApplyMybatisDao {
 
-	List<User> getUserAllUserlist(QueryUserDto dto);
-	List<User> getUserAllUserIntegrallist(QueryUserDto dto);
-	
-	Double getAllIntegralSum();
+	List<AuctionApply> getAuctionApplyAlllist(QueryAuctionApplyDto dto); 
 }

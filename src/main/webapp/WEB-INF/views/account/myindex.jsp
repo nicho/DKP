@@ -54,7 +54,7 @@
     <td colspan="4" width="314">
     <div>
 		<h3>
-			<a href="${ctx}">《DKP》公会系统</a><small>--离恨天</small>
+			<a href="${ctx}">《DKP》公会系统</a><small style="font-size: 23px;">--离恨天</small>
 		</h3>
 	</div></td>
   </tr>
@@ -68,14 +68,14 @@
 			</font><br>
     权限：<shiro:principal property="rolesName" /><br>
     </td>
-    <td colspan="2"> <a id="myTask" href="${ctx}/activity">最近所有活动列表</a></td>
+    <td colspan="2"> <a id="myTask" href="${ctx}/activity">最近活动列表</a></td>
   </tr>
   <tr>
     <td colspan="2"><a id="myTask" href="${ctx}/activityUser/myActivity">我参与的活动</a>  </td>
     <td colspan="2"><a id="myTask" href="${ctx}/auction">近期拍卖物品</a></td>
   </tr>
   <tr>
-    <td colspan="2"><a id="myTask" href="${ctx}/activity/create">发起活动</a></td>
+    <td colspan="2"><a id="myTask" href="${ctx}/activity/create">我要发起活动</a></td>
     <td colspan="2"><a id="myTask" href="${ctx}/exchangeIntegralApply">我贡献的物品</a>  </td>
   </tr>
   <tr>

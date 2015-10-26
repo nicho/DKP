@@ -141,6 +141,16 @@ public class PunishController {
 		try {
 
 			String userId = request.getParameter("userId");
+			if (StringUtils.isEmpty(userId)) {
+				String userName = request.getParameter("userName");
+				if(!StringUtils.isEmpty(userName))
+				{
+					User user=accountService.findByGameName(userName);
+					if(user!=null)
+						userId=user.getId()+"";
+				}
+
+			}
 			if (!StringUtils.isEmpty(userId)) {
 				User user = accountService.getUser(Long.parseLong(request.getParameter("userId")));
 				// 判断用户积分
@@ -153,6 +163,7 @@ public class PunishController {
 					ValueSet punishItem=new ValueSet();
 					punishItem.setId(Long.parseLong(request.getParameter("punishItemId")));
 					newPunish.setPunishItem(punishItem);
+				 
 					punishService.savePunishToo(newPunish, user);
 
 					redirectAttributes.addFlashAttribute("message", "惩罚处理成功");
@@ -160,6 +171,9 @@ public class PunishController {
 					redirectAttributes.addFlashAttribute("message", "会员积分不够");
 				}
 
+			}else
+			{
+				redirectAttributes.addFlashAttribute("message", "惩罚处理失败");
 			}
 
 		} catch (Exception e) {
@@ -198,12 +212,26 @@ public class PunishController {
 	}
 	@RequestMapping(value = "findPunishUser")
 	@ResponseBody
-	public String findCity(@RequestParam("query") String query) { 
+	public String findPunishUser(@RequestParam("query") String query) { 
 		List<UserDto> list=accountService.getAllUserDtoByName(query);
 		ObjectMapper  objectMapper = new ObjectMapper();
 		String jsonString="";
 		try {
 			jsonString = objectMapper.writeValueAsString(list);
+		} catch (JsonProcessingException e) { 
+			e.printStackTrace();
+		}
+		 return jsonString;
+	}
+	
+	@RequestMapping(value = "getPunishUser")
+	@ResponseBody
+	public String getPunishUser(@RequestParam("query") String query) { 
+		User user=accountService.findByGameName(query);
+		ObjectMapper  objectMapper = new ObjectMapper();
+		String jsonString="";
+		try {
+			jsonString = objectMapper.writeValueAsString(user);
 		} catch (JsonProcessingException e) { 
 			e.printStackTrace();
 		}

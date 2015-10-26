@@ -99,13 +99,20 @@
 			        var parameter = {query: query};
 			        $.post('${ctx}/punish/findPunishUser', parameter, function (data) {
 				         var products= eval("(" + data + ")");
-				         var results = _.map(products, function (product) {
-				        	 $('#userId').val(product.id);
+				         var results = _.map(products, function (product) { 
 		                        return product.gameName;
 		                    });
 		                    process(results);
 			        });
-			    }   
+			    } ,
+			      updater: function (item) { 
+			    	  var parameter = {query: item};
+	                  $.post('getPunishUser.do', parameter, function (data) {
+					         var products= eval("(" + data + ")");   
+				        	 $('#userId').val(products.id); 
+				        }); 
+	                    return item;
+	                }  
 				});
 		});
 		

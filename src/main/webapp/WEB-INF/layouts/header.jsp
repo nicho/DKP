@@ -1,9 +1,9 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8" import="com.gamewin.weixin.util.ReadProperties"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <div id="header" class="row">
 	<div>
 		<h3>
-			<a href="${ctx}">《DKP》公会系统</a><small style="font-size: 23px;">--离恨天</small>
+			<a href="${ctx}">《DKP》公会系统</a><small style="font-size: 23px;">--<%=ReadProperties.getDomainMap().get("orgName")%></small>
 		</h3>
 	</div>
 	<div class="pull-right">

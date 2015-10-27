@@ -41,6 +41,7 @@ import com.gamewin.weixin.service.activity.ActivityUserService;
 import com.gamewin.weixin.service.valueSet.ValueSetService;
 import com.gamewin.weixin.util.MobileContants;
 import com.gamewin.weixin.util.MobileHttpClient;
+import com.gamewin.weixin.util.ReadProperties;
 import com.google.common.collect.Maps;
 
 /**
@@ -258,8 +259,8 @@ public class ActivityController {
 		model.addAttribute("ActivityTypeList", ActivityTypeList);
 
 		if ("pass".equals(activity.getStatus())) {
-
-			String filePath = MobileContants.IMAGEURL + "\\";
+			String IMAGEURL = ReadProperties.getDomainMap().get("IMAGEURL");
+			String filePath = IMAGEURL + "\\";
 			if (!StringUtils.isEmpty(activity.getQrCodeUrl())) {
 				File file = new File(filePath + activity.getQrCodeUrl());
 				if (!file.exists()) {
@@ -271,7 +272,8 @@ public class ActivityController {
 			}
 
 		}
-		model.addAttribute("HttpImageUrl", MobileContants.HTTPIMAGEURL);
+		String HTTPIMAGEURL = ReadProperties.getDomainMap().get("HTTPIMAGEURL");
+		model.addAttribute("HttpImageUrl", HTTPIMAGEURL);
 
 		return "activity/activityView";
 	}
@@ -279,17 +281,18 @@ public class ActivityController {
 	private void createQrCode(Activity entity, ServletRequest request, String filePath) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		String nowDate = sdf.format(new Date());
-
+		String YM = ReadProperties.getDomainMap().get("YM");
+		String orgId = ReadProperties.getDomainMap().get("orgId");
 		String imageUrl = entity.getActivityType() + "-" + entity.getId() + ".jpg";
-		String url = MobileContants.YM + "/activity/registerActivity/" + entity.getId(); //
+		String url = YM + "/activity/registerActivity/" +orgId+ entity.getId(); //
 
 		File file = new File(filePath + nowDate);
 		// 如果文件夹不存在则创建
 		if (!file.exists() && !file.isDirectory()) {
 			file.mkdirs();
 		}
-
-		String wxurl = MobileContants.IMAGEURL + nowDate + "\\" + imageUrl; //
+		String IMAGEURL = ReadProperties.getDomainMap().get("IMAGEURL");
+		String wxurl = IMAGEURL + nowDate + "\\" + imageUrl; //
 
 		// String AccessToken = activityService.getAccessToken();
 

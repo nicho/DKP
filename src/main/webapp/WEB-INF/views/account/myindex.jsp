@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" import="com.gamewin.weixin.util.ReadProperties"%>
 <%@ taglib prefix="sitemesh" uri="http://www.opensymphony.com/sitemesh/decorator" %>  
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
@@ -54,7 +54,7 @@
     <td colspan="4" width="314">
     <div>
 		<h3>
-			<a href="${ctx}">《DKP》公会系统</a><small style="font-size: 23px;">--离恨天</small>
+			<a href="${ctx}">《DKP》公会系统</a><small style="font-size: 23px;">--<%=ReadProperties.getDomainMap().get("orgName")%></small>
 		</h3>
 	</div></td>
   </tr>

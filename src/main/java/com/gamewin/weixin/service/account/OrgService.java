@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gamewin.weixin.entity.Org;
+import com.gamewin.weixin.mybatis.OrgMybatisDao;
 import com.gamewin.weixin.repository.OrgDao;
 
 /**
@@ -24,12 +25,14 @@ public class OrgService {
 
 	@Autowired
 	private OrgDao orgDao;
-
+	@Autowired
+	private OrgMybatisDao orgMybatisDao;
+	
 	public Org getOrg(Long id) {
-		return orgDao.findOne(id);
+		return orgMybatisDao.getOrg(id);
 	}
-	public String getMyOrgNotice() {
-		return orgDao.findOne(new Long(1)).getNotice();
+	public String getMyOrgNotice(Long id) {
+		return orgMybatisDao.getOrg(id).getNotice();
 	}
 	public void updateOrg(Org org) {
 		Org orgx=orgDao.findOne(org.getId());

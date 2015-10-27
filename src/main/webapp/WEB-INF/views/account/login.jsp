@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" import="com.gamewin.weixin.util.ReadProperties"%>
 <%@ taglib prefix="sitemesh" uri="http://www.opensymphony.com/sitemesh/decorator" %>  
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
@@ -58,15 +58,15 @@
 		<br>
  <div class="bodycss">
   <div class="logindiv">
-    <div class="loge logoToo"> </div>
+    <div class="loge  "> <h1><%=ReadProperties.getDomainMap().get("orgName")%></h1></div>
     <div class="loginbox">
       <p><input id="username" name="username"  type="text" class="medium-input userico required" value="${username}" /><div class="cl"></div></p>
       <p><input id="password" name="password" type="password" class="medium-input passwordico required"  autocomplete="off"/><div class="cl"></div></p>
 	  <p><input name="rememberMe" type="checkbox" value="true" class="checkbox" checked><span class="grayfont">记住我</span><span class="fr link"><a href="${ctx}/register">注册</a></span></p>
 	  <p><input name="submit_btn" type="submit" value="登&ensp;&ensp;录" class="orangebtn"></p>
     </div>
-    <div class="loginpic loginpicToo"></div>
-  <div class="visible-desktop">   <div id="login_container"></div></div>
+    <div class="loginpic "></div>
+  <div class="visible-desktop"> </div>
   </div>
     
 </div>

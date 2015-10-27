@@ -7,9 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -423,26 +420,26 @@ public class MobileHttpClient {
 		 
 
 		}
-	 public static void main(String[] args) {
-		 try {
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-				String nowDate = sdf.format(new Date());
-
-				String imageUrl = "6-42.jpg";
-				String url = MobileContants.YM + "/activity/registerActivity/42"; //
-
-				
-				
-				String wxurl =  MobileContants.IMAGEURL+nowDate+"\\" + imageUrl; // 
-				
-			String access_token=getAccessToken();
-			//createMenu(access_token);
-			String ticket = MobileHttpClient.getJsapi_ticket_WeixinLs(access_token, new Long(42));
-			MobileHttpClient.getticketImage(URLEncoder.encode(ticket, "UTF-8"), wxurl);
-			//sendWinXinMessage(access_token, "or7XwwEpjASO9A5_skvnDf729nJ4", "测试内容", "系统通知", "https://open.weixin.qq.com/connect/oauth2/authorize");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	 public static void main(String[] args) {
+//		 try {
+//				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+//				String nowDate = sdf.format(new Date());
+//
+//				String imageUrl = "6-42.jpg";
+//				String url = MobileContants.YM + "/activity/registerActivity/42"; //
+//
+//				
+//				
+//				String wxurl =  MobileContants.IMAGEURL+nowDate+"\\" + imageUrl; // 
+//				
+//			String access_token=getAccessToken();
+//			//createMenu(access_token);
+//			String ticket = MobileHttpClient.getJsapi_ticket_WeixinLs(access_token, new Long(998888888));
+//			MobileHttpClient.getticketImage(URLEncoder.encode(ticket, "UTF-8"), wxurl);
+//			//sendWinXinMessage(access_token, "or7XwwEpjASO9A5_skvnDf729nJ4", "测试内容", "系统通知", "https://open.weixin.qq.com/connect/oauth2/authorize");
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 }

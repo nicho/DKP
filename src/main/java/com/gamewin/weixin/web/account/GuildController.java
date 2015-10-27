@@ -17,9 +17,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+ 
 import com.gamewin.weixin.entity.Org;
 import com.gamewin.weixin.service.account.OrgService;
+import com.gamewin.weixin.util.ReadProperties;
  
 @Controller
 @RequestMapping(value = "/guild")
@@ -30,7 +31,8 @@ public class GuildController {
 	
 	@RequestMapping(value = "/guildInformation",method = RequestMethod.GET)
 	public String guildInformation(Model model) {
-		Org org=orgService.getOrg(new Long(1));
+		String orgId = ReadProperties.getDomainMap().get("orgId");
+		Org org=orgService.getOrg(new Long(orgId));
 		model.addAttribute("org", org);
 		return "guild/guildInformation";
 	} 

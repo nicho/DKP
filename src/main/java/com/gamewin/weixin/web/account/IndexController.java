@@ -16,6 +16,7 @@ import com.gamewin.weixin.entity.User;
 import com.gamewin.weixin.service.account.AccountService;
 import com.gamewin.weixin.service.account.OrgService;
 import com.gamewin.weixin.service.account.ShiroDbRealm.ShiroUser;
+import com.gamewin.weixin.util.ReadProperties;
  
 @Controller
 @RequestMapping(value = "/index")
@@ -29,8 +30,8 @@ public class IndexController {
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 		User u=accountService.getUser(user.getId()); 
 		user.setIntegral(u.getIntegral());
-		
-		String orgNotice=orgService.getMyOrgNotice();
+		String orgId = ReadProperties.getDomainMap().get("orgId");
+		String orgNotice=orgService.getMyOrgNotice(new Long(orgId));
 		model.addAttribute("orgNotice", orgNotice);
 		return "account/myindex";
 	} 

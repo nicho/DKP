@@ -8,6 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="${ctx}/static/easyui/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="${ctx}/static/easyui/themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="${ctx}/static/easyui/demo.css">
+	<script src="${ctx}/static/jquery/underscore-min.js" type="text/javascript"></script>
 	<script type="text/javascript" src="${ctx}/static/easyui/jquery.easyui.min.js"></script>
 
 	<title>惩罚登记</title>
@@ -45,15 +46,17 @@
 			 <div class="control-group">
 				<label class="control-label">被处罚人:</label>
 				<div class="controls">
-					<select name="userId" class="required">
+					<input type="text" id="userName" name="userName" autocomplete="off" value="" class="input-large required "/>
+					<input type="hidden" id="userId" name="userId" value=""  />
+				<!-- 	<select name="userId" class="required">
 						<option value="" >请选择</option>
 						<c:forEach var="list" items="${userList }">
 							<option value="${list.id }" >${list.gameName },积分:<fmt:formatNumber value="${list.integral}" pattern="##.##"/></option>
 						</c:forEach>
-					</select>
+					</select> -->
 				</div>
 			</div>  
-				  
+				   
 			<div class="control-group">
 				<label for="description" class="control-label">描述:</label>
 				<div class="controls">
@@ -75,11 +78,42 @@
 			$("#task_gameName").focus();
 			//为inputForm注册validate函数
 			$("#inputForm").validate({
+				rules : {
+					userName : {
+					remote: "${ctx}/punish/checkPunishUserName"
+					}
+				},
+				messages : {
+					userName : {
+					remote: "会员游戏名不存在"
+					} 
+				},
 				  submitHandler: function(form) {  //通过之后回调 
 					 $("input[type='submit']").attr("disabled","disabled"); 
 				  	form.submit();
 				 } 
-			});
+			}); 
+			
+			$('#userName').typeahead({
+			    source:function (query, process) {
+			        var parameter = {query: query};
+			        $.post('${ctx}/punish/findPunishUser', parameter, function (data) {
+				         var products= eval("(" + data + ")");
+				         var results = _.map(products, function (product) { 
+		                        return product.gameName;
+		                    });
+		                    process(results);
+			        });
+			    } ,
+			      updater: function (item) { 
+			    	  var parameter = {query: item};
+	                  $.post('${ctx}/punish/getPunishUser', parameter, function (data) {
+					         var products= eval("(" + data + ")");   
+				        	 $('#userId').val(products.id); 
+				        }); 
+	                    return item;
+	                }  
+				});
 		});
 		
 		function changPunishItem(obj)

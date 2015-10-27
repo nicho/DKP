@@ -79,11 +79,31 @@ public class AccountService {
 		}
 		return dtoList;
 	}
-
+	public List<UserDto> getAllUserDtoByName(String name) {
+		List<UserDto> dtoList = new ArrayList<UserDto>();
+		QueryUserDto dtox=new QueryUserDto();
+		dtox.setSearch_LIKE_userName(name);
+		List<User> userList = (List<User>) userMybatisDao.getUserAllUserlist(dtox);
+		if(userList!=null && userList.size()>0)
+		{
+			for (int i = 0; i < userList.size(); i++) {
+				User user=userList.get(i);
+				UserDto dto=new UserDto();
+				dto.setId(user.getId());
+				dto.setGameName(user.getGameName());
+				dto.setIntegral(user.getIntegral());
+				dto.setName(user.getName());
+				dtoList.add(dto);
+			}
+		}
+		return dtoList;
+	}
 	public User getUser(Long id) {
 		return userDao.findOne(id);
 	}
-
+	public User findByGameName(String loginName) {
+		return userDao.findByGameName(loginName);
+	}
 	public User findUserByLoginName(String loginName) {
 		return userDao.findByLoginName(loginName);
 	}

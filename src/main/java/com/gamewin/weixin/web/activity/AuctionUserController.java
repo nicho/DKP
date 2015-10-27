@@ -106,6 +106,12 @@ public class AuctionUserController {
 				redirectAttributes.addFlashAttribute("message", "您已经参与过"+auction.getGoodsName()+"竞拍!无需重复参与!");
 				return "redirect:/auction/";
 			}
+			
+			if(newAuctionUser.getNumber()>auction.getNumber())
+			{
+				redirectAttributes.addFlashAttribute("message", "库存不足,无法购买"+newAuctionUser.getNumber()+"件!");
+				return "redirect:/auction/";
+			}
 
 			if (user.getIntegral() >= (newAuctionUser.getBidPrice() * newAuctionUser.getNumber())) {
 				newAuctionUser.setAuctionIntegral(newAuctionUser.getBidPrice() * newAuctionUser.getNumber());

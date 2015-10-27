@@ -284,7 +284,7 @@ public class ActivityController {
 		String YM = ReadProperties.getDomainMap().get("YM");
 		String orgId = ReadProperties.getDomainMap().get("orgId");
 		String imageUrl = entity.getActivityType() + "-" + entity.getId() + ".jpg";
-		String url = YM + "/activity/registerActivity/" +orgId+ entity.getId(); //
+		String url = YM + "/activity/registerActivity/"+ entity.getId(); //
 
 		File file = new File(filePath + nowDate);
 		// 如果文件夹不存在则创建
@@ -299,7 +299,7 @@ public class ActivityController {
 		try {
 			String AccessToken = MobileHttpClient.getAccessToken();
 			// QRCodeUtil.createEncode(url, null, filePath + nowDate, imageUrl);
-			String ticket = MobileHttpClient.getJsapi_ticket_WeixinLs(AccessToken, entity.getId());
+			String ticket = MobileHttpClient.getJsapi_ticket_WeixinLs(AccessToken, new Long(orgId+entity.getId()));
 			MobileHttpClient.getticketImage(URLEncoder.encode(ticket, "UTF-8"), wxurl);
 		} catch (Exception e) {
 			e.printStackTrace();

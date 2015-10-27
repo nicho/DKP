@@ -38,7 +38,7 @@
         <a href="#" onclick="window.open('${activity.webUrl}')">${activity.webUrl}</a>  
       </li>
        <li><span>二维码 </span>
-        <div class="fl divwidth"><img src="${HttpImageUrl}/image/${activity.qrCodeUrl}" width="350px" height="350px"/> </div>
+        <div class="fl divwidth"><img src="${HttpImageUrl}/${activity.qrCodeUrl}" width="350px" height="350px"/> </div>
       </li>
       </c:if>
       

@@ -420,6 +420,11 @@ public class MobileHttpClient {
 		 
 
 		}
+	 public static void main(String[] args) {
+		 System.out.println("106555555".toString().substring(0,2));
+		 System.out.println("106555555".toString().substring(2));
+		 
+	}
 //	 public static void main(String[] args) {
 //		 try {
 //				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");

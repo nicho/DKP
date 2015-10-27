@@ -25,11 +25,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.gamewin.weixin.entity.Activity;
+import com.gamewin.weixin.entity.Org;
 import com.gamewin.weixin.service.account.AccountService;
+import com.gamewin.weixin.service.account.OrgService;
 import com.gamewin.weixin.service.activity.ActivityService;
 import com.gamewin.weixin.util.InputMessage;
 import com.gamewin.weixin.util.MobileContants;
 import com.gamewin.weixin.util.OutputMessage;
+import com.gamewin.weixin.util.ReadProperties;
 import com.gamewin.weixin.util.SHA1;
 import com.gamewin.weixin.util.SerializeXmlUtil;
 import com.thoughtworks.xstream.XStream;
@@ -38,7 +41,9 @@ import com.thoughtworks.xstream.XStream;
 @RequestMapping(value = "/api")
 public class ApiListController {
 	private String Token = "DU2qERxP";
-
+	@Autowired
+	private OrgService orgService;
+	
 	@Autowired
 	private ActivityService activityService;
 	@Autowired
@@ -162,9 +167,16 @@ public class ApiListController {
 						e.printStackTrace();
 					}
 
+					//前2位为机构ID
+					String orgId=qrCodeId.toString().substring(0,2);
+				     qrCodeId=new Long(qrCodeId.toString().substring(2));
+				     
 					Activity activity = activityService.getActivity(qrCodeId);
-
-					String url = MobileContants.YM + "/activity/registerActivity/" + activity.getId(); //
+				
+					Org org=orgService.getOrg(new Long(orgId));
+					
+					
+					String url = org.getUrl()+ "/activity/registerActivity/" + activity.getId(); //
 					 	 
 					str.append("<xml>                                              ");
 					str.append("<ToUserName><![CDATA[" + custermname + "]]></ToUserName>        ");
@@ -174,7 +186,7 @@ public class ApiListController {
 					str.append("<ArticleCount>1</ArticleCount>                     ");
 					str.append("<Articles>                                         ");
 					str.append("<item>                                             ");
-					str.append("<Title><![CDATA[DKP活动参与通知]]></Title>                   ");
+					str.append("<Title><![CDATA["+org.getOrgName()+" DKP活动参与通知]]></Title>                   ");
 					str.append("<Description><![CDATA[您扫描的活动'"+activity.getTitle()+"',请点击阅读全文,参与活动]]></Description> ");
 					str.append("<PicUrl><![CDATA[]]></PicUrl>                ");
 					str.append("<Url><![CDATA[" + url + "]]></Url>                         ");
@@ -195,10 +207,16 @@ public class ApiListController {
 						System.out.println("用户关注" + inputMsg.getEventKey() + "------转换失败");
 						e.printStackTrace();
 					}
-
+					
+					//前2位为机构ID
+					String orgId=qrCodeId.toString().substring(0,2);
+				     qrCodeId=new Long(qrCodeId.toString().substring(2));
+				     
 					Activity activity = activityService.getActivity(qrCodeId);
-
-					String url = MobileContants.YM + "/activity/registerActivity/" + activity.getId(); //
+				
+					Org org=orgService.getOrg(new Long(orgId));
+					
+					String url = org.getUrl()+ "/activity/registerActivity/" + activity.getId(); //
 					 	 
 					str.append("<xml>                                              ");
 					str.append("<ToUserName><![CDATA[" + custermname + "]]></ToUserName>        ");
@@ -208,7 +226,7 @@ public class ApiListController {
 					str.append("<ArticleCount>1</ArticleCount>                     ");
 					str.append("<Articles>                                         ");
 					str.append("<item>                                             ");
-					str.append("<Title><![CDATA[DKP活动参与通知]]></Title>                   ");
+					str.append("<Title><![CDATA["+org.getOrgName()+"DKP活动参与通知]]></Title>                   ");
 					str.append("<Description><![CDATA[请扫描的活动'"+activity.getTitle()+"',请点击阅读全文,参与活动]]></Description> ");
 					str.append("<PicUrl><![CDATA[]]></PicUrl>                ");
 					str.append("<Url><![CDATA[" + url + "]]></Url>                         ");
@@ -221,8 +239,8 @@ public class ApiListController {
 			}
 
 		} else if ("text".equals(msgType)) {
-
-			String redurl = URLEncoder.encode(MobileContants.YM + "/weixinUser/wxbindUserOpenId", "utf-8");
+			String YM = ReadProperties.getDomainMap().get("YM");
+			String redurl = URLEncoder.encode(YM + "/weixinUser/wxbindUserOpenId", "utf-8");
 			String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + MobileContants.wxappID + "&redirect_uri=" + redurl
 					+ "&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
 
@@ -246,4 +264,5 @@ public class ApiListController {
 		}
 
 	}
+	
 }

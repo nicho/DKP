@@ -13,6 +13,14 @@ public class Org extends IdEntity {
 	private String status;
 	private String description;
 	private String notice;
+	private String url;
+	
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
 	public String getOrgName() {
 		return orgName;
 	}

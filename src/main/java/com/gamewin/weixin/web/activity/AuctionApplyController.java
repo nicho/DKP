@@ -111,6 +111,27 @@ public class AuctionApplyController {
 		return "auctionApplyItems/auctionApplyList";
 	}
 
+	
+	@RequestMapping(value = "user/approvalList", method = RequestMethod.GET)
+	public String userapprovalList(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
+			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model,
+			ServletRequest request) {
+		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
+		Long userId = getCurrentUserId();
+		// 我的申请
+		Page<AuctionApply> auctionApplys = auctionApplyService.getAllAuctionApprovalListMy(userId, searchParams,
+				pageNumber, pageSize, sortType);
+
+		model.addAttribute("auctionApplys", auctionApplys);
+		model.addAttribute("sortType", sortType);
+		model.addAttribute("sortTypes", sortTypes);
+		// 将搜索条件编码成字符串，用于排序，分页的URL
+		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
+
+		return "auctionApplyItems/auctionApplyListMy";
+	}
+	
 	@RequiresRoles(value = { "admin", "Head" }, logical = Logical.OR)
 	@RequestMapping(value = "approvalAllList", method = RequestMethod.GET)
 	public String approvalAllList(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
@@ -170,7 +191,44 @@ public class AuctionApplyController {
 		return "auctionApplyItems/auctionApplyForm";
 
 	}
+	@RequestMapping(value = "user/create/{id}", method = RequestMethod.GET)
+	public String usercreateForm(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
+		Auction auction = auctionService.getAuction(id);
 
+		if (auction.getNumber() <= 0) {
+			redirectAttributes.addFlashAttribute("message", "拍卖物品库存不足!");
+			return "redirect:/auction/user/";
+		}
+		User user = accountService.getUser(getCurrentUserId());
+
+		// 我的申请
+		Integer count = auctionApplyService.getAuctionApplyCountByUser(id, user.getId());
+		if (count > 0) {
+			redirectAttributes.addFlashAttribute("message", "您的申请正在审核中,无需重复申请!");
+			return "redirect:/auction/user/";
+		}
+
+		if (user.getIntegral() < auction.getIntegral()) {
+			redirectAttributes.addFlashAttribute("message", "您的积分不够!");
+			return "redirect:/auction/user/";
+		}
+
+		if (auction.getLimitedNumber() != null && auction.getLimitedNumber() > 0) {
+			// 判断是否超限
+			Integer sumCount = auctionApplyService.getAuctionApplyCountByAppId(id, user.getId());
+			if (sumCount != null && sumCount >= auction.getLimitedNumber()) {
+				redirectAttributes.addFlashAttribute("message", "拍卖物品" + auction.getGoodsName() + "超限,每人限制数量:"
+						+ auction.getLimitedNumber() + ",您已申请购买数量:" + sumCount);
+				return "redirect:/auction/user/";
+			}
+		}
+
+		model.addAttribute("auctionApply", new AuctionApply());
+		model.addAttribute("action", "create");
+		model.addAttribute("auction", auction);
+		return "auctionApplyItems/auctionApplyForm";
+
+	}
 	@RequestMapping(value = "create", method = RequestMethod.POST)
 	public String create(@Valid AuctionApply newAuctionApply, RedirectAttributes redirectAttributes,
 			ServletRequest request) {
@@ -280,5 +338,52 @@ public class AuctionApplyController {
 
 		return "redirect:/auctionApply/approvalList";
 	}
+	@RequestMapping(value = "user/approval/{id}")
+	public String userapproval(@PathVariable("id") Long id, RedirectAttributes redirectAttributes, ServletRequest request) {
+		AuctionApply auctionApply = auctionApplyService.getAuctionApply(id);
+		if(auctionApply.getAuction().getCreateUser().getId().equals(getCurrentUserId()) && "Person".equals(auctionApply.getAuction().getType()))
+		{
+			String status = request.getParameter("status");
+			User user = new User(getCurrentUserId());
+			if (("pass".equals(status) || "reject".equals(status)) && "Approval".equals(auctionApply.getStatus())) {
+				User createuser = accountService.getUser(auctionApply.getCteateUser().getId());
 
+				if ("pass".equals(status)) {
+					if (createuser.getIntegral() >= (auctionApply.getIntegral())) {
+						// 扣库存
+						Auction auction = auctionService.getAuction(auctionApply.getAuction().getId());
+						if (auction.getNumber() >= auctionApply.getNumber()) {
+							auctionApply.setApprovalUser(user);
+							auctionApply.setStatus(status);
+							auctionApplyService.saveAuctionApplyApproval(auctionApply, auction);
+							redirectAttributes.addFlashAttribute("message", "审批通过,物品拍卖成功!");
+						} else {
+							redirectAttributes.addFlashAttribute("message", "物品库存不足,无法兑换物品!");
+							return "redirect:/auctionApply/user/approvalList";
+						}
+
+					} else {
+						redirectAttributes.addFlashAttribute("message", "会员积分不够,无法兑换物品!");
+						return "redirect:/auctionApply/user/approvalList";
+					}
+				}else
+				{
+					auctionApply.setStatus(status);
+					auctionApplyService.saveAuctionApply(auctionApply);
+					redirectAttributes.addFlashAttribute("message", "审批拒绝!");
+				}
+			
+
+			} else {
+				redirectAttributes.addFlashAttribute("message", "非法操作");
+			}
+
+			return "redirect:/auctionApply/user/approvalList";
+		}else
+		{
+			redirectAttributes.addFlashAttribute("message", "非法操作");
+			return "redirect:/auctionApply/user/approvalList";
+		}
+		
+	}
 }

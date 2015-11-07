@@ -7,7 +7,8 @@
 	<h1>公会展示</h1>
 	<div class="submenu"> 
 		<a id="myTask" href="${ctx}/activity">最近活动列表</a> 
-		<a id="myTask" href="${ctx}/auction">近期拍卖物品</a> 
+		<a id="myTask" href="${ctx}/auction">公会拍卖物品</a> 
+		<a id="myTask" href="${ctx}/auction/user">个人拍卖物品</a> 
 		<a id="myTask" href="${ctx}/admin/user/integralList">个人积分排行</a>
 		<a id="myTask" href="${ctx}/activityUser/activityUserRankingList">参与活动排行</a>
 		<a id="myTask" href="${ctx}/punish/alllist">个人惩罚公告</a>
@@ -41,14 +42,17 @@
 		</shiro:hasAnyRoles>
 		 
 		<a id="account-tab" href="${ctx}/profile">个人资料修改</a>
+		
+			 <a id="account-tab" href="${ctx}/auction/user/approvalAuctionList">个人物品竞拍审核</a> 
+		 	 <a id="account-tab" href="${ctx}/auctionApply/user/approvalList">个人物品拍卖审核</a> 
 	</div>
 
 	<shiro:hasAnyRoles name="admin,Head,OneLevel,TwoLevel">
 	 <h1>审核</h1> 
 	 <div class="submenu">
 	 		<shiro:hasAnyRoles name="admin,Head">
-		 		<a id="account-tab" href="${ctx}/auction/approvalAuctionList">物品竞拍审核</a> 
-		 		<a id="account-tab" href="${ctx}/auctionApply/approvalList">物品拍卖审核</a> 
+		 		<a id="account-tab" href="${ctx}/auction/approvalAuctionList">公会物品竞拍审核</a> 
+		 		<a id="account-tab" href="${ctx}/auctionApply/approvalList">公会物品拍卖审核</a> 
 				<a id="myTask" href="${ctx}/exchangeIntegralApply/approvalList">贡献物品审核</a>
 			</shiro:hasAnyRoles>
 			

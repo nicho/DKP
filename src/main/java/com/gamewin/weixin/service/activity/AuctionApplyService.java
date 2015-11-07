@@ -120,10 +120,21 @@ public class AuctionApplyService {
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
 		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));
 		filters.put("status", new SearchFilter("status", Operator.EQ, "Approval"));
+		filters.put("auction.type", new SearchFilter("auction.type", Operator.EQ, "Guild"));
 		Specification<AuctionApply> spec = DynamicSpecifications.bySearchFilter(filters.values(), AuctionApply.class);
 		return auctionApplyDao.findAll(spec, pageRequest);
 	}
-
+	public Page<AuctionApply> getAllAuctionApprovalListMy(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize,
+			String sortType) {
+		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
+		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
+		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));
+		filters.put("status", new SearchFilter("status", Operator.EQ, "Approval"));
+		filters.put("auction.type", new SearchFilter("auction.type", Operator.EQ, "Person"));
+		filters.put("auction.createUser.id", new SearchFilter("auction.createUser.id", Operator.EQ, userId)); 
+		Specification<AuctionApply> spec = DynamicSpecifications.bySearchFilter(filters.values(), AuctionApply.class);
+		return auctionApplyDao.findAll(spec, pageRequest);
+	}
 	public Page<AuctionApply> getAllAuctionAllList(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize, String sortType) {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);

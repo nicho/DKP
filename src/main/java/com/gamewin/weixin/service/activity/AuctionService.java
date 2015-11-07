@@ -62,9 +62,21 @@ public class AuctionService {
 
 	public Page<Auction> getAllAuction(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize,
 			String sortType) {
-		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
-		Specification<Auction> spec = buildSpecification(userId, searchParams);
-
+		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType); 
+		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
+		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0"));
+		filters.put("type", new SearchFilter("type", Operator.EQ, "Guild"));
+		Specification<Auction> spec = DynamicSpecifications.bySearchFilter(filters.values(), Auction.class);
+		return auctionDao.findAll(spec, pageRequest);
+	}
+	public Page<Auction> getAllAuctionToUser(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize,
+			String sortType) {
+		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType); 
+		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
+		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0")); 
+		filters.put("type", new SearchFilter("type", Operator.EQ, "Person"));
+		Specification<Auction> spec = DynamicSpecifications.bySearchFilter(filters.values(), Auction.class);
+		
 		return auctionDao.findAll(spec, pageRequest);
 	}
 	public Page<Auction> getApprovalAuction(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize,
@@ -73,10 +85,21 @@ public class AuctionService {
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
 		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0")); 
 		filters.put("isAuction", new SearchFilter("isAuction", Operator.EQ, "Y")); 
+		filters.put("type", new SearchFilter("type", Operator.EQ, "Guild")); 
 		Specification<Auction> spec = DynamicSpecifications.bySearchFilter(filters.values(), Auction.class);
 		return auctionDao.findAll(spec, pageRequest);
 	}
-	
+	public Page<Auction> getApprovalAuctionByMy(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize,
+			String sortType) {
+		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
+		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
+		filters.put("isdelete", new SearchFilter("isdelete", Operator.EQ, "0")); 
+		filters.put("isAuction", new SearchFilter("isAuction", Operator.EQ, "Y")); 
+		filters.put("type", new SearchFilter("type", Operator.EQ, "Person")); 
+		filters.put("createUser.id", new SearchFilter("createUser.id", Operator.EQ, userId)); 
+		Specification<Auction> spec = DynamicSpecifications.bySearchFilter(filters.values(), Auction.class);
+		return auctionDao.findAll(spec, pageRequest);
+	}
 	public Page<Auction> getAllAuctionMy(Long userId, Map<String, Object> searchParams, int pageNumber, int pageSize,
 			String sortType) {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);

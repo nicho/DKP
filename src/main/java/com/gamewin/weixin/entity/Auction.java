@@ -22,6 +22,16 @@ public class Auction extends IdEntity {
 	private Integer limitedNumber;
 	private User approvalUser;
 	private Date approvalDate;
+	private String type;
+	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "approval_user_id")
 	public User getApprovalUser() {

@@ -63,20 +63,42 @@ public class AuctionUserController {
 	public String createForm(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
 		Auction auction = auctionService.getAuction(id);
 
-		 
 		User user = accountService.getUser(getCurrentUserId());
 
 		if (user.getIntegral() < auction.getIntegral()) {
 			redirectAttributes.addFlashAttribute("message", "您的积分不足起拍价!无法参与本次竞拍!");
 			return "redirect:/auction/";
 		}
-		
-		//判断人员是否参与过本轮竞拍
-		Integer count=auctionUserService.getAuctionUserCountByUser(id, user.getId());
-		if(count>0)
-		{
-			redirectAttributes.addFlashAttribute("message", "您已经参与过"+auction.getGoodsName()+"竞拍!无需重复参与!");
+
+		// 判断人员是否参与过本轮竞拍
+		Integer count = auctionUserService.getAuctionUserCountByUser(id, user.getId());
+		if (count > 0) {
+			redirectAttributes.addFlashAttribute("message", "您已经参与过" + auction.getGoodsName() + "竞拍!无需重复参与!");
 			return "redirect:/auction/";
+		}
+		model.addAttribute("auctionUser", new AuctionUser());
+		model.addAttribute("action", "create");
+		model.addAttribute("auction", auction);
+		return "auctionUserItems/auctionUserForm";
+
+	}
+
+	@RequestMapping(value = "user/create/{id}", method = RequestMethod.GET)
+	public String usercreateForm(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
+		Auction auction = auctionService.getAuction(id);
+
+		User user = accountService.getUser(getCurrentUserId());
+
+		if (user.getIntegral() < auction.getIntegral()) {
+			redirectAttributes.addFlashAttribute("message", "您的积分不足起拍价!无法参与本次竞拍!");
+			return "redirect:/auction/user/";
+		}
+
+		// 判断人员是否参与过本轮竞拍
+		Integer count = auctionUserService.getAuctionUserCountByUser(id, user.getId());
+		if (count > 0) {
+			redirectAttributes.addFlashAttribute("message", "您已经参与过" + auction.getGoodsName() + "竞拍!无需重复参与!");
+			return "redirect:/auction/user/";
 		}
 		model.addAttribute("auctionUser", new AuctionUser());
 		model.addAttribute("action", "create");
@@ -94,22 +116,20 @@ public class AuctionUserController {
 			User user = accountService.getUser(getCurrentUserId());
 			Long auctionId = Long.parseLong(request.getParameter("auctionId"));
 			Auction auction = auctionService.getAuction(auctionId);
-			
+
 			if (user.getIntegral() < auction.getIntegral()) {
 				redirectAttributes.addFlashAttribute("message", "您的积分不足起拍价!无法参与本次竞拍!");
 				return "redirect:/auction/";
 			}
-			//判断人员是否参与过本轮竞拍
-			Integer count=auctionUserService.getAuctionUserCountByUser(auctionId, user.getId());
-			if(count>0)
-			{
-				redirectAttributes.addFlashAttribute("message", "您已经参与过"+auction.getGoodsName()+"竞拍!无需重复参与!");
+			// 判断人员是否参与过本轮竞拍
+			Integer count = auctionUserService.getAuctionUserCountByUser(auctionId, user.getId());
+			if (count > 0) {
+				redirectAttributes.addFlashAttribute("message", "您已经参与过" + auction.getGoodsName() + "竞拍!无需重复参与!");
 				return "redirect:/auction/";
 			}
-			
-			if(newAuctionUser.getNumber()>auction.getNumber())
-			{
-				redirectAttributes.addFlashAttribute("message", "库存不足,无法购买"+newAuctionUser.getNumber()+"件!");
+
+			if (newAuctionUser.getNumber() > auction.getNumber()) {
+				redirectAttributes.addFlashAttribute("message", "库存不足,无法购买" + newAuctionUser.getNumber() + "件!");
 				return "redirect:/auction/";
 			}
 
@@ -123,7 +143,7 @@ public class AuctionUserController {
 
 				redirectAttributes.addFlashAttribute("message", "提交竞拍成功");
 			} else {
-				redirectAttributes.addFlashAttribute("message", "您的积分不够!无法同时购买"+newAuctionUser.getNumber()+"件");
+				redirectAttributes.addFlashAttribute("message", "您的积分不够!无法同时购买" + newAuctionUser.getNumber() + "件");
 				return "redirect:/auction/";
 			}
 
@@ -145,17 +165,17 @@ public class AuctionUserController {
 	@RequiresRoles(value = { "admin", "Head" }, logical = Logical.OR)
 	@RequestMapping(value = "approval", method = RequestMethod.POST)
 	public String approval(@Valid Long auctionId, @Valid Long[] chk_list, RedirectAttributes redirectAttributes,
-			ServletRequest request) { 
-		Auction auction = auctionService.getAuction(auctionId);  
-		if ("Y".equals(auction.getStatus())) { 
+			ServletRequest request) {
+		Auction auction = auctionService.getAuction(auctionId);
+		if ("Y".equals(auction.getStatus())) {
 			try {
-				auctionUserService.saveAuctionUserApproval(auction, chk_list,new User(getCurrentUserId())); 
+				auctionUserService.saveAuctionUserApproval(auction, chk_list, new User(getCurrentUserId()));
 				redirectAttributes.addFlashAttribute("message", "物品拍卖成功!");
 			} catch (Exception e) {
 				redirectAttributes.addFlashAttribute("message", e.getMessage());
 				return "redirect:/auction/approvalAuctionList";
 			}
-		
+
 		} else {
 			redirectAttributes.addFlashAttribute("message", "非法操作");
 		}
@@ -163,4 +183,29 @@ public class AuctionUserController {
 		return "redirect:/auction/approvalAuctionList";
 	}
 
+	@RequestMapping(value = "user/approval", method = RequestMethod.POST)
+	public String userapproval(@Valid Long auctionId, @Valid Long[] chk_list, RedirectAttributes redirectAttributes,
+			ServletRequest request) {
+		Auction auction = auctionService.getAuction(auctionId);
+		if ("Person".equals(auction.getType()) && auction.getCreateUser().getId().equals(getCurrentUserId())) {
+			if ("Y".equals(auction.getStatus())) {
+				try {
+					auctionUserService.saveAuctionUserApproval(auction, chk_list, new User(getCurrentUserId()));
+					redirectAttributes.addFlashAttribute("message", "物品拍卖成功!");
+				} catch (Exception e) {
+					redirectAttributes.addFlashAttribute("message", e.getMessage());
+					return "redirect:/auction/approvalAuctionList";
+				}
+
+			} else {
+				redirectAttributes.addFlashAttribute("message", "非法操作");
+			}
+
+			return "redirect:/auction/user/approvalAuctionList";
+		} else {
+			redirectAttributes.addFlashAttribute("message", "非法操作");
+			return "redirect:/auction/user/approvalAuctionList";
+		}
+
+	}
 }

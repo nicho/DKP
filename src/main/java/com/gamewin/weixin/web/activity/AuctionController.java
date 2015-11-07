@@ -61,10 +61,10 @@ public class AuctionController {
 	private AuctionService auctionService;
 
 	@Autowired
-	private AccountService accountService; 
+	private AccountService accountService;
 	@Autowired
 	private AuctionUserService auctionUserService;
-	
+
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
@@ -83,9 +83,29 @@ public class AuctionController {
 
 		return "auctionItems/auctionList";
 	}
-	
+
+	@RequestMapping(value = "user", method = RequestMethod.GET)
+	public String userlist(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
+			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model,
+			ServletRequest request) {
+		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
+		Long userId = getCurrentUserId();
+
+		Page<Auction> auctions = auctionService.getAllAuctionToUser(userId, searchParams, pageNumber, pageSize,
+				sortType);
+
+		model.addAttribute("auctions", auctions);
+		model.addAttribute("sortType", sortType);
+		model.addAttribute("sortTypes", sortTypes);
+		// 将搜索条件编码成字符串，用于排序，分页的URL
+		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
+
+		return "auctionItems/auctionMyList";
+	}
+
 	@RequiresRoles(value = { "admin", "Head" }, logical = Logical.OR)
-	@RequestMapping(value = "approvalAuctionList",method = RequestMethod.GET)
+	@RequestMapping(value = "approvalAuctionList", method = RequestMethod.GET)
 	public String approvalAuctionList(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
 			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model,
@@ -93,7 +113,8 @@ public class AuctionController {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
 		Long userId = getCurrentUserId();
 
-		Page<Auction> auctions = auctionService.getApprovalAuction(userId, searchParams, pageNumber, pageSize, sortType);
+		Page<Auction> auctions = auctionService
+				.getApprovalAuction(userId, searchParams, pageNumber, pageSize, sortType);
 
 		model.addAttribute("auctions", auctions);
 		model.addAttribute("sortType", sortType);
@@ -103,6 +124,27 @@ public class AuctionController {
 
 		return "auctionItems/approvalAuctionList";
 	}
+	
+	@RequestMapping(value = "user/approvalAuctionList", method = RequestMethod.GET)
+	public String userapprovalAuctionList(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
+			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
+			@RequestParam(value = "sortType", defaultValue = "auto") String sortType, Model model,
+			ServletRequest request) {
+		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
+		Long userId = getCurrentUserId();
+
+		Page<Auction> auctions = auctionService
+				.getApprovalAuctionByMy(userId, searchParams, pageNumber, pageSize, sortType);
+
+		model.addAttribute("auctions", auctions);
+		model.addAttribute("sortType", sortType);
+		model.addAttribute("sortTypes", sortTypes);
+		// 将搜索条件编码成字符串，用于排序，分页的URL
+		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
+
+		return "auctionItems/approvalAuctionListMy";
+	}
+	
 	@RequestMapping(value = "mylist", method = RequestMethod.GET)
 	public String mylist(@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
@@ -162,6 +204,7 @@ public class AuctionController {
 			newAuction.setCreateDate(new Date());
 			newAuction.setIsdelete(0);
 			newAuction.setStatus("Y");
+			newAuction.setType("Guild");
 			auctionService.saveAuction(newAuction);
 
 			redirectAttributes.addFlashAttribute("message", "拍卖物品添加成功");
@@ -171,6 +214,37 @@ public class AuctionController {
 		}
 
 		return "redirect:/auction/";
+	}
+
+	@RequestMapping(value = "user/create", method = RequestMethod.GET)
+	public String usercreateForm(Model model) {
+		model.addAttribute("auction", new Auction());
+		model.addAttribute("action", "create");
+
+		model.addAttribute("userList", accountService.getAllUserDto());
+		return "auctionItems/auctionMyForm";
+	}
+
+	@RequestMapping(value = "user/create", method = RequestMethod.POST)
+	public String usercreate(@Valid Auction newAuction, RedirectAttributes redirectAttributes, ServletRequest request) {
+		User createuser = new User(getCurrentUserId());
+
+		try {
+
+			newAuction.setCreateUser(createuser);
+			newAuction.setCreateDate(new Date());
+			newAuction.setIsdelete(0);
+			newAuction.setStatus("Y");
+			newAuction.setType("Person");
+			auctionService.saveAuction(newAuction);
+
+			redirectAttributes.addFlashAttribute("message", "个人拍卖物品添加成功");
+
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("message", "个人拍卖物品添加成功");
+		}
+
+		return "redirect:/auction/user";
 	}
 
 	/**
@@ -200,21 +274,51 @@ public class AuctionController {
 		redirectAttributes.addFlashAttribute("message", "删除拍卖物品'" + auction.getGoodsName() + "'成功");
 		return "redirect:/auction/";
 	}
-	
-	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
-	@RequestMapping(value = "update/{id}", method = RequestMethod.GET)
-	public String updateForm(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("auction", auctionService.getAuction(id)); 
-		model.addAttribute("action", "update"); 
-		return "auctionItems/auctionForm"; 
+
+	@RequestMapping(value = "user/delete/{id}")
+	public String userdelete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+
+		Auction auction = auctionService.getAuction(id);
+		if ("Person".equals(auction.getType()) && auction.getCreateUser().getId().equals(getCurrentUserId())) {
+			auction.setIsdelete(1);
+			auctionService.saveAuction(auction);
+			redirectAttributes.addFlashAttribute("message", "删除个人拍卖物品'" + auction.getGoodsName() + "'成功");
+			return "redirect:/auction/user/";
+		} else {
+			redirectAttributes.addFlashAttribute("message", "非法操作");
+			return "redirect:/auction/user/";
+		}
 	}
 
-	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
-	@RequestMapping(value = "update", method = RequestMethod.POST) 
-	public String update(@Valid @ModelAttribute("newAuction") Auction newAuction, RedirectAttributes redirectAttributes, ServletRequest request) { 
-		 User user = new User(getCurrentUserId()); 
+	@RequiresRoles(value = { "admin", "Head" }, logical = Logical.OR)
+	@RequestMapping(value = "update/{id}", method = RequestMethod.GET)
+	public String updateForm(@PathVariable("id") Long id, Model model) {
+		model.addAttribute("auction", auctionService.getAuction(id));
+		model.addAttribute("action", "update");
+		return "auctionItems/auctionForm";
+	}
+
+	@RequestMapping(value = "user/update/{id}", method = RequestMethod.GET)
+	public String updateMyForm(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
+		Auction ac = auctionService.getAuction(id);
+		if ("Person".equals(ac.getType()) && ac.getCreateUser().getId().equals(getCurrentUserId())) {
+			model.addAttribute("auction", ac);
+			model.addAttribute("action", "update");
+			return "auctionItems/auctionMyForm";
+		} else {
+			redirectAttributes.addFlashAttribute("message", "非法操作");
+			return "redirect:/auction/user/";
+		}
+
+	}
+
+	@RequiresRoles(value = { "admin", "Head" }, logical = Logical.OR)
+	@RequestMapping(value = "update", method = RequestMethod.POST)
+	public String update(@Valid @ModelAttribute("newAuction") Auction newAuction,
+			RedirectAttributes redirectAttributes, ServletRequest request) {
+		User user = new User(getCurrentUserId());
 		newAuction.setCreateUser(user);
-		newAuction.setCreateDate(new Date()); 
+		newAuction.setCreateDate(new Date());
 		newAuction.setIsdelete(0);
 		newAuction.setStatus("Y");
 		auctionService.saveAuction(newAuction);
@@ -222,15 +326,12 @@ public class AuctionController {
 		return "redirect:/auction/";
 	}
 
-	
-	
-	
 	@RequestMapping(value = "viewAuctionUser/{id}")
 	public String viewAuctionUser(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes,
 			ServletRequest request) {
 		Auction auction = auctionService.getAuction(id);
 		model.addAttribute("auction", auction);
-		
+
 		if ("Y".equals(auction.getStatus())) {
 			redirectAttributes.addFlashAttribute("message", "活动正在拍卖中,无法查看！非法操作!");
 			return "redirect:/auction/";
@@ -238,17 +339,32 @@ public class AuctionController {
 		List<AuctionUser> auctionUsers = auctionUserService.getAllAuctionApprovalList(id);
 		model.addAttribute("auctionUsers", auctionUsers);
 
- 
+		return "auctionUserItems/viewAuctionUserConfirm";
+	}
+
+	@RequestMapping(value = "user/viewAuctionUser/{id}")
+	public String userviewAuctionUser(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes,
+			ServletRequest request) {
+		Auction auction = auctionService.getAuction(id);
+		model.addAttribute("auction", auction);
+
+		if ("Y".equals(auction.getStatus())) {
+			redirectAttributes.addFlashAttribute("message", "活动正在拍卖中,无法查看！非法操作!");
+			return "redirect:/auction/user/";
+		}
+		List<AuctionUser> auctionUsers = auctionUserService.getAllAuctionApprovalList(id);
+		model.addAttribute("auctionUsers", auctionUsers);
+
 		return "auctionUserItems/viewAuctionUserConfirm";
 	}
 	
-	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
+	@RequiresRoles(value = { "admin", "Head" }, logical = Logical.OR)
 	@RequestMapping(value = "approvalConfirm/{id}")
 	public String approvalConfirm(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes,
 			ServletRequest request) {
 		Auction auction = auctionService.getAuction(id);
 		model.addAttribute("auction", auction);
-		
+
 		List<AuctionUser> auctionUsers = auctionUserService.getAllAuctionApprovalList(id);
 		model.addAttribute("auctionUsers", auctionUsers);
 
@@ -257,5 +373,29 @@ public class AuctionController {
 			return "redirect:/auction/approvalAuctionList/";
 		}
 		return "auctionUserItems/auctionUserConfirm";
+	}
+	
+	@RequestMapping(value = "user/approvalConfirm/{id}")
+	public String userapprovalConfirm(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes,
+			ServletRequest request) {
+		Auction auction = auctionService.getAuction(id);
+		if("Person".equals(auction.getType()) && auction.getCreateUser().getId().equals(getCurrentUserId()))
+		{
+			model.addAttribute("auction", auction);
+
+			List<AuctionUser> auctionUsers = auctionUserService.getAllAuctionApprovalList(id);
+			model.addAttribute("auctionUsers", auctionUsers);
+
+			if (!"Y".equals(auction.getStatus())) {
+				redirectAttributes.addFlashAttribute("message", "操作失败,该活动已被审批,或非法操作!");
+				return "redirect:/auction/user/approvalAuctionList/";
+			}
+			return "auctionUserItems/auctionUserConfirmMy";
+		}else
+		{
+			redirectAttributes.addFlashAttribute("message", "非法操作!");
+			return "redirect:/auction/user/approvalAuctionList/";
+		}
+
 	}
 }

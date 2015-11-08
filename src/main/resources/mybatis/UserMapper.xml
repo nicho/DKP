@@ -39,7 +39,7 @@
 	</select>
  
     <select id="getAllIntegralSum" resultType="java.lang.Double" >
-		SELECT SUM(u.`integral`) FROM wx_user u 
+		SELECT SUM(u.`integral`) FROM wx_user u where u.status='enabled'
 	</select>
 	 
  

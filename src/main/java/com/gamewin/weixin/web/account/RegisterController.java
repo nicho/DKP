@@ -80,7 +80,15 @@ public class RegisterController {
 			return "false";
 		}
 	}
-
+	@RequestMapping(value = "checkGameName")
+	@ResponseBody
+	public String checkGameName(@RequestParam("gameName") String gameName) {
+		if (accountService.findUserByGameName(gameName) == null) {
+			return "true";
+		} else {
+			return "false";
+		}
+	}
 	/**
 	 * Ajax请求校验是否是二级经销商
 	 */

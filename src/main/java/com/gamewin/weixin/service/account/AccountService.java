@@ -107,6 +107,10 @@ public class AccountService {
 	public User findUserByLoginName(String loginName) {
 		return userDao.findByLoginName(loginName);
 	}
+	public User findUserByGameName(String loginName) {
+		return userDao.findByGameName(loginName);
+	}
+	
 	public User findByWeixinOpenid(String weixinOpenid) {
 		return userDao.findByWeixinOpenid(weixinOpenid);
 	}

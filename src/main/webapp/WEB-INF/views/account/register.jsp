@@ -36,14 +36,18 @@
 				rules: {
 					loginName: {
 						remote: "${ctx}/register/checkLoginName"
+					},
+					gameName: {
+						remote: "${ctx}/register/checkGameName"
 					} 
-			
 				},
 				messages: {
 					loginName: {
 						remote: "用户登录名已存在"
+					}, 
+					gameName: {
+						remote: "游戏名已存在"
 					}  
-				
 				}
 			});
 		});

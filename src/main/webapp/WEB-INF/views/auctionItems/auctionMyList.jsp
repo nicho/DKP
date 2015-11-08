@@ -7,7 +7,7 @@
 
 <html>
 <head>
-<title>拍卖物品列表</title>
+<title>个人拍卖物品列表</title>
 
 <link href="${ctx}/static/styles/dkp.css" type="text/css" rel="stylesheet" />
 
@@ -74,12 +74,20 @@
 					 <c:if test="${task.isAuction eq 'Y'}"> 
 							<c:if test="${task.status eq 'pass'}"><a href="${ctx}/auction/user/viewAuctionUser/${task.id}" >查看竞拍结果</a> &nbsp;</c:if>
 					 </c:if>
-					<shiro:hasAnyRoles name="admin,Head">
+
+					
+					<c:if test="${myuserId eq task.createUser.id}">
 							<c:if test="${task.status eq 'Y'}">
 								<a href="${ctx}/auction/user/update/${task.id}"  >修改</a>&nbsp; 
 							</c:if>
-						<a href="#" onclick="confirmDelete('${ctx}/auction/user/delete/${task.id}')">删除</a>&nbsp; 
-					</shiro:hasAnyRoles>
+							<a href="#" onclick="confirmDelete('${ctx}/auction/user/delete/${task.id}')">删除</a>&nbsp; 
+					</c:if>
+					<c:if test="${myuserId != task.createUser.id}">
+						<shiro:hasAnyRoles name="admin,Head"> 
+							<a href="#" onclick="confirmDelete('${ctx}/auction/user/delete/${task.id}')">删除</a>&nbsp; 
+						</shiro:hasAnyRoles>
+					</c:if>
+					
 					</td>
 
 				</tr>

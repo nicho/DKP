@@ -355,7 +355,7 @@ public class AuctionApplyController {
 						if (auction.getNumber() >= auctionApply.getNumber()) {
 							auctionApply.setApprovalUser(user);
 							auctionApply.setStatus(status);
-							auctionApplyService.saveAuctionApplyApproval(auctionApply, auction);
+							auctionApplyService.saveAuctionApplyApproval(auctionApply, auction);  
 							redirectAttributes.addFlashAttribute("message", "审批通过,物品拍卖成功!");
 						} else {
 							redirectAttributes.addFlashAttribute("message", "物品库存不足,无法兑换物品!");

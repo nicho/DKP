@@ -7,7 +7,7 @@
 
 <html>
 <head>
-<title>拍卖物品列表</title>
+<title>公会物品列表</title>
 
 <link href="${ctx}/static/styles/dkp.css" type="text/css" rel="stylesheet" />
 

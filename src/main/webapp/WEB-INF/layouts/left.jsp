@@ -43,16 +43,16 @@
 		 
 		<a id="account-tab" href="${ctx}/profile">个人资料修改</a>
 		
-			 <a id="account-tab" href="${ctx}/auction/user/approvalAuctionList">个人物品竞拍审核</a> 
-		 	 <a id="account-tab" href="${ctx}/auctionApply/user/approvalList">个人物品拍卖审核</a> 
+			 <a id="account-tab" href="${ctx}/auction/user/approvalAuctionList">个人竞拍审核</a> 
+		 	 <a id="account-tab" href="${ctx}/auctionApply/user/approvalList">个人拍卖审核</a> 
 	</div>
 
 	<shiro:hasAnyRoles name="admin,Head,OneLevel,TwoLevel">
 	 <h1>审核</h1> 
 	 <div class="submenu">
 	 		<shiro:hasAnyRoles name="admin,Head">
-		 		<a id="account-tab" href="${ctx}/auction/approvalAuctionList">公会物品竞拍审核</a> 
-		 		<a id="account-tab" href="${ctx}/auctionApply/approvalList">公会物品拍卖审核</a> 
+		 		<a id="account-tab" href="${ctx}/auction/approvalAuctionList">公会竞拍审核</a> 
+		 		<a id="account-tab" href="${ctx}/auctionApply/approvalList">公会拍卖审核</a> 
 				<a id="myTask" href="${ctx}/exchangeIntegralApply/approvalList">贡献物品审核</a>
 			</shiro:hasAnyRoles>
 			

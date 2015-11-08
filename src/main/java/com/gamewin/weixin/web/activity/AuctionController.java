@@ -100,7 +100,7 @@ public class AuctionController {
 		model.addAttribute("sortTypes", sortTypes);
 		// 将搜索条件编码成字符串，用于排序，分页的URL
 		model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
-
+		model.addAttribute("myuserId", userId);
 		return "auctionItems/auctionMyList";
 	}
 
@@ -277,9 +277,9 @@ public class AuctionController {
 
 	@RequestMapping(value = "user/delete/{id}")
 	public String userdelete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
-
+		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 		Auction auction = auctionService.getAuction(id);
-		if ("Person".equals(auction.getType()) && auction.getCreateUser().getId().equals(getCurrentUserId())) {
+		if (("Person".equals(auction.getType()) && auction.getCreateUser().getId().equals(getCurrentUserId())) || ("admin".equals(user.getRoles()) || "Head".equals(user.getRoles()))) {
 			auction.setIsdelete(1);
 			auctionService.saveAuction(auction);
 			redirectAttributes.addFlashAttribute("message", "删除个人拍卖物品'" + auction.getGoodsName() + "'成功");

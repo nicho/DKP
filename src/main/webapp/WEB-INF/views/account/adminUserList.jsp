@@ -72,7 +72,15 @@
 					<shiro:hasAnyRoles name="admin,Head">
 							<a href="${ctx}/admin/user/update/${user.id}">修改</a>&nbsp; 
 							<a href="#" onclick="confirmDelete('${ctx}/admin/user/delete/${user.id}')">删除</a>&nbsp; 
-					 		<a href="#"	onclick="confirmDisabled('${ctx}/admin/user/disabled/${user.id}')">失效</a>&nbsp;
+							
+							<c:if test="${user.status eq 'enabled'}">
+							<a href="#"	onclick="confirmable('${ctx}/admin/user/disabled/${user.id}')">失效</a>&nbsp;
+							</c:if>
+					 		 <c:if test="${user.status eq 'disabled'}">
+								<a href="#"	onclick="confirmDisabled('${ctx}/admin/user/able/${user.id}')">生效</a>&nbsp;
+							</c:if>
+					 		
+					 		
 					</shiro:hasAnyRoles>
 
 				</tr>

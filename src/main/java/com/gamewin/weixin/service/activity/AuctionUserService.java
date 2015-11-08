@@ -93,6 +93,29 @@ public class AuctionUserService {
 						ih.setTitle("拍卖竞拍扣除积分");
 						integralHistoryDao.save(ih);
 						
+						if("Person".equals(auctionUser.getAuction().getType()))
+						{
+							//如果是个人,给发起人,加积分
+							User cuser = auctionUser.getAuction().getCreateUser();
+							cuser.setIntegral(cuser.getIntegral() + auctionUser.getAuctionIntegral());
+							userDao.save(cuser);
+							
+							
+							// 记录日志
+							IntegralHistory ih2 = new IntegralHistory();
+							ih2.setAuction(auction);
+							ih2.setCreateDate(new Date());
+							ih2.setDescription("个人物品竞拍:'" + auction.getGoodsName() + "',数量:" + auctionUser.getNumber() + ",获得积分:" + auctionUser.getAuctionIntegral());
+							ih2.setIntegral(auctionUser.getAuctionIntegral());
+							ih2.setIsdelete(0);
+							ih2.setMark("+");
+							ih2.setUser(user);
+							ih2.setStatus("Y");
+							ih2.setTitle("个人竞拍获得积分");
+							integralHistoryDao.save(ih2);
+							
+						}
+						
 					}else{
 						throw new Exception("用户:"+auctionUser.getUser().getName()+",积分不足,无法兑换物品!剩余:"+auctionUser.getUser().getIntegral()+",需要"+auctionUser.getAuctionIntegral());
 					}

@@ -137,7 +137,17 @@ public class UserAdminController {
 		redirectAttributes.addFlashAttribute("message", "失效用户" + user.getLoginName() + "成功");
 		return "redirect:/admin/user";
 	}
- 
+	
+	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
+	@RequestMapping(value = "able/{id}")
+	public String able(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+		User user = accountService.getUser(id);
+		user.setStatus("enabled");
+		accountService.updateUser(user);
+		redirectAttributes.addFlashAttribute("message", "生效用户" + user.getLoginName() + "成功");
+		return "redirect:/admin/user";
+	}
+	
 	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(value = "delete/{id}")
 	public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {

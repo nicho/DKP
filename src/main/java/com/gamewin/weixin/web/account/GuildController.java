@@ -39,8 +39,8 @@ public class GuildController {
 	
 	@RequiresRoles(value = { "admin", "Head"}, logical = Logical.OR)
 	@RequestMapping(value = "updateGuildInformation", method = RequestMethod.POST) 
-	public String update(@Valid @ModelAttribute("newOrg") Org org, RedirectAttributes redirectAttributes, ServletRequest request) { 
-		orgService.updateOrg(org);
+	public String update(@Valid @ModelAttribute("newOrg") Org org, RedirectAttributes redirectAttributes, ServletRequest request) {  
+		orgService.updateOrgNotice(org);
 		redirectAttributes.addFlashAttribute("message", "更新公会信息成功");
 		return "redirect:/guild/guildInformation";
 	}

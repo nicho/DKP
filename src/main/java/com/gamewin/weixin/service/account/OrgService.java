@@ -34,9 +34,7 @@ public class OrgService {
 	public String getMyOrgNotice(Long id) {
 		return orgMybatisDao.getOrg(id).getNotice();
 	}
-	public void updateOrg(Org org) {
-		Org orgx=orgDao.findOne(org.getId());
-		orgx.setNotice(org.getNotice());
-		orgDao.save(orgx);
+	public void updateOrgNotice(Org org) { 
+		orgMybatisDao.updateOrgNotice(org);
 	}
 }

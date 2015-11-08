@@ -5,7 +5,10 @@
 <mapper namespace="com.gamewin.weixin.mybatis.OrgMybatisDao">
  
 	<select id="getOrg"   parameterType="java.lang.Long"  resultType="com.gamewin.weixin.entity.Org">
-		SELECT u.`org_name` as orgName ,u.`create_date` as createDate,u.status,u.description,u.notice,u.url FROM dkp.wx_org u where u.id=#{id} 
-	</select>
- 
+		SELECT u.id,u.`org_name` as orgName ,u.`create_date` as createDate,u.status,u.description,u.notice,u.url FROM dkp.wx_org u where u.id=#{id} 
+	</select> 
+	
+ 	<update id="updateOrgNotice"   parameterType="com.gamewin.weixin.entity.Org" >
+ 			update  dkp.wx_org u  set u.notice=#{notice} where u.id=#{id} 
+	</update>
 </mapper> 

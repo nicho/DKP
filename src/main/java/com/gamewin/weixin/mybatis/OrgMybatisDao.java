@@ -17,4 +17,6 @@ import com.gamewin.weixin.entity.Org;
 public interface OrgMybatisDao {
 
 	Org getOrg(Long id);
+
+	int updateOrgNotice(Org org);
 }

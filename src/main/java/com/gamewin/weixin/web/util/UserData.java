@@ -3,10 +3,12 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  *******************************************************************************/
-package com.gamewin.weixin.data;
+package com.gamewin.weixin.web.util;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Random;
+
+import com.gamewin.weixin.entity.User;
 
 public class UserData {
 	public static String create()   {
@@ -28,7 +30,8 @@ public class UserData {
 	public static void main(String[] args) {
 		
 		//生成名字
-		String name="离丶"+UserData.create()+UserData.create(); 
+		String name="离丶"+UserData.create()+UserData.create();
+
 		System.out.println(name);
 	}
 }

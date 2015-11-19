@@ -40,6 +40,16 @@ public class User extends IdEntity {
 	private String wxWeixinOpenid;
 	private String rank;
 	private Double integral;
+	private String isFalse;
+	
+	public String getIsFalse() {
+		return isFalse;
+	}
+
+	public void setIsFalse(String isFalse) {
+		this.isFalse = isFalse;
+	}
+
 	// 不持久化到数据库，也不显示在Restful接口的属性.
 	@Transient
 	@JsonIgnore

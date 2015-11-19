@@ -32,7 +32,7 @@ public class UserApiController {
 	@RequestMapping(method = { RequestMethod.GET, RequestMethod.POST })
 	public void list(HttpServletRequest request, HttpServletResponse response) {
 		//生成名字
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 4000; i++) {
 			String name="离丶"; 
 			
 			Random random=new Random(); 

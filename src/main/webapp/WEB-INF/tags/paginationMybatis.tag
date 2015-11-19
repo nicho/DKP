@@ -55,7 +55,7 @@ function onChangePageSize(obj)
             
             </li>
             <li class="xifenye" id="xifenye" style="width: 66px; ">
-            	<a id="xiye"><input type="text" id="pageNumTag"  class="input" name="pageNum" value="${page.pageNum}"   style="width: 15px;height: 10px; padding: 4px 6px; margin-bottom: 0px; font-size: 12px; text-align: center;" /></a>/<a id="mo">${page.pages}</a>
+            	<a id="xiye"><input type="text" id="pageNumTag"  class="input" name="pageNum" value="${page.pageNum}"   style="width: 22px;height: 10px; padding: 4px 6px; margin-bottom: 0px; font-size: 12px; text-align: center;" /></a>/<a id="mo">${page.pages}</a>
                 <div class="xab" id="xab" style="display:none">
                 	<ul id="uljia">	
                     </ul>

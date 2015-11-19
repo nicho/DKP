@@ -325,6 +325,26 @@ public class AuctionController {
 		redirectAttributes.addFlashAttribute("message", "更新拍卖物品成功");
 		return "redirect:/auction/";
 	}
+	
+	@RequestMapping(value = "user/update", method = RequestMethod.POST)
+	public String userupdate(@Valid @ModelAttribute("newAuction") Auction newAuction,
+			RedirectAttributes redirectAttributes, ServletRequest request) {
+		User user = new User(getCurrentUserId());
+		newAuction.setCreateUser(user);
+		newAuction.setCreateDate(new Date());
+		newAuction.setIsdelete(0);
+		newAuction.setStatus("Y");
+		if ("Person".equals(newAuction.getType()) && newAuction.getCreateUser().getId().equals(getCurrentUserId())) {
+			auctionService.saveAuction(newAuction);
+			redirectAttributes.addFlashAttribute("message", "更新拍卖物品成功");
+			return "redirect:/auction/user/";
+		}else
+		{
+			redirectAttributes.addFlashAttribute("message", "非法操作");
+			return "redirect:/auction/user/";
+		}
+
+	}
 
 	@RequestMapping(value = "viewAuctionUser/{id}")
 	public String viewAuctionUser(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes,

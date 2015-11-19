@@ -16,6 +16,7 @@
 <body>
 	<form id="inputForm" action="${ctx}/auction/user/${action}" method="post" class="form-horizontal">
 	<input type="hidden" id="id" name="id" value="${auction.id}"  />
+		<input type="hidden" id="type" name="type" value="${auction.type}"  />
 		<fieldset>
 			<legend>
 				<small>拍卖登记</small>

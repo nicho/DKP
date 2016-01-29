@@ -105,7 +105,7 @@ public class AuctionApplyService {
 				ih2.setIntegral(entity.getIntegral());
 				ih2.setIsdelete(0);
 				ih2.setMark("+");
-				ih2.setUser(user);
+				ih2.setUser(cuser);
 				ih2.setStatus("Y");
 				ih2.setTitle("个人拍卖获得积分");
 				integralHistoryDao.save(ih2);
